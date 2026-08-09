@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <title>Messages | SocialSphere</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/instagram.css">
+  <link rel="stylesheet" href="/css/ultimate.css">
+  <script src="/js/api.js"></script>
+  <link rel="stylesheet" href="/css/premium.css">
+</head>
+<body class="instagram-page">
+<header class="topbar insta-topbar">
+  <nav class="navwrap">
+    <a class="brand insta-brand" href="/feed"><span class="brandmark">S</span><span>SocialSphere</span></a>
+    <div class="navlinks"><a href="/feed">⌂ <span>Home</span></a><a href="/search">⌕ <span>Search</span></a><a href="/create-post">⊞ <span>Create</span></a><a class="active message-link" href="/messages">✉ <span>Messages</span><b class="message-badge hidden">0</b></a><a href="/notifications">♡ <span>Alerts</span></a><a href="/profile">◎ <span>Profile</span></a></div>
+  </nav>
+</header>
+
+<main class="shell messages-shell">
+  <section class="glass messenger">
+    <aside class="conversation-sidebar">
+      <div class="conversation-sidebar-head"><div><span class="eyebrow">Direct</span><h1>Messages</h1></div><button class="new-chat-button" type="button" onclick="toggleNewChat()">＋</button></div>
+      <div class="new-chat-panel hidden" id="newChatPanel"><input id="userSearch" placeholder="Search people…" autocomplete="off"><div id="userSearchResults"></div></div>
+      <div class="conversation-list" id="conversationList"><div class="empty">Loading conversations…</div></div>
+    </aside>
+
+    <section class="chat-panel">
+      <div class="chat-empty" id="chatEmpty"><div class="chat-empty-icon">✉</div><h2>Your messages</h2><p>Send private messages, photos and videos.</p><button class="btn" type="button" onclick="toggleNewChat(true)">Send message</button></div>
+      <div class="chat-active hidden" id="chatActive">
+        <header class="chat-header"><button class="mobile-back" type="button" onclick="closeMobileChat()">←</button><a id="chatProfileLink" class="chat-person" href="#"><img class="avatar" id="chatAvatar" alt=""><span><strong id="chatName">User</strong><small id="chatUsername">@username</small></span></a><div class="call-buttons"><button class="attachment-button" type="button" onclick="startCall('audio')" title="Voice call">☎</button><button class="attachment-button" type="button" onclick="startCall('video')" title="Video call">▣</button></div></header>
+        <div class="message-stream" id="messageStream"><div class="empty">Loading messages…</div></div>
+        <div class="attachment-preview hidden" id="attachmentPreview"></div>
+        <form class="message-composer" id="messageForm">
+          <button class="attachment-button" type="button" onclick="document.getElementById('messageMedia').click()" title="Send photo or video">＋</button>
+          <button class="attachment-button" id="voiceButton" type="button" onclick="toggleVoiceRecording()" title="Record voice message">🎙</button>
+          <input id="messageMedia" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg,video/quicktime" hidden>
+          <textarea id="messageInput" maxlength="4000" rows="1" placeholder="Message…"></textarea>
+          <button class="send-message-button" id="sendButton" type="submit">➤</button>
+        </form>
+      </div>
+    </section>
+  </section>
+</main>
+
+<nav class="mobile-bottom-nav"><a href="/feed">⌂<span>Home</span></a><a href="/search">⌕<span>Search</span></a><a class="mobile-create" href="/create-post">＋<span>Create</span></a><a class="active" href="/messages">✉<span>Messages</span></a><a href="/profile">◎<span>Profile</span></a></nav>
+<div class="toast" id="toast"></div>
+
+<script>
+const conversationList = document.getElementById('conversationList');
+const stream = document.getElementById('messageStream');
+const toast = document.getElementById('toast');
+const searchInput = document.getElementById('userSearch');
+const searchResults = document.getElementById('userSearchResults');
+const messageInput = document.getElementById('messageInput');
+const messageMedia = document.getElementById('messageMedia');
+const attachmentPreview = document.getElementById('attachmentPreview');
+let currentUser = null;
+let selectedUserId = Number(new URLSearchParams(location.search).get('user_id')) || null;
+let selectedUser = null;
+let searchTimer = null;
+let lastMessageSignature = '';
+let attachmentObjectUrl = '';
+const foundUsers = new Map();
+
+function notify(message) { toast.textContent = message; toast.classList.add('show'); clearTimeout(notify.timer); notify.timer = setTimeout(() => toast.classList.remove('show'), 2500); }
+function toggleNewChat(forceOpen=false) { const panel=document.getElementById('newChatPanel'); panel.classList.toggle('hidden', forceOpen ? false : !panel.classList.contains('hidden')); if(!panel.classList.contains('hidden')) searchInput.focus(); }
+function conversationRow(item) { const active=item.user_id===selectedUserId?'active':''; const prefix=item.last_message_sent_by_me?'You: ':''; return `<button class="conversation-row ${active}" onclick="openConversation(${item.user_id})"><img class="avatar" src="${fileUrl(item.profile_image,item.full_name||item.username)}" alt=""><span class="conversation-copy"><span class="conversation-title"><strong>${escapeHtml(item.full_name||item.username)}</strong><small>${new Date(item.last_message_at).toLocaleDateString()}</small></span><span class="conversation-preview">${escapeHtml(prefix+item.last_message)}</span></span>${item.unread_count?`<b class="conversation-unread">${item.unread_count>99?'99+':item.unread_count}</b>`:''}</button>`; }
+async function loadConversations(){try{const items=await api('/api/messages/conversations');conversationList.innerHTML=items.length?items.map(conversationRow).join(''):'<div class="empty"><div class="icon">✉</div><h3>No messages yet</h3><p>Search for someone and say hello.</p></div>';}catch(error){conversationList.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;}}
+
+function messageMediaMarkup(message){if(!message.media_url)return'';const url=fileUrl(message.media_url);if(message.media_type==='video')return `<video class="message-media" src="${url}" controls playsinline preload="metadata"></video>`;if(message.media_type==='audio')return `<audio class="message-audio" src="${url}" controls preload="metadata"></audio>`;return `<img class="message-media" src="${url}" alt="Shared photo" loading="lazy">`;}
+function messageBubble(message){const mine=message.sender_id===currentUser.id;return `<div class="message-line ${mine?'mine':'theirs'}" id="message-${message.id}"><div class="message-bubble">${messageMediaMarkup(message)}${message.text?`<p>${escapeHtml(message.text)}</p>`:''}<small>${new Date(message.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}${mine?(message.is_read?' · Seen':' · Sent'):''}</small></div>${mine?`<button class="message-delete" onclick="deleteMessage(${message.id})" title="Delete">×</button>`:''}</div>`;}
+function renderMessages(messages,forceScroll=false){const signature=messages.map(item=>`${item.id}:${item.is_read}:${item.media_url||''}:${item.text}`).join('|');if(signature===lastMessageSignature&&!forceScroll)return;const nearBottom=stream.scrollHeight-stream.scrollTop-stream.clientHeight<130;lastMessageSignature=signature;stream.innerHTML=messages.length?messages.map(messageBubble).join(''):`<div class="chat-intro"><img class="avatar" src="${fileUrl(selectedUser.profile_image,selectedUser.full_name||selectedUser.username)}" alt=""><h3>${escapeHtml(selectedUser.full_name||selectedUser.username)}</h3><p>Start your conversation. You can send messages, photos and videos.</p></div>`;if(forceScroll||nearBottom)stream.scrollTop=stream.scrollHeight;}
+async function resolveUser(userId){const profile=await api(`/api/users/${userId}`);return profile.user;}
+async function openConversation(userId,suppliedUser=null){if(userId===currentUser.id)return;selectedUserId=Number(userId);selectedUser=suppliedUser||await resolveUser(selectedUserId);history.replaceState({},'',`/messages?user_id=${selectedUserId}`);document.getElementById('chatEmpty').classList.add('hidden');document.getElementById('chatActive').classList.remove('hidden');document.querySelector('.messenger').classList.add('chat-open');document.getElementById('chatAvatar').src=fileUrl(selectedUser.profile_image,selectedUser.full_name||selectedUser.username);document.getElementById('chatName').textContent=selectedUser.full_name||selectedUser.username;document.getElementById('chatUsername').textContent='@'+selectedUser.username;document.getElementById('chatProfileLink').href=`/profile?user_id=${selectedUser.id}`;stream.innerHTML='<div class="empty">Loading messages…</div>';lastMessageSignature='';clearAttachment();await loadMessages(true);await Promise.all([loadConversations(),refreshMessageBadge(),refreshNotificationBadge()]);messageInput.focus();}
+async function loadMessages(forceScroll=false){if(!selectedUserId||!currentUser)return;try{renderMessages(await api(`/api/messages/users/${selectedUserId}`),forceScroll);}catch(error){stream.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;}}
+
+function clearAttachment(){if(attachmentObjectUrl)URL.revokeObjectURL(attachmentObjectUrl);attachmentObjectUrl='';messageMedia.value='';attachmentPreview.innerHTML='';attachmentPreview.classList.add('hidden');}
+messageMedia.addEventListener('change',()=>{const file=messageMedia.files[0];if(!file)return clearAttachment();if(file.size>60*1024*1024){notify('File must be under 60 MB');return clearAttachment();}if(attachmentObjectUrl)URL.revokeObjectURL(attachmentObjectUrl);attachmentObjectUrl=URL.createObjectURL(file);const video=file.type.startsWith('video/');attachmentPreview.innerHTML=`${video?`<video src="${attachmentObjectUrl}" muted></video>`:`<img src="${attachmentObjectUrl}" alt="">`}<span>${escapeHtml(file.name)}</span><button type="button" onclick="clearAttachment()">×</button>`;attachmentPreview.classList.remove('hidden');});
+
+async function sendMessage(event){event.preventDefault();if(!selectedUserId)return;const text=messageInput.value.trim();const file=messageMedia.files[0];if(!text&&!file)return;const button=document.getElementById('sendButton');button.disabled=true;messageInput.disabled=true;try{if(file){const body=new FormData();body.append('text',text);body.append('media',file);await api(`/api/messages/users/${selectedUserId}/media`,{method:'POST',body});}else{await api(`/api/messages/users/${selectedUserId}`,{method:'POST',body:JSON.stringify({text})});}messageInput.value='';messageInput.style.height='auto';clearAttachment();await Promise.all([loadMessages(true),loadConversations()]);}catch(error){notify(error.message);}finally{button.disabled=false;messageInput.disabled=false;messageInput.focus();}}
+async function deleteMessage(messageId){if(!confirm('Delete this message?'))return;try{await api(`/api/messages/${messageId}`,{method:'DELETE'});lastMessageSignature='';await Promise.all([loadMessages(),loadConversations()]);}catch(error){notify(error.message);}}
+function searchUserRow(user){foundUsers.set(user.id,user);return `<button class="new-chat-user" onclick="openSearchUser(${user.id})"><img class="avatar" src="${fileUrl(user.profile_image,user.full_name||user.username)}" alt=""><span><strong>${escapeHtml(user.full_name||user.username)}</strong><small>@${escapeHtml(user.username)}</small></span></button>`;}
+function openSearchUser(userId){const user=foundUsers.get(Number(userId));if(user)startWithUser(user);}
+async function searchUsers(){const q=searchInput.value.trim();if(!q){searchResults.innerHTML='';return;}foundUsers.clear();searchResults.innerHTML='<div class="small-loading">Searching…</div>';try{const users=await api(`/api/users/search?q=${encodeURIComponent(q)}`);searchResults.innerHTML=users.length?users.map(searchUserRow).join(''):'<div class="small-loading">No users found.</div>';}catch(error){searchResults.innerHTML=`<div class="small-loading">${escapeHtml(error.message)}</div>`;}}
+function startWithUser(user){document.getElementById('newChatPanel').classList.add('hidden');searchInput.value='';searchResults.innerHTML='';openConversation(user.id,user);}
+function closeMobileChat(){document.querySelector('.messenger').classList.remove('chat-open');}
+function startCall(mode){if(!selectedUserId)return notify('Open a conversation first');location.href=`/call?user_id=${selectedUserId}&mode=${mode}`;}
+let mediaRecorder=null,voiceChunks=[],voiceStartedAt=0,voiceStream=null;
+async function toggleVoiceRecording(){
+  const button=document.getElementById('voiceButton');
+  if(mediaRecorder&&mediaRecorder.state==='recording'){mediaRecorder.stop();return;}
+  if(!selectedUserId)return notify('Open a conversation first');
+  if(!navigator.mediaDevices?.getUserMedia)return notify('Voice recording is not supported in this browser');
+  try{
+    voiceStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    const type=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm';
+    mediaRecorder=new MediaRecorder(voiceStream,{mimeType:type});voiceChunks=[];voiceStartedAt=Date.now();
+    mediaRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};
+    mediaRecorder.onstop=async()=>{button.classList.remove('recording');button.textContent='🎙';voiceStream?.getTracks().forEach(t=>t.stop());const duration=(Date.now()-voiceStartedAt)/1000;const blob=new Blob(voiceChunks,{type:'audio/webm'});if(duration<.4)return;const body=new FormData();body.append('audio',blob,'voice-message.webm');body.append('duration_seconds',String(duration));try{button.disabled=true;await api(`/api/messages/users/${selectedUserId}/voice`,{method:'POST',body});await Promise.all([loadMessages(true),loadConversations()]);}catch(e){notify(e.message)}finally{button.disabled=false}};
+    mediaRecorder.start(250);button.classList.add('recording');button.textContent='■';notify('Recording… tap again to send');
+  }catch(e){notify('Microphone permission is required');}
+}
+document.getElementById('messageForm').addEventListener('submit',sendMessage);messageInput.addEventListener('input',()=>{messageInput.style.height='auto';messageInput.style.height=Math.min(messageInput.scrollHeight,150)+'px';});searchInput.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(searchUsers,300);});
+async function start(){currentUser=await ensureAuthenticated();if(!currentUser)return;await loadConversations();if(selectedUserId&&selectedUserId!==currentUser.id){try{await openConversation(selectedUserId);}catch(error){notify(error.message);}}}
+start();window.setInterval(async()=>{if(document.hidden||!currentUser)return;if(selectedUserId)await loadMessages();await loadConversations();await refreshNavigationBadges();},4000);window.addEventListener('beforeunload',()=>{if(attachmentObjectUrl)URL.revokeObjectURL(attachmentObjectUrl);});
+</script>
+</body>
+</html>

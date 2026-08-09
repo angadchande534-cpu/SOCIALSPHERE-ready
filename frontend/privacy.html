@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050505">
+
+    <title>Privacy Policy | SocialSphere</title>
+
+    <!-- Your existing SocialSphere CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/instagram.css">
+    <link rel="stylesheet" href="/css/ultimate.css">
+    <link rel="stylesheet" href="/css/premium.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #f5f5f7;
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(115, 78, 255, 0.18),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(255, 60, 150, 0.14),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(0, 195, 255, 0.10),
+                    transparent 35%
+                ),
+                #050507;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .privacy-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(5,5,8,0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .privacy-nav-inner {
+            width: min(1180px, calc(100% - 30px));
+            height: 72px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .privacy-brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            font-size: 20px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .privacy-brand-logo {
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            font-size: 21px;
+            font-weight: 900;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c4dff,
+                    #ff477e,
+                    #ff9f43
+                );
+
+            box-shadow:
+                0 8px 28px rgba(124,77,255,0.35);
+        }
+
+        .privacy-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .privacy-nav-links a {
+            padding: 10px 14px;
+
+            border-radius: 12px;
+
+            color: #b9bcc8;
+            font-size: 14px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+        .privacy-nav-links a:hover {
+            color: white;
+            background: rgba(255,255,255,0.07);
+        }
+
+        .home-button {
+            color: white !important;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7447ff,
+                    #a447ff
+                ) !important;
+
+            box-shadow:
+                0 8px 25px rgba(116,71,255,0.25);
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .privacy-hero {
+            width: min(1000px, calc(100% - 30px));
+            margin: 0 auto;
+
+            padding: 80px 0 45px;
+
+            text-align: center;
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 20px;
+            padding: 9px 15px;
+
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 999px;
+
+            color: #c9c8d3;
+            font-size: 13px;
+            font-weight: 700;
+
+            background: rgba(255,255,255,0.045);
+        }
+
+        .privacy-badge span {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #48e89b;
+
+            box-shadow:
+                0 0 14px rgba(72,232,155,0.7);
+        }
+
+        .privacy-hero h1 {
+            margin: 0;
+
+            font-size: clamp(42px, 7vw, 75px);
+            line-height: 1;
+            letter-spacing: -3px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #c7c2ff 45%,
+                    #ff9ed2
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .privacy-hero p {
+            width: min(680px, 100%);
+
+            margin: 24px auto 0;
+
+            color: #9da0ae;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .updated-date {
+            margin-top: 18px;
+
+            color: #747785;
+            font-size: 13px;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .privacy-layout {
+            width: min(1180px, calc(100% - 30px));
+
+            margin: 0 auto 100px;
+
+            display: grid;
+            grid-template-columns: 250px minmax(0, 1fr);
+            gap: 30px;
+
+            align-items: start;
+        }
+
+        /* =========================
+           SIDE NAVIGATION
+        ========================= */
+
+        .privacy-sidebar {
+            position: sticky;
+            top: 95px;
+
+            padding: 18px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 22px;
+
+            background: rgba(255,255,255,0.035);
+
+            box-shadow:
+                0 20px 55px rgba(0,0,0,0.22);
+        }
+
+        .privacy-sidebar-title {
+            margin: 0 0 13px 8px;
+
+            color: #7e8293;
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+        }
+
+        .privacy-sidebar a {
+            display: block;
+
+            padding: 11px 12px;
+
+            border-radius: 12px;
+
+            color: #b4b6c1;
+            font-size: 13px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .privacy-sidebar a:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,0.06);
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .privacy-content {
+            min-width: 0;
+        }
+
+        .privacy-card {
+            margin-bottom: 22px;
+            padding: 30px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.055),
+                    rgba(255,255,255,0.018)
+                );
+
+            box-shadow:
+                0 25px 65px rgba(0,0,0,0.22);
+
+            scroll-margin-top: 100px;
+        }
+
+        .privacy-number {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            margin-bottom: 17px;
+
+            border-radius: 12px;
+
+            font-weight: 800;
+
+            color: #dedaff;
+
+            background:
+                rgba(123,84,255,0.16);
+
+            border:
+                1px solid rgba(133,100,255,0.2);
+        }
+
+        .privacy-card h2 {
+            margin: 0 0 15px;
+
+            font-size: 23px;
+            letter-spacing: -0.5px;
+        }
+
+        .privacy-card h3 {
+            margin: 25px 0 10px;
+
+            color: #e4e4ea;
+            font-size: 16px;
+        }
+
+        .privacy-card p {
+            margin: 0 0 15px;
+
+            color: #a7a9b5;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .privacy-card ul {
+            margin: 13px 0 17px;
+            padding-left: 21px;
+        }
+
+        .privacy-card li {
+            margin: 9px 0;
+
+            color: #a7a9b5;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .privacy-card strong {
+            color: #ededf1;
+        }
+
+        .privacy-note {
+            margin-top: 20px;
+            padding: 18px;
+
+            border:
+                1px solid rgba(105,199,255,0.14);
+
+            border-radius: 16px;
+
+            background:
+                rgba(70,166,255,0.06);
+        }
+
+        .privacy-note strong {
+            display: block;
+            margin-bottom: 6px;
+
+            color: #bfe6ff;
+        }
+
+        /* =========================
+           PRIVACY HIGHLIGHTS
+        ========================= */
+
+        .privacy-highlights {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-top: 25px;
+        }
+
+        .highlight-card {
+            padding: 20px;
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+        .highlight-icon {
+            margin-bottom: 12px;
+
+            font-size: 27px;
+        }
+
+        .highlight-card h3 {
+            margin: 0 0 8px;
+
+            color: white;
+            font-size: 15px;
+        }
+
+        .highlight-card p {
+            margin: 0;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact-card {
+            position: relative;
+            overflow: hidden;
+
+            text-align: center;
+        }
+
+        .contact-card::before {
+            content: "";
+
+            position: absolute;
+            width: 180px;
+            height: 180px;
+
+            left: -70px;
+            top: -80px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(118,73,255,0.15);
+
+            filter: blur(15px);
+        }
+
+        .contact-card h2,
+        .contact-card p,
+        .contact-card a {
+            position: relative;
+        }
+
+        .contact-button {
+            display: inline-block;
+
+            margin-top: 12px;
+            padding: 13px 22px;
+
+            border-radius: 14px;
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            text-decoration: none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7b4dff,
+                    #d347ff
+                );
+
+            box-shadow:
+                0 12px 30px rgba(125,77,255,0.28);
+
+            transition: 0.2s ease;
+        }
+
+        .contact-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .privacy-footer {
+            padding: 30px 15px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.07);
+
+            text-align: center;
+
+            color: #707381;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            gap: 17px;
+
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #a2a4af;
+
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .privacy-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .privacy-sidebar {
+                position: relative;
+                top: 0;
+
+                display: flex;
+                overflow-x: auto;
+
+                padding: 10px;
+            }
+
+            .privacy-sidebar-title {
+                display: none;
+            }
+
+            .privacy-sidebar a {
+                flex-shrink: 0;
+            }
+
+            .privacy-highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .privacy-nav-inner {
+                height: 64px;
+            }
+
+            .privacy-brand span:last-child {
+                display: none;
+            }
+
+            .privacy-nav-links a:not(.home-button) {
+                display: none;
+            }
+
+            .privacy-hero {
+                padding-top: 55px;
+            }
+
+            .privacy-hero h1 {
+                font-size: 44px;
+                letter-spacing: -2px;
+            }
+
+            .privacy-hero p {
+                font-size: 15px;
+            }
+
+            .privacy-card {
+                padding: 22px 18px;
+                border-radius: 19px;
+            }
+
+            .privacy-card h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<!-- ====================================
+     NAVBAR
+==================================== -->
+
+<header class="privacy-navbar">
+
+    <div class="privacy-nav-inner">
+
+        <a href="/" class="privacy-brand">
+
+            <div class="privacy-brand-logo">
+                S
+            </div>
+
+            <span>SocialSphere</span>
+
+        </a>
+
+
+        <nav class="privacy-nav-links">
+
+            <a href="/about">
+                About
+            </a>
+
+            <a href="/terms">
+                Terms
+            </a>
+
+            <a href="/contact">
+                Contact
+            </a>
+
+            <a href="/feed" class="home-button">
+                Open SocialSphere
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- ====================================
+     HERO
+==================================== -->
+
+<section class="privacy-hero">
+
+    <div class="privacy-badge">
+        <span></span>
+        Your privacy matters
+    </div>
+
+    <h1>
+        Privacy Policy
+    </h1>
+
+    <p>
+        This Privacy Policy explains how SocialSphere
+        collects, uses, stores and protects information
+        when you create an account and use our social
+        media platform.
+    </p>
+
+    <div class="updated-date">
+        Last updated: August 7, 2026
+    </div>
+
+</section>
+
+
+<!-- ====================================
+     MAIN
+==================================== -->
+
+<div class="privacy-layout">
+
+
+    <!-- SIDE NAV -->
+
+    <aside class="privacy-sidebar">
+
+        <p class="privacy-sidebar-title">
+            On this page
+        </p>
+
+        <a href="#information">
+            Information We Collect
+        </a>
+
+        <a href="#usage">
+            How We Use Information
+        </a>
+
+        <a href="#content">
+            Your Content
+        </a>
+
+        <a href="#sharing">
+            Information Sharing
+        </a>
+
+        <a href="#security">
+            Security
+        </a>
+
+        <a href="#cookies">
+            Cookies
+        </a>
+
+        <a href="#rights">
+            Your Rights
+        </a>
+
+        <a href="#children">
+            Children's Privacy
+        </a>
+
+        <a href="#changes">
+            Policy Changes
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
+
+    </aside>
+
+
+    <!-- CONTENT -->
+
+    <main class="privacy-content">
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="privacy-card">
+
+            <div class="privacy-number">
+                ✓
+            </div>
+
+            <h2>
+                Welcome to SocialSphere
+            </h2>
+
+            <p>
+                SocialSphere is a social media platform
+                that allows users to create accounts,
+                publish posts, upload media, communicate
+                with other users, like and comment on
+                content, follow accounts and use other
+                social features.
+            </p>
+
+            <p>
+                By using SocialSphere, you acknowledge
+                the practices described in this Privacy
+                Policy.
+            </p>
+
+
+            <div class="privacy-highlights">
+
+                <div class="highlight-card">
+
+                    <div class="highlight-icon">
+                        🔐
+                    </div>
+
+                    <h3>
+                        Protected
+                    </h3>
+
+                    <p>
+                        We use reasonable security
+                        practices to protect account
+                        information.
+                    </p>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <div class="highlight-icon">
+                        👤
+                    </div>
+
+                    <h3>
+                        Your Control
+                    </h3>
+
+                    <p>
+                        You can manage your profile,
+                        posts and other information
+                        available through your account.
+                    </p>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <div class="highlight-icon">
+                        🚫
+                    </div>
+
+                    <h3>
+                        No Password Sharing
+                    </h3>
+
+                    <p>
+                        Your password should never be
+                        publicly displayed or shared
+                        with other users.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- INFORMATION -->
+
+        <section
+            class="privacy-card"
+            id="information"
+        >
+
+            <div class="privacy-number">
+                1
+            </div>
+
+            <h2>
+                Information We Collect
+            </h2>
+
+            <p>
+                We may collect information that you
+                provide directly when creating or
+                using your SocialSphere account.
+            </p>
+
+
+            <h3>
+                Account Information
+            </h3>
+
+            <ul>
+
+                <li>
+                    Name
+                </li>
+
+                <li>
+                    Username
+                </li>
+
+                <li>
+                    Email address
+                </li>
+
+                <li>
+                    Password in securely hashed form
+                </li>
+
+                <li>
+                    Profile picture
+                </li>
+
+                <li>
+                    Biography and profile information
+                </li>
+
+            </ul>
+
+
+            <h3>
+                Content You Create
+            </h3>
+
+            <p>
+                When you use SocialSphere, we may store
+                content that you voluntarily upload or
+                create, including:
+            </p>
+
+            <ul>
+
+                <li>
+                    Posts
+                </li>
+
+                <li>
+                    Photos
+                </li>
+
+                <li>
+                    Videos and reels
+                </li>
+
+                <li>
+                    Comments
+                </li>
+
+                <li>
+                    Likes
+                </li>
+
+                <li>
+                    Stories
+                </li>
+
+                <li>
+                    Messages
+                </li>
+
+                <li>
+                    Profile information
+                </li>
+
+            </ul>
+
+
+            <h3>
+                Usage Information
+            </h3>
+
+            <p>
+                We may automatically receive technical
+                information necessary for operating,
+                protecting and improving the platform,
+                such as browser information, device
+                information, timestamps and application
+                activity.
+            </p>
+
+        </section>
+
+
+
+        <!-- HOW USED -->
+
+        <section
+            class="privacy-card"
+            id="usage"
+        >
+
+            <div class="privacy-number">
+                2
+            </div>
+
+            <h2>
+                How We Use Your Information
+            </h2>
+
+            <p>
+                Information collected through
+                SocialSphere may be used to:
+            </p>
+
+            <ul>
+
+                <li>
+                    Create and maintain your account.
+                </li>
+
+                <li>
+                    Authenticate you when you log in.
+                </li>
+
+                <li>
+                    Display your profile and posts.
+                </li>
+
+                <li>
+                    Provide likes, comments, follows,
+                    messages and notifications.
+                </li>
+
+                <li>
+                    Allow users to search for and
+                    interact with accounts.
+                </li>
+
+                <li>
+                    Provide account recovery and
+                    password reset functionality.
+                </li>
+
+                <li>
+                    Detect abuse, spam or suspicious
+                    activity.
+                </li>
+
+                <li>
+                    Improve platform performance and
+                    user experience.
+                </li>
+
+                <li>
+                    Maintain platform security.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- CONTENT -->
+
+        <section
+            class="privacy-card"
+            id="content"
+        >
+
+            <div class="privacy-number">
+                3
+            </div>
+
+            <h2>
+                Your Posts and Public Content
+            </h2>
+
+            <p>
+                Information you intentionally publish
+                through SocialSphere may be visible to
+                other users depending on the features
+                and privacy controls available on your
+                account.
+            </p>
+
+            <p>
+                Publicly visible information may
+                include your username, profile
+                picture, biography, posts, reels,
+                comments, follower information and
+                other activity.
+            </p>
+
+            <div class="privacy-note">
+
+                <strong>
+                    Remember
+                </strong>
+
+                Information that you publish publicly
+                may be viewed, copied or shared by
+                other people. Consider this before
+                posting personal or sensitive
+                information.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SHARING -->
+
+        <section
+            class="privacy-card"
+            id="sharing"
+        >
+
+            <div class="privacy-number">
+                4
+            </div>
+
+            <h2>
+                How Information May Be Shared
+            </h2>
+
+            <p>
+                SocialSphere does not intentionally
+                sell your personal account information.
+            </p>
+
+            <p>
+                Information may nevertheless be shared
+                in limited situations necessary for
+                operating the platform.
+            </p>
+
+            <ul>
+
+                <li>
+                    With other users when you
+                    intentionally publish public
+                    content.
+                </li>
+
+                <li>
+                    With infrastructure or hosting
+                    providers used to operate the
+                    platform.
+                </li>
+
+                <li>
+                    When required to protect users,
+                    prevent fraud or address security
+                    problems.
+                </li>
+
+                <li>
+                    When required to comply with
+                    applicable legal obligations.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- SECURITY -->
+
+        <section
+            class="privacy-card"
+            id="security"
+        >
+
+            <div class="privacy-number">
+                5
+            </div>
+
+            <h2>
+                Account and Data Security
+            </h2>
+
+            <p>
+                SocialSphere uses reasonable technical
+                and organizational safeguards designed
+                to protect user information.
+            </p>
+
+            <p>
+                Passwords should be stored using secure
+                password hashing rather than as plain
+                text.
+            </p>
+
+            <p>
+                However, no website, application,
+                database or internet transmission can
+                guarantee absolute security.
+            </p>
+
+
+            <h3>
+                You can help protect your account by:
+            </h3>
+
+            <ul>
+
+                <li>
+                    Using a strong and unique password.
+                </li>
+
+                <li>
+                    Never sharing your password.
+                </li>
+
+                <li>
+                    Logging out from shared devices.
+                </li>
+
+                <li>
+                    Keeping your email account secure.
+                </li>
+
+                <li>
+                    Reporting suspicious account
+                    activity.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- COOKIES -->
+
+        <section
+            class="privacy-card"
+            id="cookies"
+        >
+
+            <div class="privacy-number">
+                6
+            </div>
+
+            <h2>
+                Cookies and Sessions
+            </h2>
+
+            <p>
+                SocialSphere may use cookies,
+                authentication tokens or similar
+                browser storage technologies to keep
+                users signed in and maintain secure
+                sessions.
+            </p>
+
+            <p>
+                These technologies can also be used to
+                remember certain settings and provide
+                features necessary for the website to
+                function correctly.
+            </p>
+
+        </section>
+
+
+
+        <!-- RIGHTS -->
+
+        <section
+            class="privacy-card"
+            id="rights"
+        >
+
+            <div class="privacy-number">
+                7
+            </div>
+
+            <h2>
+                Your Privacy Choices
+            </h2>
+
+            <p>
+                Depending on the features available on
+                SocialSphere, you may be able to:
+            </p>
+
+            <ul>
+
+                <li>
+                    Edit your profile information.
+                </li>
+
+                <li>
+                    Change your profile image.
+                </li>
+
+                <li>
+                    Delete your posts.
+                </li>
+
+                <li>
+                    Remove comments.
+                </li>
+
+                <li>
+                    Unfollow users.
+                </li>
+
+                <li>
+                    Remove saved posts.
+                </li>
+
+                <li>
+                    Change or reset your password.
+                </li>
+
+                <li>
+                    Request deletion of your account
+                    where that functionality is
+                    provided.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- RETENTION -->
+
+        <section class="privacy-card">
+
+            <div class="privacy-number">
+                8
+            </div>
+
+            <h2>
+                Data Retention
+            </h2>
+
+            <p>
+                We may retain information for as long
+                as reasonably necessary to provide
+                SocialSphere services, maintain
+                accounts, protect platform security
+                and comply with applicable
+                obligations.
+            </p>
+
+            <p>
+                Content deleted by a user may require
+                a limited period of time to disappear
+                completely from backups or technical
+                systems.
+            </p>
+
+        </section>
+
+
+
+        <!-- THIRD PARTY -->
+
+        <section class="privacy-card">
+
+            <div class="privacy-number">
+                9
+            </div>
+
+            <h2>
+                Third-Party Services
+            </h2>
+
+            <p>
+                SocialSphere may depend on third-party
+                infrastructure or services for
+                features such as database hosting,
+                website hosting, email delivery,
+                storage or authentication support.
+            </p>
+
+            <p>
+                Those providers may process limited
+                information necessary to provide
+                their services.
+            </p>
+
+        </section>
+
+
+
+        <!-- CHILDREN -->
+
+        <section
+            class="privacy-card"
+            id="children"
+        >
+
+            <div class="privacy-number">
+                10
+            </div>
+
+            <h2>
+                Children's Privacy
+            </h2>
+
+            <p>
+                Users should only use SocialSphere if
+                they meet the minimum age required by
+                applicable laws and the platform's
+                terms.
+            </p>
+
+            <p>
+                If information is discovered to have
+                been collected from a person who is
+                not legally permitted to use the
+                service, appropriate action may be
+                taken to remove the account and
+                associated information.
+            </p>
+
+        </section>
+
+
+
+        <!-- CHANGES -->
+
+        <section
+            class="privacy-card"
+            id="changes"
+        >
+
+            <div class="privacy-number">
+                11
+            </div>
+
+            <h2>
+                Changes to This Privacy Policy
+            </h2>
+
+            <p>
+                SocialSphere may update this Privacy
+                Policy when features, security
+                practices or legal requirements
+                change.
+            </p>
+
+            <p>
+                When changes are made, the
+                "Last updated" date displayed on this
+                page may be revised.
+            </p>
+
+            <p>
+                Continued use of SocialSphere after
+                an updated policy becomes effective
+                means that you acknowledge the
+                updated policy.
+            </p>
+
+        </section>
+
+
+
+        <!-- CONTACT -->
+
+        <section
+            class="privacy-card contact-card"
+            id="contact"
+        >
+
+            <div class="privacy-number"
+                 style="margin-left:auto;margin-right:auto;">
+                ✉
+            </div>
+
+            <h2>
+                Questions About Privacy?
+            </h2>
+
+            <p>
+                If you have questions, concerns or
+                requests regarding this Privacy
+                Policy, please contact SocialSphere
+                through the contact page.
+            </p>
+
+            <a
+                href="/contact"
+                class="contact-button"
+            >
+                Contact SocialSphere
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- ====================================
+     FOOTER
+==================================== -->
+
+<footer class="privacy-footer">
+
+    <div class="footer-links">
+
+        <a href="/about">
+            About
+        </a>
+
+        <a href="/privacy">
+            Privacy
+        </a>
+
+        <a href="/terms">
+            Terms
+        </a>
+
+        <a href="/contact">
+            Contact
+        </a>
+
+        <a href="/login">
+            Login
+        </a>
+
+    </div>
+
+    <div>
+        © 2026 SocialSphere. All rights reserved.
+    </div>
+
+</footer>
+
+
+</body>
+</html>

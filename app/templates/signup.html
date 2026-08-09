@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account | SocialSphere</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(118, 75, 162, 0.35),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(255, 87, 34, 0.25),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #090b15,
+                    #11152a,
+                    #161126
+                );
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1050px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            background: rgba(255,255,255,0.05);
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.45);
+
+            backdrop-filter: blur(20px);
+        }
+
+        /* LEFT SIDE */
+
+        .left {
+            padding: 60px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(116, 72, 255, 0.18),
+                    rgba(255, 71, 111, 0.12)
+                );
+        }
+
+        .logo {
+            font-size: 35px;
+            font-weight: 800;
+
+            margin-bottom: 25px;
+
+            background: linear-gradient(
+                90deg,
+                #9477ff,
+                #ff577f,
+                #ff9b4a
+            );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .left h1 {
+            font-size: 46px;
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+        }
+
+        .left p {
+            color: #b9bdd3;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .features {
+            margin-top: 35px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            color: #d9dbeb;
+        }
+
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* RIGHT SIDE */
+
+        .right {
+            padding: 50px;
+        }
+
+        .right h2 {
+            font-size: 31px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #9ea3ba;
+            margin-bottom: 30px;
+        }
+
+        .name-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+            color: #c8cade;
+        }
+
+        .input-group input {
+            width: 100%;
+
+            padding: 15px 16px;
+
+            border-radius: 12px;
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            background: rgba(255,255,255,0.06);
+
+            color: white;
+
+            outline: none;
+
+            transition: 0.25s;
+        }
+
+        .input-group input::placeholder {
+            color: #71758b;
+        }
+
+        .input-group input:focus {
+            border-color: #8767ff;
+
+            box-shadow:
+                0 0 0 3px rgba(135,103,255,0.12);
+
+            background: rgba(255,255,255,0.08);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 70px;
+        }
+
+        .show-password {
+            position: absolute;
+
+            right: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            cursor: pointer;
+
+            color: #a9adbf;
+
+            font-size: 13px;
+
+            user-select: none;
+        }
+
+        .signup-btn {
+            width: 100%;
+
+            margin-top: 8px;
+
+            padding: 16px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #745bff,
+                    #a454ff,
+                    #ff537a
+                );
+
+            box-shadow:
+                0 12px 30px rgba(130,70,255,0.3);
+
+            transition: 0.25s;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 15px 40px rgba(130,70,255,0.45);
+        }
+
+        .signup-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-text {
+            margin-top: 25px;
+
+            text-align: center;
+
+            color: #9ca0b5;
+        }
+
+        .login-text a {
+            color: #a78bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* MESSAGE */
+
+        #message {
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+        }
+
+        #message.success {
+            display: block;
+
+            background: rgba(34,197,94,0.12);
+
+            border: 1px solid rgba(34,197,94,0.35);
+
+            color: #86efac;
+        }
+
+        #message.error {
+            display: block;
+
+            background: rgba(239,68,68,0.12);
+
+            border: 1px solid rgba(239,68,68,0.35);
+
+            color: #fca5a5;
+        }
+
+        /* LOADING */
+
+        .loader {
+            display: none;
+
+            width: 18px;
+            height: 18px;
+
+            border: 2px solid rgba(255,255,255,0.4);
+
+            border-top-color: white;
+
+            border-radius: 50%;
+
+            animation: spin 0.8s linear infinite;
+
+            margin-right: 8px;
+        }
+
+        .button-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes spin {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left {
+                display: none;
+            }
+
+            .right {
+                padding: 40px 30px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 0;
+            }
+
+            .container {
+                min-height: 100vh;
+
+                border-radius: 0;
+
+                border: none;
+            }
+
+            .right {
+                padding: 40px 20px;
+            }
+
+            .name-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT SECTION -->
+
+    <div class="left">
+
+        <div class="logo">
+            SocialSphere
+        </div>
+
+        <h1>
+            Connect.
+            <br>
+            Share.
+            <br>
+            Discover.
+        </h1>
+
+        <p>
+            Join SocialSphere and connect with people,
+            share posts, explore content and build your
+            social community.
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    👥
+                </div>
+
+                <span>
+                    Connect with friends
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📸
+                </div>
+
+                <span>
+                    Share photos, posts and reels
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    💬
+                </div>
+
+                <span>
+                    Chat with your community
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🎥
+                </div>
+
+                <span>
+                    Voice and video communication
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT SECTION -->
+
+    <div class="right">
+
+        <h2>
+            Create Account
+        </h2>
+
+        <p class="subtitle">
+            Start your SocialSphere journey
+        </p>
+
+
+        <div id="message"></div>
+
+
+        <form id="signupForm">
+
+            <!-- NAME -->
+
+            <div class="name-row">
+
+                <div class="input-group">
+
+                    <label>
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="first_name"
+                        id="first_name"
+                        placeholder="First name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Last Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="last_name"
+                        id="last_name"
+                        placeholder="Last name"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- USERNAME -->
+
+            <div class="input-group">
+
+                <label>
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Choose username"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="input-group">
+
+                <label>
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="you@example.com"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Minimum 6 characters"
+                        minlength="6"
+                        required
+                    >
+
+                    <span
+                        class="show-password"
+                        id="showPassword"
+                    >
+                        SHOW
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="input-group">
+
+                <label>
+                    Confirm Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Enter password again"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="signup-btn"
+                id="signupButton"
+            >
+
+                <div class="button-content">
+
+                    <div
+                        class="loader"
+                        id="loader"
+                    ></div>
+
+                    <span id="buttonText">
+                        Create Account
+                    </span>
+
+                </div>
+
+            </button>
+
+        </form>
+
+
+        <div class="login-text">
+
+            Already have an account?
+
+            <a href="/login">
+                Sign In
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+    ========================================
+    SOCIALSPHERE SIGNUP
+    ========================================
+    */
+
+
+    const signupForm =
+        document.getElementById("signupForm");
+
+
+    const signupButton =
+        document.getElementById("signupButton");
+
+
+    const buttonText =
+        document.getElementById("buttonText");
+
+
+    const loader =
+        document.getElementById("loader");
+
+
+    const message =
+        document.getElementById("message");
+
+
+    const passwordInput =
+        document.getElementById("password");
+
+
+    const confirmPasswordInput =
+        document.getElementById("confirmPassword");
+
+
+    const showPassword =
+        document.getElementById("showPassword");
+
+
+
+    /*
+    ========================================
+    PASSWORD SHOW / HIDE
+    ========================================
+    */
+
+
+    showPassword.addEventListener(
+        "click",
+        function () {
+
+            if (
+                passwordInput.type === "password"
+            ) {
+
+                passwordInput.type = "text";
+
+                showPassword.textContent = "HIDE";
+
+            }
+
+            else {
+
+                passwordInput.type = "password";
+
+                showPassword.textContent = "SHOW";
+
+            }
+
+        }
+    );
+
+
+
+    /*
+    ========================================
+    SHOW MESSAGE FUNCTION
+    ========================================
+    */
+
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        message.textContent = text;
+
+        message.className = "";
+
+        message.classList.add(type);
+
+    }
+
+
+
+    /*
+    ========================================
+    SIGNUP FORM
+    ========================================
+    */
+
+
+    signupForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            /*
+            CLEAR OLD MESSAGE
+            */
+
+            message.style.display = "none";
+
+            message.className = "";
+
+
+
+            /*
+            PASSWORD CHECK
+            */
+
+            const password =
+                passwordInput.value;
+
+
+            const confirmPassword =
+                confirmPasswordInput.value;
+
+
+            if (
+                password.length < 6
+            ) {
+
+                showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                password !== confirmPassword
+            ) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+
+            /*
+            START LOADING
+            */
+
+
+            signupButton.disabled = true;
+
+            loader.style.display = "block";
+
+            buttonText.textContent =
+                "Creating Account...";
+
+
+
+            /*
+            CREATE FORM DATA
+            */
+
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "first_name",
+                document
+                    .getElementById("first_name")
+                    .value
+                    .trim()
+            );
+
+
+            formData.append(
+                "last_name",
+                document
+                    .getElementById("last_name")
+                    .value
+                    .trim()
+            );
+
+
+            formData.append(
+                "username",
+                document
+                    .getElementById("username")
+                    .value
+                    .trim()
+            );
+
+
+            formData.append(
+                "email",
+                document
+                    .getElementById("email")
+                    .value
+                    .trim()
+            );
+
+
+            formData.append(
+                "password",
+                password
+            );
+
+
+
+            /*
+            SEND DATA TO FASTAPI
+            */
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/signup",
+                        {
+                            method: "POST",
+
+                            body: formData
+                        }
+                    );
+
+
+                /*
+                READ SERVER RESPONSE
+                */
+
+
+                let data;
+
+
+                try {
+
+                    data =
+                        await response.json();
+
+                }
+
+                catch {
+
+                    throw new Error(
+                        "Server returned an invalid response."
+                    );
+
+                }
+
+
+
+                console.log(
+                    "SIGNUP RESPONSE:",
+                    data
+                );
+
+
+
+                /*
+                SUCCESS
+                */
+
+
+                if (
+                    response.ok &&
+                    data.success
+                ) {
+
+                    showMessage(
+                        "Account created successfully! Redirecting to login...",
+                        "success"
+                    );
+
+
+                    signupForm.reset();
+
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "/login";
+
+                        },
+                        1200
+                    );
+
+                }
+
+
+                /*
+                SERVER ERROR
+                */
+
+
+                else {
+
+                    showMessage(
+                        data.message ||
+                        data.detail ||
+                        "Account creation failed.",
+                        "error"
+                    );
+
+                }
+
+            }
+
+
+            /*
+            CONNECTION ERROR
+            */
+
+
+            catch (error) {
+
+                console.error(
+                    "SIGNUP ERROR:",
+                    error
+                );
+
+
+                showMessage(
+                    "Cannot connect to the server. Make sure FastAPI is running.",
+                    "error"
+                );
+
+            }
+
+
+            /*
+            STOP LOADING
+            */
+
+
+            finally {
+
+                signupButton.disabled = false;
+
+                loader.style.display = "none";
+
+                buttonText.textContent =
+                    "Create Account";
+
+            }
+
+        }
+    );
+
+
+</script>
+
+</body>
+</html>

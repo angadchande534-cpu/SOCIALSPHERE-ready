@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialSphere Video Call</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #08080d;
+            color: white;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .call-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #remoteVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #111;
+        }
+
+        #localVideo {
+            position: absolute;
+            right: 25px;
+            bottom: 110px;
+            width: 230px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 18px;
+            background: #1b1b1b;
+            border: 2px solid rgba(255,255,255,0.2);
+            transform: scaleX(-1);
+        }
+
+        .status {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,.6);
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 18px;
+        }
+
+        .control-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            background: #28282f;
+            color: white;
+        }
+
+        .control-btn:hover {
+            background: #3c3c46;
+        }
+
+        .off {
+            background: #ef4444;
+        }
+
+        .end-call {
+            background: #ef4444;
+        }
+
+        .end-call:hover {
+            background: #dc2626;
+        }
+
+        #errorMessage {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff6b6b;
+            background: rgba(0,0,0,.75);
+            padding: 12px 20px;
+            border-radius: 10px;
+            display: none;
+            max-width: 600px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="call-container">
+
+    <!-- Other person's video -->
+    <video id="remoteVideo" autoplay playsinline></video>
+
+    <!-- Your camera -->
+    <video id="localVideo" autoplay playsinline muted></video>
+
+    <div class="status" id="status">
+        Starting camera and microphone...
+    </div>
+
+    <div id="errorMessage"></div>
+
+    <div class="controls">
+
+        <button
+            id="micButton"
+            class="control-btn"
+            onclick="toggleMic()"
+            title="Mute microphone"
+        >
+            🎤
+        </button>
+
+        <button
+            id="cameraButton"
+            class="control-btn"
+            onclick="toggleCamera()"
+            title="Turn camera off"
+        >
+            📹
+        </button>
+
+        <button
+            class="control-btn end-call"
+            onclick="endCall()"
+            title="End call"
+        >
+            📞
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+let localStream = null;
+
+const localVideo = document.getElementById("localVideo");
+const remoteVideo = document.getElementById("remoteVideo");
+
+const statusText = document.getElementById("status");
+const errorMessage = document.getElementById("errorMessage");
+
+const micButton = document.getElementById("micButton");
+const cameraButton = document.getElementById("cameraButton");
+
+
+async function startCamera() {
+
+    try {
+
+        // Ask browser for CAMERA + MICROPHONE
+        localStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true
+            }
+        });
+
+        // Show your own camera
+        localVideo.srcObject = localStream;
+
+        statusText.innerText = "Camera & microphone connected";
+
+        console.log("Camera + microphone started");
+
+        console.log(
+            "Video tracks:",
+            localStream.getVideoTracks()
+        );
+
+        console.log(
+            "Audio tracks:",
+            localStream.getAudioTracks()
+        );
+
+    }
+
+    catch (error) {
+
+        console.error("Camera/Microphone error:", error);
+
+        statusText.innerText = "Camera/Microphone unavailable";
+
+        errorMessage.style.display = "block";
+
+        if (error.name === "NotAllowedError") {
+
+            errorMessage.innerText =
+                "Camera or microphone permission was blocked. Allow Camera and Microphone for this website and reload the page.";
+
+        }
+
+        else if (error.name === "NotFoundError") {
+
+            errorMessage.innerText =
+                "No camera or microphone was found on this device.";
+
+        }
+
+        else {
+
+            errorMessage.innerText =
+                "Camera error: " + error.message;
+
+        }
+
+    }
+
+}
+
+
+function toggleMic() {
+
+    if (!localStream) return;
+
+    const audioTracks = localStream.getAudioTracks();
+
+    if (audioTracks.length === 0) {
+        alert("No microphone found.");
+        return;
+    }
+
+    const audioTrack = audioTracks[0];
+
+    audioTrack.enabled = !audioTrack.enabled;
+
+    if (audioTrack.enabled) {
+
+        micButton.innerHTML = "🎤";
+        micButton.classList.remove("off");
+
+    } else {
+
+        micButton.innerHTML = "🔇";
+        micButton.classList.add("off");
+
+    }
+}
+
+
+function toggleCamera() {
+
+    if (!localStream) return;
+
+    const videoTracks = localStream.getVideoTracks();
+
+    if (videoTracks.length === 0) {
+        alert("No camera found.");
+        return;
+    }
+
+    const videoTrack = videoTracks[0];
+
+    videoTrack.enabled = !videoTrack.enabled;
+
+    if (videoTrack.enabled) {
+
+        cameraButton.innerHTML = "📹";
+        cameraButton.classList.remove("off");
+
+    } else {
+
+        cameraButton.innerHTML = "🚫";
+        cameraButton.classList.add("off");
+
+    }
+}
+
+
+function endCall() {
+
+    if (localStream) {
+
+        localStream.getTracks().forEach(track => {
+            track.stop();
+        });
+
+    }
+
+    window.history.back();
+}
+
+
+// Start camera automatically
+window.addEventListener("load", startCamera);
+
+</script>
+
+</body>
+</html>

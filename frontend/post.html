@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Post | SocialSphere</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #090b12;
+            --card: rgba(20, 23, 35, 0.92);
+            --card-light: rgba(30, 34, 50, 0.85);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
+            --muted: #9499aa;
+            --primary: #7c5cff;
+            --primary2: #4f8cff;
+            --danger: #ff4b6e;
+            --success: #20c997;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(108, 76, 255, 0.20), transparent 35%),
+                radial-gradient(circle at 80% 80%, rgba(0, 166, 255, 0.16), transparent 35%),
+                linear-gradient(135deg, #07080d, #0d101a 60%, #090b12);
+
+            color: var(--text);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 72px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: rgba(7, 8, 13, 0.80);
+            backdrop-filter: blur(20px);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+
+            background: linear-gradient(
+                90deg,
+                #a78bfa,
+                #638bff,
+                #4ddcff
+            );
+
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            width: 44px;
+            height: 44px;
+
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            background: rgba(255,255,255,0.04);
+            color: white;
+
+            font-size: 20px;
+
+            display: grid;
+            place-items: center;
+
+            transition: 0.25s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(124,92,255,0.18);
+            border-color: rgba(124,92,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            width: min(1180px, 94%);
+            margin: 42px auto;
+
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.8fr);
+
+            gap: 28px;
+        }
+
+        /* ================= POST ================= */
+
+        .post-card {
+            border-radius: 26px;
+            overflow: hidden;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.30),
+                inset 0 1px rgba(255,255,255,0.03);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 18px 20px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 2px solid rgba(124,92,255,0.7);
+
+            background: #2b3040;
+        }
+
+        .user-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .user-info p {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .menu-container {
+            position: relative;
+        }
+
+        .menu-btn {
+            width: 38px;
+            height: 38px;
+
+            border: 0;
+            border-radius: 12px;
+
+            background: transparent;
+            color: white;
+
+            font-size: 22px;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .post-menu {
+            position: absolute;
+
+            right: 0;
+            top: 45px;
+
+            min-width: 170px;
+
+            background: #171a27;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            padding: 7px;
+
+            box-shadow: 0 15px 45px rgba(0,0,0,0.4);
+
+            display: none;
+
+            z-index: 10;
+        }
+
+        .post-menu.show {
+            display: block;
+        }
+
+        .post-menu button {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: none;
+            border-radius: 10px;
+
+            text-align: left;
+
+            background: transparent;
+            color: white;
+
+            font-size: 13px;
+        }
+
+        .post-menu button:hover {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .post-menu .delete {
+            color: #ff6480;
+        }
+
+        /* ================= MEDIA ================= */
+
+        .media-container {
+            width: 100%;
+
+            background: #000;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 400px;
+            max-height: 720px;
+
+            overflow: hidden;
+        }
+
+        .post-media {
+            width: 100%;
+            max-height: 720px;
+
+            object-fit: contain;
+
+            display: block;
+        }
+
+        .media-placeholder {
+            width: 100%;
+            min-height: 450px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                radial-gradient(circle at center, #222a45, #11141e 60%);
+
+            color: #777e93;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .post-actions {
+            padding: 16px 20px 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .action-left {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 44px;
+            height: 44px;
+
+            border: none;
+            border-radius: 14px;
+
+            background: rgba(255,255,255,0.04);
+
+            display: grid;
+            place-items: center;
+
+            font-size: 22px;
+            color: white;
+
+            transition: 0.22s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255,255,255,0.10);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.liked {
+            background: rgba(255,75,110,0.13);
+            color: #ff4b6e;
+        }
+
+        .action-btn.saved {
+            background: rgba(124,92,255,0.17);
+            color: #a78bfa;
+        }
+
+        .post-content {
+            padding: 4px 20px 22px;
+        }
+
+        .likes {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 13px;
+        }
+
+        .caption {
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .caption strong {
+            margin-right: 6px;
+        }
+
+        .post-date {
+            margin-top: 13px;
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        /* ================= COMMENTS ================= */
+
+        .comments-panel {
+            border-radius: 26px;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+
+            max-height: 780px;
+        }
+
+        .comments-title {
+            padding: 20px;
+
+            border-bottom: 1px solid var(--border);
+
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+
+            padding: 10px 18px;
+
+            min-height: 450px;
+        }
+
+        .comment {
+            display: flex;
+            gap: 11px;
+
+            padding: 13px 0;
+        }
+
+        .comment-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+            object-fit: cover;
+
+            background: #2b3040;
+        }
+
+        .comment-body {
+            flex: 1;
+        }
+
+        .comment-text {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .comment-text strong {
+            margin-right: 5px;
+        }
+
+        .comment-meta {
+            margin-top: 6px;
+
+            font-size: 10px;
+            color: var(--muted);
+
+            display: flex;
+            gap: 14px;
+        }
+
+        .empty-comments {
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--muted);
+            text-align: center;
+
+            padding: 40px 15px;
+        }
+
+        .empty-comments .icon {
+            font-size: 44px;
+            margin-bottom: 14px;
+        }
+
+        /* ================= COMMENT INPUT ================= */
+
+        .comment-form {
+            border-top: 1px solid var(--border);
+
+            padding: 14px;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comment-input {
+            flex: 1;
+
+            border: 1px solid var(--border);
+            outline: none;
+
+            padding: 13px 14px;
+
+            border-radius: 14px;
+
+            background: rgba(255,255,255,0.04);
+
+            color: white;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+        }
+
+        .comment-input:focus {
+            border-color: rgba(124,92,255,0.7);
+            box-shadow: 0 0 0 3px rgba(124,92,255,0.08);
+        }
+
+        .comment-input::placeholder {
+            color: #777d8c;
+        }
+
+        .send-comment {
+            border: none;
+
+            padding: 12px 15px;
+
+            border-radius: 13px;
+
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+
+            color: white;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .send-comment:hover {
+            filter: brightness(1.12);
+        }
+
+        /* ================= LOADING ================= */
+
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+
+            z-index: 5000;
+
+            display: grid;
+            place-items: center;
+
+            background: #080a10;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 50%;
+
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #7c5cff;
+
+            animation: spin .7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ================= TOAST ================= */
+
+        .toast {
+            position: fixed;
+
+            left: 50%;
+            bottom: 25px;
+
+            transform: translate(-50%, 120px);
+
+            background: #1c2030;
+
+            border: 1px solid var(--border);
+
+            padding: 12px 18px;
+
+            border-radius: 14px;
+
+            font-size: 13px;
+
+            z-index: 6000;
+
+            opacity: 0;
+
+            transition: 0.3s;
+        }
+
+        .toast.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .page {
+                grid-template-columns: 1fr;
+                width: min(680px, 94%);
+            }
+
+            .comments-panel {
+                max-height: none;
+            }
+
+            .comments-list {
+                min-height: 300px;
+                max-height: 450px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 64px;
+                padding: 0 4%;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .nav-btn {
+                width: 39px;
+                height: 39px;
+            }
+
+            .page {
+                width: 100%;
+                margin: 0 auto;
+                gap: 10px;
+            }
+
+            .post-card,
+            .comments-panel {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .media-container {
+                min-height: 330px;
+            }
+
+            .post-header {
+                padding: 14px;
+            }
+
+            .post-actions,
+            .post-content {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loading -->
+    <div id="loadingScreen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            SocialSphere
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/" class="nav-btn" title="Home">
+                🏠
+            </a>
+
+            <a href="/explore" class="nav-btn" title="Explore">
+                🔍
+            </a>
+
+            <a href="/messages" class="nav-btn" title="Messages">
+                💬
+            </a>
+
+            <a href="/notifications" class="nav-btn" title="Notifications">
+                🔔
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="page">
+
+        <!-- ================= POST ================= -->
+
+        <article class="post-card">
+
+            <div class="post-header">
+
+                <a href="#" id="profileLink" class="user">
+
+                    <img
+                        id="userAvatar"
+                        class="avatar"
+                        src="/static/images/default-avatar.png"
+                        onerror="this.src='https://ui-avatars.com/api/?name=User&background=242839&color=fff'"
+                        alt="profile"
+                    >
+
+                    <div class="user-info">
+
+                        <h3 id="username">
+                            Loading...
+                        </h3>
+
+                        <p id="location">
+                            SocialSphere
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <div class="menu-container">
+
+                    <button
+                        class="menu-btn"
+                        id="menuButton"
+                        type="button"
+                    >
+                        ⋯
+                    </button>
+
+                    <div
+                        class="post-menu"
+                        id="postMenu"
+                    >
+
+                        <button
+                            type="button"
+                            onclick="copyPostLink()"
+                        >
+                            🔗 Copy link
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="reportPost()"
+                        >
+                            ⚠️ Report post
+                        </button>
+
+                        <button
+                            class="delete"
+                            id="deletePostButton"
+                            type="button"
+                            onclick="deletePost()"
+                            style="display:none;"
+                        >
+                            🗑 Delete post
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- POST MEDIA -->
+
+            <div
+                class="media-container"
+                id="mediaContainer"
+            >
+
+                <div class="media-placeholder">
+                    Loading post...
+                </div>
+
+            </div>
+
+
+            <!-- ACTION BUTTONS -->
+
+            <div class="post-actions">
+
+                <div class="action-left">
+
+                    <button
+                        id="likeButton"
+                        class="action-btn"
+                        type="button"
+                        onclick="toggleLike()"
+                        title="Like"
+                    >
+                        ♡
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        type="button"
+                        onclick="focusComment()"
+                        title="Comment"
+                    >
+                        💬
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        type="button"
+                        onclick="sharePost()"
+                        title="Share"
+                    >
+                        ✈
+                    </button>
+
+                </div>
+
+
+                <button
+                    id="saveButton"
+                    class="action-btn"
+                    type="button"
+                    onclick="toggleSave()"
+                    title="Save"
+                >
+                    🔖
+                </button>
+
+            </div>
+
+
+            <!-- POST INFORMATION -->
+
+            <div class="post-content">
+
+                <div
+                    class="likes"
+                    id="likeCount"
+                >
+                    0 likes
+                </div>
+
+
+                <div class="caption">
+
+                    <strong id="captionUsername">
+                        user
+                    </strong>
+
+                    <span id="caption">
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="post-date"
+                    id="postDate"
+                >
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- ================= COMMENTS ================= -->
+
+        <section class="comments-panel">
+
+            <div class="comments-title">
+                Comments
+            </div>
+
+
+            <div
+                class="comments-list"
+                id="commentsList"
+            >
+
+                <div class="empty-comments">
+
+                    <div class="icon">
+                        💬
+                    </div>
+
+                    <div>
+                        Loading comments...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <form
+                class="comment-form"
+                id="commentForm"
+            >
+
+                <input
+                    id="commentInput"
+                    class="comment-input"
+                    type="text"
+                    maxlength="500"
+                    autocomplete="off"
+                    placeholder="Add a comment..."
+                    required
+                >
+
+                <button
+                    class="send-comment"
+                    type="submit"
+                >
+                    Post
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+
+
+<script>
+
+    /* =========================================================
+       SETTINGS
+    ========================================================== */
+
+    // Example URL:
+    // http://127.0.0.1:8000/post/123
+
+    const pathParts =
+        window.location.pathname
+        .split("/")
+        .filter(Boolean);
+
+    const postId =
+        pathParts[pathParts.length - 1];
+
+
+    let currentPost = null;
+
+    let isLiked = false;
+
+    let isSaved = false;
+
+
+
+    /* =========================================================
+       AUTH TOKEN
+    ========================================================== */
+
+    function getToken() {
+
+        return (
+            localStorage.getItem("access_token") ||
+            localStorage.getItem("token") ||
+            ""
+        );
+
+    }
+
+
+    function authHeaders() {
+
+        const token = getToken();
+
+        if (!token) {
+            return {
+                "Content-Type": "application/json"
+            };
+        }
+
+        return {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        };
+
+    }
+
+
+
+    /* =========================================================
+       LOAD POST
+    ========================================================== */
+
+    async function loadPost() {
+
+        try {
+
+            /*
+                Your FastAPI endpoint should be:
+
+                GET /api/posts/{post_id}
+            */
+
+            const response =
+                await fetch(`/api/posts/${postId}`, {
+                    headers: authHeaders()
+                });
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Post could not be loaded"
+                );
+
+            }
+
+
+            const post =
+                await response.json();
+
+
+            currentPost = post;
+
+            displayPost(post);
+
+            await loadComments();
+
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "mediaContainer"
+            ).innerHTML = `
+
+                <div class="media-placeholder">
+
+                    <div style="text-align:center;">
+
+                        <div style="font-size:50px;">
+                            😕
+                        </div>
+
+                        <h3 style="margin-top:15px;">
+                            Post unavailable
+                        </h3>
+
+                        <p style="
+                            color:#8d93a6;
+                            margin-top:8px;
+                        ">
+                            This post may have been deleted.
+                        </p>
+
+                    </div>
+
+                </div>
+            `;
+
+        }
+        finally {
+
+            document.getElementById(
+                "loadingScreen"
+            ).style.display = "none";
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       DISPLAY POST
+    ========================================================== */
+
+    function displayPost(post) {
+
+        /*
+            The backend response can look like:
+
+            {
+                "id": 5,
+                "username": "angad",
+                "user_id": 2,
+                "avatar_url": "...",
+                "caption": "My new bike!",
+                "media_url": "...",
+                "media_type": "image",
+                "likes_count": 10,
+                "liked_by_me": true,
+                "saved_by_me": false,
+                "location": "Mumbai",
+                "created_at": "2026-08-07T10:30:00"
+            }
+        */
+
+
+        const username =
+            post.username ||
+            post.user?.username ||
+            "user";
+
+
+        const avatar =
+            post.avatar_url ||
+            post.user?.avatar_url ||
+            "/static/images/default-avatar.png";
+
+
+        document.getElementById(
+            "username"
+        ).textContent = username;
+
+
+        document.getElementById(
+            "captionUsername"
+        ).textContent = username;
+
+
+        document.getElementById(
+            "userAvatar"
+        ).src = avatar;
+
+
+        document.getElementById(
+            "caption"
+        ).textContent =
+            post.caption ||
+            post.content ||
+            "";
+
+
+        document.getElementById(
+            "location"
+        ).textContent =
+            post.location ||
+            "SocialSphere";
+
+
+        document.getElementById(
+            "likeCount"
+        ).textContent =
+            `${post.likes_count || 0} likes`;
+
+
+        if (post.created_at) {
+
+            document.getElementById(
+                "postDate"
+            ).textContent =
+                formatDate(post.created_at);
+
+        }
+
+
+        /* PROFILE LINK */
+
+        if (post.user_id) {
+
+            document.getElementById(
+                "profileLink"
+            ).href =
+                `/profile/${post.user_id}`;
+
+        }
+        else {
+
+            document.getElementById(
+                "profileLink"
+            ).href =
+                `/profile/${username}`;
+
+        }
+
+
+        /* LIKE STATUS */
+
+        isLiked =
+            Boolean(post.liked_by_me);
+
+
+        updateLikeButton();
+
+
+        /* SAVE STATUS */
+
+        isSaved =
+            Boolean(post.saved_by_me);
+
+
+        updateSaveButton();
+
+
+        /* OWNER CHECK */
+
+        if (post.is_owner === true) {
+
+            document.getElementById(
+                "deletePostButton"
+            ).style.display = "block";
+
+        }
+
+
+        displayMedia(post);
+
+    }
+
+
+
+    /* =========================================================
+       DISPLAY IMAGE / VIDEO
+    ========================================================== */
+
+    function displayMedia(post) {
+
+        const container =
+            document.getElementById(
+                "mediaContainer"
+            );
+
+
+        const url =
+            post.media_url ||
+            post.image_url ||
+            post.video_url;
+
+
+        if (!url) {
+
+            container.innerHTML = `
+
+                <div class="media-placeholder">
+
+                    No media in this post
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const mediaType =
+            post.media_type ||
+            detectMediaType(url);
+
+
+        if (mediaType === "video") {
+
+            container.innerHTML = `
+
+                <video
+                    class="post-media"
+                    controls
+                    playsinline
+                    preload="metadata"
+                >
+
+                    <source
+                        src="${escapeHTML(url)}"
+                    >
+
+                    Your browser does not support video.
+
+                </video>
+            `;
+
+        }
+        else {
+
+            container.innerHTML = `
+
+                <img
+                    class="post-media"
+                    src="${escapeHTML(url)}"
+                    alt="Post image"
+                >
+            `;
+
+        }
+
+    }
+
+
+
+    function detectMediaType(url) {
+
+        const value =
+            String(url).toLowerCase();
+
+        if (
+            value.includes(".mp4") ||
+            value.includes(".webm") ||
+            value.includes(".mov")
+        ) {
+
+            return "video";
+
+        }
+
+        return "image";
+
+    }
+
+
+
+    /* =========================================================
+       LIKE POST
+    ========================================================== */
+
+    async function toggleLike() {
+
+        if (!requireLogin()) {
+            return;
+        }
+
+
+        const oldState =
+            isLiked;
+
+
+        isLiked =
+            !isLiked;
+
+
+        updateLikeButton();
+
+
+        let count =
+            Number(
+                currentPost?.likes_count || 0
+            );
+
+
+        count += isLiked ? 1 : -1;
+
+        count =
+            Math.max(0, count);
+
+
+        currentPost.likes_count =
+            count;
+
+
+        document.getElementById(
+            "likeCount"
+        ).textContent =
+            `${count} likes`;
+
+
+        try {
+
+            const endpoint =
+                oldState
+                ? `/api/posts/${postId}/unlike`
+                : `/api/posts/${postId}/like`;
+
+
+            const response =
+                await fetch(endpoint, {
+
+                    method: "POST",
+
+                    headers: authHeaders()
+
+                });
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Like failed"
+                );
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+
+            isLiked =
+                oldState;
+
+
+            currentPost.likes_count =
+                oldState
+                ? count + 1
+                : count - 1;
+
+
+            updateLikeButton();
+
+
+            document.getElementById(
+                "likeCount"
+            ).textContent =
+                `${currentPost.likes_count} likes`;
+
+
+            showToast(
+                "Could not update like"
+            );
+
+        }
+
+    }
+
+
+
+    function updateLikeButton() {
+
+        const button =
+            document.getElementById(
+                "likeButton"
+            );
+
+
+        if (isLiked) {
+
+            button.textContent = "♥";
+
+            button.classList.add(
+                "liked"
+            );
+
+        }
+        else {
+
+            button.textContent = "♡";
+
+            button.classList.remove(
+                "liked"
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       SAVE POST
+    ========================================================== */
+
+    async function toggleSave() {
+
+        if (!requireLogin()) {
+            return;
+        }
+
+
+        const oldState =
+            isSaved;
+
+
+        isSaved =
+            !isSaved;
+
+
+        updateSaveButton();
+
+
+        try {
+
+            const endpoint =
+                oldState
+                ? `/api/posts/${postId}/unsave`
+                : `/api/posts/${postId}/save`;
+
+
+            const response =
+                await fetch(endpoint, {
+
+                    method: "POST",
+
+                    headers: authHeaders()
+
+                });
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Save failed"
+                );
+
+            }
+
+
+            showToast(
+                isSaved
+                ? "Post saved"
+                : "Removed from saved"
+            );
+
+        }
+        catch (error) {
+
+            isSaved =
+                oldState;
+
+
+            updateSaveButton();
+
+
+            showToast(
+                "Could not save post"
+            );
+
+        }
+
+    }
+
+
+
+    function updateSaveButton() {
+
+        const button =
+            document.getElementById(
+                "saveButton"
+            );
+
+
+        if (isSaved) {
+
+            button.classList.add(
+                "saved"
+            );
+
+            button.textContent = "🔖";
+
+        }
+        else {
+
+            button.classList.remove(
+                "saved"
+            );
+
+            button.textContent = "🔖";
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       LOAD COMMENTS
+    ========================================================== */
+
+    async function loadComments() {
+
+        const container =
+            document.getElementById(
+                "commentsList"
+            );
+
+
+        try {
+
+            /*
+                Endpoint:
+
+                GET /api/posts/{post_id}/comments
+            */
+
+
+            const response =
+                await fetch(
+                    `/api/posts/${postId}/comments`,
+                    {
+                        headers: authHeaders()
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Comments unavailable"
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            const comments =
+                Array.isArray(result)
+                ? result
+                : result.comments || [];
+
+
+            renderComments(comments);
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+
+            container.innerHTML = `
+
+                <div class="empty-comments">
+
+                    <div class="icon">
+                        💬
+                    </div>
+
+                    <div>
+                        No comments yet.
+                    </div>
+
+                </div>
+            `;
+
+        }
+
+    }
+
+
+
+    function renderComments(comments) {
+
+        const container =
+            document.getElementById(
+                "commentsList"
+            );
+
+
+        if (!comments.length) {
+
+            container.innerHTML = `
+
+                <div class="empty-comments">
+
+                    <div class="icon">
+                        💬
+                    </div>
+
+                    <strong>
+                        No comments yet
+                    </strong>
+
+                    <div style="
+                        font-size:12px;
+                        margin-top:7px;
+                    ">
+                        Start the conversation.
+                    </div>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            comments.map(comment => {
+
+                const username =
+                    comment.username ||
+                    comment.user?.username ||
+                    "user";
+
+
+                const avatar =
+                    comment.avatar_url ||
+                    comment.user?.avatar_url ||
+                    "/static/images/default-avatar.png";
+
+
+                const content =
+                    comment.content ||
+                    comment.text ||
+                    "";
+
+
+                return `
+
+                    <div class="comment">
+
+                        <img
+                            class="comment-avatar"
+                            src="${escapeHTML(avatar)}"
+                            onerror="
+                                this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=242839&color=fff'
+                            "
+                        >
+
+                        <div class="comment-body">
+
+                            <div class="comment-text">
+
+                                <strong>
+                                    ${escapeHTML(username)}
+                                </strong>
+
+                                ${escapeHTML(content)}
+
+                            </div>
+
+                            <div class="comment-meta">
+
+                                <span>
+                                    ${comment.created_at
+                                        ? formatRelativeTime(
+                                            comment.created_at
+                                        )
+                                        : "now"
+                                    }
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+    }
+
+
+
+    /* =========================================================
+       ADD COMMENT
+    ========================================================== */
+
+    document.getElementById(
+        "commentForm"
+    ).addEventListener(
+        "submit",
+        addComment
+    );
+
+
+    async function addComment(event) {
+
+        event.preventDefault();
+
+
+        if (!requireLogin()) {
+            return;
+        }
+
+
+        const input =
+            document.getElementById(
+                "commentInput"
+            );
+
+
+        const content =
+            input.value.trim();
+
+
+        if (!content) {
+            return;
+        }
+
+
+        const button =
+            event.target.querySelector(
+                "button"
+            );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "...";
+
+
+        try {
+
+            /*
+                Endpoint:
+
+                POST /api/posts/{post_id}/comments
+
+                JSON:
+
+                {
+                    "content": "Nice post"
+                }
+            */
+
+
+            const response =
+                await fetch(
+                    `/api/posts/${postId}/comments`,
+                    {
+
+                        method: "POST",
+
+                        headers: authHeaders(),
+
+                        body: JSON.stringify({
+                            content: content
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Comment failed"
+                );
+
+            }
+
+
+            input.value = "";
+
+
+            await loadComments();
+
+
+            showToast(
+                "Comment added"
+            );
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+
+            showToast(
+                "Could not add comment"
+            );
+
+        }
+        finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Post";
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       DELETE POST
+    ========================================================== */
+
+    async function deletePost() {
+
+        if (!requireLogin()) {
+            return;
+        }
+
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to delete this post?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        try {
+
+            /*
+                Endpoint:
+
+                DELETE /api/posts/{post_id}
+            */
+
+
+            const response =
+                await fetch(
+                    `/api/posts/${postId}`,
+                    {
+
+                        method: "DELETE",
+
+                        headers: authHeaders()
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Delete failed"
+                );
+
+            }
+
+
+            showToast(
+                "Post deleted"
+            );
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "/";
+
+            }, 500);
+
+        }
+        catch (error) {
+
+            showToast(
+                "Could not delete post"
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       SHARE
+    ========================================================== */
+
+    async function sharePost() {
+
+        const url =
+            window.location.href;
+
+
+        try {
+
+            if (navigator.share) {
+
+                await navigator.share({
+
+                    title: "SocialSphere",
+
+                    text: "Check out this post on SocialSphere",
+
+                    url: url
+
+                });
+
+            }
+            else {
+
+                await navigator.clipboard.writeText(
+                    url
+                );
+
+
+                showToast(
+                    "Post link copied"
+                );
+
+            }
+
+        }
+        catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+
+
+    async function copyPostLink() {
+
+        try {
+
+            await navigator.clipboard.writeText(
+                window.location.href
+            );
+
+
+            showToast(
+                "Link copied"
+            );
+
+
+            closeMenu();
+
+        }
+        catch (error) {
+
+            showToast(
+                "Could not copy link"
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       REPORT
+    ========================================================== */
+
+    function reportPost() {
+
+        closeMenu();
+
+
+        if (!requireLogin()) {
+            return;
+        }
+
+
+        showToast(
+            "Report feature can be connected to your backend."
+        );
+
+    }
+
+
+
+    /* =========================================================
+       MENU
+    ========================================================== */
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+
+    const postMenu =
+        document.getElementById(
+            "postMenu"
+        );
+
+
+    menuButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            postMenu.classList.toggle(
+                "show"
+            );
+
+        }
+    );
+
+
+    document.addEventListener(
+        "click",
+        function() {
+
+            closeMenu();
+
+        }
+    );
+
+
+    function closeMenu() {
+
+        postMenu.classList.remove(
+            "show"
+        );
+
+    }
+
+
+
+    /* =========================================================
+       COMMENT FOCUS
+    ========================================================== */
+
+    function focusComment() {
+
+        document.getElementById(
+            "commentInput"
+        ).focus();
+
+    }
+
+
+
+    /* =========================================================
+       LOGIN CHECK
+    ========================================================== */
+
+    function requireLogin() {
+
+        if (!getToken()) {
+
+            showToast(
+                "Please login first"
+            );
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "/login";
+
+            }, 700);
+
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
+
+
+    /* =========================================================
+       DATE FUNCTIONS
+    ========================================================== */
+
+    function formatDate(dateString) {
+
+        try {
+
+            const date =
+                new Date(dateString);
+
+
+            return date.toLocaleDateString(
+                undefined,
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
+        }
+        catch {
+
+            return "";
+
+        }
+
+    }
+
+
+
+    function formatRelativeTime(dateString) {
+
+        const date =
+            new Date(dateString);
+
+
+        const seconds =
+            Math.floor(
+                (Date.now() - date.getTime())
+                / 1000
+            );
+
+
+        if (seconds < 60) {
+            return "now";
+        }
+
+
+        const minutes =
+            Math.floor(
+                seconds / 60
+            );
+
+
+        if (minutes < 60) {
+
+            return `${minutes}m`;
+
+        }
+
+
+        const hours =
+            Math.floor(
+                minutes / 60
+            );
+
+
+        if (hours < 24) {
+
+            return `${hours}h`;
+
+        }
+
+
+        const days =
+            Math.floor(
+                hours / 24
+            );
+
+
+        if (days < 7) {
+
+            return `${days}d`;
+
+        }
+
+
+        return formatDate(
+            dateString
+        );
+
+    }
+
+
+
+    /* =========================================================
+       SECURITY
+    ========================================================== */
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+
+    /* =========================================================
+       TOAST
+    ========================================================== */
+
+    let toastTimer;
+
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        toast.textContent =
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toastTimer =
+            setTimeout(() => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            }, 2500);
+
+    }
+
+
+
+    /* =========================================================
+       START PAGE
+    ========================================================== */
+
+    if (
+        !postId ||
+        postId === "post"
+    ) {
+
+        document.getElementById(
+            "loadingScreen"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "mediaContainer"
+        ).innerHTML = `
+
+            <div class="media-placeholder">
+
+                Invalid post ID
+
+            </div>
+        `;
+
+    }
+    else {
+
+        loadPost();
+
+    }
+
+</script>
+
+</body>
+</html>

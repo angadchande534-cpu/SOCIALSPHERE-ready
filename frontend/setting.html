@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#050507"
+    >
+
+    <title>Settings | SocialSphere</title>
+
+    <!-- EXISTING SOCIALSPHERE CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/instagram.css">
+    <link rel="stylesheet" href="/css/ultimate.css">
+    <link rel="stylesheet" href="/css/premium.css">
+
+    <!-- EXISTING API HELPER -->
+    <script src="/js/api.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at 10% 8%,
+                    rgba(118, 73, 255, .16),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(255, 60, 145, .10),
+                    transparent 30%
+                ),
+                #050507;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* =====================================
+           NAVBAR
+        ====================================== */
+
+        .settings-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+
+            width: 100%;
+            height: 72px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.07);
+
+            background:
+                rgba(6,6,9,.88);
+
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+        }
+
+        .settings-nav-inner {
+            width:
+                min(1220px, calc(100% - 30px));
+
+            height: 100%;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            font-size: 21px;
+            font-weight: 850;
+
+            letter-spacing: -.5px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            font-size: 20px;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7550ff,
+                    #bd43ff,
+                    #ff477e
+                );
+
+            box-shadow:
+                0 10px 35px
+                rgba(120,73,255,.3);
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+
+            gap: 4px;
+        }
+
+        .desktop-nav a {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                10px 13px;
+
+            border-radius: 12px;
+
+            color: #9fa3b2;
+
+            font-size: 13px;
+            font-weight: 650;
+
+            transition: .2s ease;
+        }
+
+        .desktop-nav a:hover,
+        .desktop-nav a.active {
+            color: white;
+
+            background:
+                rgba(255,255,255,.065);
+        }
+
+        .desktop-nav svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* =====================================
+           PAGE
+        ====================================== */
+
+        .settings-page {
+            width:
+                min(1050px, calc(100% - 28px));
+
+            margin: auto;
+
+            padding:
+                50px 0 110px;
+        }
+
+        /* =====================================
+           HEADER
+        ====================================== */
+
+        .settings-header {
+            margin-bottom: 30px;
+        }
+
+        .page-label {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                8px 13px;
+
+            margin-bottom: 15px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            color: #aaaebe;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .page-label span {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #9e66ff;
+
+            box-shadow:
+                0 0 13px #9e66ff;
+        }
+
+        .settings-header h1 {
+            margin: 0;
+
+            font-size:
+                clamp(38px, 6vw, 60px);
+
+            line-height: 1;
+
+            letter-spacing: -2.2px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #d9d3ff 50%,
+                    #ffa4ce
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .settings-header p {
+            max-width: 620px;
+
+            margin:
+                15px 0 0;
+
+            color: #898d9d;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* =====================================
+           ACCOUNT CARD
+        ====================================== */
+
+        .account-card {
+            display: flex;
+            align-items: center;
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+            padding: 22px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.05),
+                    rgba(255,255,255,.018)
+                );
+
+            box-shadow:
+                0 22px 60px rgba(0,0,0,.22);
+        }
+
+        .account-avatar {
+            width: 76px;
+            height: 76px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border:
+                2px solid rgba(255,255,255,.09);
+
+            background: #17171d;
+        }
+
+        .account-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .account-info h2 {
+            margin:
+                0 0 4px;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            font-size: 20px;
+        }
+
+        .account-info .username {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #a9acb9;
+
+            font-size: 13px;
+        }
+
+        .account-info .email {
+            display: block;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            color: #747988;
+
+            font-size: 12px;
+        }
+
+        .edit-profile-btn {
+            flex-shrink: 0;
+
+            padding:
+                11px 16px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius: 13px;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.055);
+
+            font-size: 12px;
+            font-weight: 800;
+
+            transition: .2s ease;
+        }
+
+        .edit-profile-btn:hover {
+            transform: translateY(-1px);
+
+            background:
+                rgba(255,255,255,.09);
+        }
+
+        /* =====================================
+           SETTINGS LAYOUT
+        ====================================== */
+
+        .settings-layout {
+            display: grid;
+
+            grid-template-columns:
+                220px minmax(0,1fr);
+
+            gap: 22px;
+
+            align-items: start;
+        }
+
+        /* =====================================
+           SIDEBAR
+        ====================================== */
+
+        .settings-sidebar {
+            position: sticky;
+            top: 95px;
+
+            padding: 10px;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,.025);
+        }
+
+        .settings-tab {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding:
+                12px 13px;
+
+            border: 0;
+            border-radius: 12px;
+
+            color: #9094a3;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+        .settings-tab:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,.05);
+        }
+
+        .settings-tab.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(118,73,255,.30),
+                    rgba(201,63,255,.17)
+                );
+        }
+
+        .settings-tab svg {
+            width: 18px;
+            height: 18px;
+
+            flex-shrink: 0;
+        }
+
+        /* =====================================
+           PANEL
+        ====================================== */
+
+        .settings-panel {
+            display: none;
+        }
+
+        .settings-panel.active {
+            display: block;
+        }
+
+        .setting-section {
+            margin-bottom: 17px;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(255,255,255,.075);
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.028);
+        }
+
+        .section-header {
+            padding:
+                19px 20px 14px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.055);
+        }
+
+        .section-header h2 {
+            margin:
+                0 0 5px;
+
+            font-size: 17px;
+        }
+
+        .section-header p {
+            margin: 0;
+
+            color: #777c8b;
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =====================================
+           SETTING ROW
+        ====================================== */
+
+        .setting-row {
+            min-height: 72px;
+
+            padding:
+                14px 18px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.05);
+        }
+
+        .setting-row:last-child {
+            border-bottom: 0;
+        }
+
+        .setting-icon {
+            width: 41px;
+            height: 41px;
+
+            flex-shrink: 0;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            color: #b896ff;
+
+            background:
+                rgba(129,81,255,.11);
+        }
+
+        .setting-icon svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .setting-text {
+            min-width: 0;
+
+            flex: 1;
+        }
+
+        .setting-text strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #ededf1;
+
+            font-size: 13px;
+        }
+
+        .setting-text span {
+            display: block;
+
+            color: #777c8b;
+
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .row-action {
+            min-width: 82px;
+
+            padding:
+                9px 12px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius: 11px;
+
+            color: #d9d9df;
+
+            background:
+                rgba(255,255,255,.04);
+
+            cursor: pointer;
+
+            text-align: center;
+
+            font-size: 11px;
+            font-weight: 750;
+
+            transition: .2s ease;
+        }
+
+        .row-action:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,.085);
+        }
+
+        .row-action.primary {
+            border: 0;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7650ff,
+                    #be43ff
+                );
+        }
+
+        /* =====================================
+           TOGGLE
+        ====================================== */
+
+        .switch {
+            position: relative;
+
+            width: 45px;
+            height: 25px;
+
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            position: absolute;
+
+            opacity: 0;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius: 999px;
+
+            background: #24252d;
+
+            cursor: pointer;
+
+            transition: .25s ease;
+        }
+
+        .slider::before {
+            content: "";
+
+            position: absolute;
+
+            width: 19px;
+            height: 19px;
+
+            left: 2px;
+            top: 2px;
+
+            border-radius: 50%;
+
+            background: #b6b8c2;
+
+            transition: .25s ease;
+        }
+
+        .switch input:checked + .slider {
+            background:
+                linear-gradient(
+                    135deg,
+                    #7550ff,
+                    #cb43ff
+                );
+        }
+
+        .switch input:checked +
+        .slider::before {
+            transform:
+                translateX(20px);
+
+            background: white;
+        }
+
+        /* =====================================
+           DANGER
+        ====================================== */
+
+        .danger-section {
+            border-color:
+                rgba(255,70,100,.13);
+        }
+
+        .danger-section
+        .setting-icon {
+            color: #ff728d;
+
+            background:
+                rgba(255,60,100,.09);
+        }
+
+        .logout-button {
+            min-width: 92px;
+
+            padding:
+                10px 14px;
+
+            border:
+                1px solid rgba(255,75,105,.20);
+
+            border-radius: 11px;
+
+            color: #ff7891;
+
+            background:
+                rgba(255,50,90,.07);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition: .2s;
+        }
+
+        .logout-button:hover {
+            color: white;
+
+            background: #e33d5e;
+        }
+
+        /* =====================================
+           INFO
+        ====================================== */
+
+        .account-detail {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 18px;
+
+            padding:
+                15px 18px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.05);
+        }
+
+        .account-detail:last-child {
+            border-bottom: 0;
+        }
+
+        .account-detail span {
+            color: #777c8b;
+
+            font-size: 11px;
+        }
+
+        .account-detail strong {
+            max-width: 62%;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            font-size: 12px;
+
+            text-align: right;
+        }
+
+        /* =====================================
+           LOADING
+        ====================================== */
+
+        .loading-card {
+            min-height: 300px;
+
+            display: grid;
+            place-items: center;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.025);
+        }
+
+        .loader {
+            width: 44px;
+            height: 44px;
+
+            margin:
+                0 auto 18px;
+
+            border:
+                3px solid rgba(255,255,255,.1);
+
+            border-top-color:
+                #9e67ff;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =====================================
+           TOAST
+        ====================================== */
+
+        .toast {
+            position: fixed;
+
+            z-index: 500;
+
+            left: 50%;
+            bottom: 88px;
+
+            max-width:
+                calc(100% - 30px);
+
+            padding:
+                11px 18px;
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            border-radius: 999px;
+
+            background:
+                rgba(20,20,28,.96);
+
+            color: white;
+
+            font-size: 13px;
+
+            box-shadow:
+                0 16px 50px rgba(0,0,0,.4);
+
+            opacity: 0;
+            pointer-events: none;
+
+            transform:
+                translate(-50%,20px);
+
+            transition: .25s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+
+            transform:
+                translate(-50%,0);
+        }
+
+        /* =====================================
+           MOBILE NAV
+        ====================================== */
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* =====================================
+           RESPONSIVE
+        ====================================== */
+
+        @media (max-width: 800px) {
+
+            .settings-layout {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .settings-sidebar {
+                position: relative;
+
+                top: 0;
+
+                display: flex;
+
+                overflow-x: auto;
+
+                scrollbar-width: none;
+            }
+
+            .settings-sidebar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .settings-tab {
+                width: auto;
+
+                flex-shrink: 0;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .settings-navbar {
+                height: 63px;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .brand span:last-child {
+                display: none;
+            }
+
+            .settings-page {
+                width:
+                    calc(100% - 18px);
+
+                padding:
+                    35px 0 100px;
+            }
+
+            .settings-header h1 {
+                font-size: 40px;
+            }
+
+            .account-card {
+                padding: 15px;
+
+                border-radius: 18px;
+
+                gap: 12px;
+            }
+
+            .account-avatar {
+                width: 58px;
+                height: 58px;
+            }
+
+            .account-info h2 {
+                font-size: 16px;
+            }
+
+            .edit-profile-btn {
+                padding:
+                    9px 11px;
+
+                font-size: 10px;
+            }
+
+            .setting-row {
+                padding:
+                    13px 14px;
+            }
+
+            .setting-icon {
+                width: 37px;
+                height: 37px;
+            }
+
+            .setting-text span {
+                display: none;
+            }
+
+            .mobile-nav {
+                position: fixed;
+
+                z-index: 300;
+
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+
+                height: 64px;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(5,1fr);
+
+                border:
+                    1px solid rgba(255,255,255,.10);
+
+                border-radius: 20px;
+
+                background:
+                    rgba(12,12,17,.93);
+
+                backdrop-filter: blur(18px);
+
+                box-shadow:
+                    0 18px 55px rgba(0,0,0,.48);
+            }
+
+            .mobile-nav a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                gap: 3px;
+
+                color: #858a99;
+
+                font-size: 19px;
+            }
+
+            .mobile-nav a.active {
+                color: white;
+            }
+
+            .mobile-nav small {
+                font-size: 8px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     TOP NAVBAR
+=========================================== -->
+
+<header class="settings-navbar">
+
+    <div class="settings-nav-inner">
+
+        <a
+            href="/feed"
+            class="brand"
+        >
+
+            <div class="brand-logo">
+                S
+            </div>
+
+            <span>
+                SocialSphere
+            </span>
+
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="/feed">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M3 11.5 12 4l9 7.5"
+                    />
+
+                    <path
+                        d="M5 10.5V20h14v-9.5"
+                    />
+                </svg>
+
+                Home
+
+            </a>
+
+
+            <a href="/explore">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                    />
+
+                    <path
+                        d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z"
+                    />
+                </svg>
+
+                Explore
+
+            </a>
+
+
+            <a href="/messages">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"
+                    />
+                </svg>
+
+                Messages
+
+            </a>
+
+
+            <a href="/profile">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4"
+                    />
+
+                    <path
+                        d="M4 21a8 8 0 0 1 16 0"
+                    />
+                </svg>
+
+                Profile
+
+            </a>
+
+
+            <a
+                href="/settings"
+                class="active"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="3"
+                    />
+
+                    <path
+                        d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.7 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1A1.7 1.7 0 0 0 15.5 4.7a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.1.4.3.7.6 1 .3.3.7.4 1.1.4h.1v4h-.1a1.7 1.7 0 0 0-1.7.6Z"
+                    />
+                </svg>
+
+                Settings
+
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<!-- ==========================================
+     PAGE
+=========================================== -->
+
+<main class="settings-page">
+
+
+    <section class="settings-header">
+
+        <div class="page-label">
+
+            <span></span>
+
+            SocialSphere preferences
+
+        </div>
+
+        <h1>
+            Settings
+        </h1>
+
+        <p>
+            Manage your account, privacy,
+            security and SocialSphere preferences.
+        </p>
+
+    </section>
+
+
+
+    <!-- ======================================
+         ACCOUNT SUMMARY
+    ======================================= -->
+
+    <section
+        class="account-card"
+        id="accountCard"
+    >
+
+        <img
+            id="accountAvatar"
+            class="account-avatar"
+            src=""
+            alt=""
+        >
+
+
+        <div class="account-info">
+
+            <h2 id="accountName">
+                Loading...
+            </h2>
+
+            <span
+                class="username"
+                id="accountUsername"
+            >
+                @username
+            </span>
+
+            <span
+                class="email"
+                id="accountEmail"
+            >
+                Loading account...
+            </span>
+
+        </div>
+
+
+        <a
+            href="/edit-profile"
+            class="edit-profile-btn"
+        >
+            Edit Profile
+        </a>
+
+    </section>
+
+
+
+    <!-- ======================================
+         SETTINGS AREA
+    ======================================= -->
+
+    <div class="settings-layout">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="settings-sidebar">
+
+
+            <button
+                class="settings-tab active"
+                data-panel="account"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4"
+                    />
+
+                    <path
+                        d="M4 21a8 8 0 0 1 16 0"
+                    />
+                </svg>
+
+                Account
+
+            </button>
+
+
+            <button
+                class="settings-tab"
+                data-panel="privacy"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <rect
+                        x="5"
+                        y="10"
+                        width="14"
+                        height="10"
+                        rx="2"
+                    />
+
+                    <path
+                        d="M8 10V7a4 4 0 0 1 8 0v3"
+                    />
+                </svg>
+
+                Privacy
+
+            </button>
+
+
+            <button
+                class="settings-tab"
+                data-panel="notifications"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                    />
+
+                    <path
+                        d="M10 21h4"
+                    />
+                </svg>
+
+                Notifications
+
+            </button>
+
+
+            <button
+                class="settings-tab"
+                data-panel="security"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
+                    />
+                </svg>
+
+                Security
+
+            </button>
+
+
+            <button
+                class="settings-tab"
+                data-panel="about"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                    />
+
+                    <path d="M12 11v5"/>
+
+                    <path d="M12 8h.01"/>
+                </svg>
+
+                About
+
+            </button>
+
+        </aside>
+
+
+
+        <!-- ==================================
+             CONTENT
+        =================================== -->
+
+        <section>
+
+
+            <!-- ==============================
+                 ACCOUNT PANEL
+            =============================== -->
+
+            <div
+                class="settings-panel active"
+                id="panel-account"
+            >
+
+
+                <section class="setting-section">
+
+                    <div class="section-header">
+
+                        <h2>
+                            Account
+                        </h2>
+
+                        <p>
+                            Manage your SocialSphere
+                            profile and account information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4"
+                                />
+
+                                <path
+                                    d="M4 21a8 8 0 0 1 16 0"
+                                />
+                            </svg>
+
+                        </div>
+
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Edit Profile
+                            </strong>
+
+                            <span>
+                                Change your name, bio,
+                                picture, location and website.
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="/edit-profile"
+                            class="row-action primary"
+                        >
+                            Edit
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <rect
+                                    x="3"
+                                    y="5"
+                                    width="18"
+                                    height="14"
+                                    rx="2"
+                                />
+
+                                <path
+                                    d="m3 7 9 6 9-6"
+                                />
+                            </svg>
+
+                        </div>
+
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Email Address
+                            </strong>
+
+                            <span id="settingsEmail">
+                                Loading...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path
+                                    d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"
+                                />
+
+                                <path
+                                    d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"
+                                />
+                            </svg>
+
+                        </div>
+
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Copy Profile Link
+                            </strong>
+
+                            <span>
+                                Copy a link to your
+                                SocialSphere profile.
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            class="row-action"
+                            onclick="copyProfileLink()"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- ACCOUNT INFO -->
+
+                <section class="setting-section">
+
+                    <div class="section-header">
+
+                        <h2>
+                            Account Information
+                        </h2>
+
+                    </div>
+
+
+                    <div class="account-detail">
+
+                        <span>
+                            Username
+                        </span>
+
+                        <strong id="detailUsername">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="account-detail">
+
+                        <span>
+                            Email
+                        </span>
+
+                        <strong id="detailEmail">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="account-detail">
+
+                        <span>
+                            Account created
+                        </span>
+
+                        <strong id="detailCreated">
+                            —
+                        </strong>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+
+            <!-- ==============================
+                 PRIVACY
+            =============================== -->
+
+            <div
+                class="settings-panel"
+                id="panel-privacy"
+            >
+
+
+                <section class="setting-section">
+
+                    <div class="section-header">
+
+                        <h2>
+                            Privacy
+                        </h2>
+
+                        <p>
+                            Privacy and account
+                            activity shortcuts.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            ♡
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Liked Posts
+                            </strong>
+
+                            <span>
+                                See posts you have liked.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/like"
+                            class="row-action"
+                        >
+                            Open
+                        </a>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            ◇
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Saved Posts
+                            </strong>
+
+                            <span>
+                                View your bookmarked posts.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/bookmarks"
+                            class="row-action"
+                        >
+                            Open
+                        </a>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <rect
+                                    x="5"
+                                    y="10"
+                                    width="14"
+                                    height="10"
+                                    rx="2"
+                                />
+
+                                <path
+                                    d="M8 10V7a4 4 0 0 1 8 0v3"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Privacy Policy
+                            </strong>
+
+                            <span>
+                                Learn how SocialSphere
+                                handles account data.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/privacy"
+                            class="row-action"
+                        >
+                            Read
+                        </a>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+
+            <!-- ==============================
+                 NOTIFICATIONS
+            =============================== -->
+
+            <div
+                class="settings-panel"
+                id="panel-notifications"
+            >
+
+
+                <section class="setting-section">
+
+                    <div class="section-header">
+
+                        <h2>
+                            Notification Preferences
+                        </h2>
+
+                        <p>
+                            These preferences are
+                            saved on this device.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            ♥
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Like notifications
+                            </strong>
+
+                            <span>
+                                Show notifications when
+                                someone likes your content.
+                            </span>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                id="likesToggle"
+                                type="checkbox"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            💬
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Comment notifications
+                            </strong>
+
+                            <span>
+                                Show notifications for
+                                comments on your posts.
+                            </span>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                id="commentsToggle"
+                                type="checkbox"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            👤
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Follow notifications
+                            </strong>
+
+                            <span>
+                                Show notifications for
+                                new followers.
+                            </span>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                id="followsToggle"
+                                type="checkbox"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            ✉
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Message notifications
+                            </strong>
+
+                            <span>
+                                Keep message notification
+                                alerts enabled.
+                            </span>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                id="messagesToggle"
+                                type="checkbox"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+
+                <section class="setting-section">
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            🔔
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Open Notifications
+                            </strong>
+
+                            <span>
+                                See your SocialSphere
+                                notification history.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/notifications"
+                            class="row-action"
+                        >
+                            Open
+                        </a>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+
+            <!-- ==============================
+                 SECURITY
+            =============================== -->
+
+            <div
+                class="settings-panel"
+                id="panel-security"
+            >
+
+
+                <section class="setting-section">
+
+                    <div class="section-header">
+
+                        <h2>
+                            Security
+                        </h2>
+
+                        <p>
+                            Manage your login and password.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <rect
+                                    x="5"
+                                    y="10"
+                                    width="14"
+                                    height="10"
+                                    rx="2"
+                                />
+
+                                <path
+                                    d="M8 10V7a4 4 0 0 1 8 0v3"
+                                />
+                            </svg>
+
+                        </div>
+
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Reset Password
+                            </strong>
+
+                            <span>
+                                Send a secure password
+                                reset link to your email.
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="/forgot-password"
+                            class="row-action primary"
+                        >
+                            Reset
+                        </a>
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- LOGOUT -->
+
+                <section
+                    class="setting-section danger-section"
+                >
+
+                    <div class="section-header">
+
+                        <h2>
+                            Login Session
+                        </h2>
+
+                        <p>
+                            Signing out removes the
+                            saved login from this browser.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path
+                                    d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
+                                />
+
+                                <path
+                                    d="m16 17 5-5-5-5"
+                                />
+
+                                <path
+                                    d="M21 12H9"
+                                />
+                            </svg>
+
+                        </div>
+
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Log Out
+                            </strong>
+
+                            <span>
+                                Sign out of SocialSphere
+                                on this device.
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="logout-button"
+                            onclick="confirmLogout()"
+                        >
+                            Log Out
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+
+            <!-- ==============================
+                 ABOUT
+            =============================== -->
+
+            <div
+                class="settings-panel"
+                id="panel-about"
+            >
+
+
+                <section class="setting-section">
+
+                    <div class="section-header">
+
+                        <h2>
+                            SocialSphere
+                        </h2>
+
+                        <p>
+                            Information and support.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            i
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                About SocialSphere
+                            </strong>
+
+                            <span>
+                                Learn more about the
+                                platform.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/about"
+                            class="row-action"
+                        >
+                            Open
+                        </a>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            §
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Terms of Service
+                            </strong>
+
+                            <span>
+                                Read SocialSphere's
+                                terms and rules.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/terms"
+                            class="row-action"
+                        >
+                            Read
+                        </a>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            ✉
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>
+                                Contact
+                            </strong>
+
+                            <span>
+                                Get help or send feedback.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/contact"
+                            class="row-action"
+                        >
+                            Contact
+                        </a>
+
+                    </div>
+
+
+                    <div class="account-detail">
+
+                        <span>
+                            Version
+                        </span>
+
+                        <strong>
+                            SocialSphere 5.0
+                        </strong>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+        </section>
+
+    </div>
+
+</main>
+
+
+
+<!-- ==========================================
+     MOBILE NAVIGATION
+=========================================== -->
+
+<nav class="mobile-nav">
+
+    <a href="/feed">
+        ⌂
+        <small>Home</small>
+    </a>
+
+    <a href="/explore">
+        ⌕
+        <small>Explore</small>
+    </a>
+
+    <a href="/create-post">
+        ＋
+        <small>Create</small>
+    </a>
+
+    <a href="/messages">
+        ✉
+        <small>Messages</small>
+    </a>
+
+    <a
+        href="/settings"
+        class="active"
+    >
+        ⚙
+        <small>Settings</small>
+    </a>
+
+</nav>
+
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<script>
+
+    /* ======================================
+       VARIABLES
+    ======================================= */
+
+    let currentUser = null;
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    /* ======================================
+       TOAST
+    ======================================= */
+
+    function notify(message) {
+
+        toast.textContent =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+
+        clearTimeout(
+            notify.timer
+        );
+
+        notify.timer =
+            setTimeout(() => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            }, 2300);
+
+    }
+
+
+    /* ======================================
+       SETTINGS TABS
+    ======================================= */
+
+    document
+        .querySelectorAll(
+            ".settings-tab"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".settings-tab"
+                        )
+                        .forEach(item =>
+                            item.classList.remove(
+                                "active"
+                            )
+                        );
+
+
+                    document
+                        .querySelectorAll(
+                            ".settings-panel"
+                        )
+                        .forEach(panel =>
+                            panel.classList.remove(
+                                "active"
+                            )
+                        );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    document
+                        .getElementById(
+                            `panel-${button.dataset.panel}`
+                        )
+                        .classList.add(
+                            "active"
+                        );
+
+                }
+            );
+
+        });
+
+
+    /* ======================================
+       NOTIFICATION PREFERENCES
+    ======================================= */
+
+    const preferenceKeys = {
+
+        likesToggle:
+            "socialsphere_notify_likes",
+
+        commentsToggle:
+            "socialsphere_notify_comments",
+
+        followsToggle:
+            "socialsphere_notify_follows",
+
+        messagesToggle:
+            "socialsphere_notify_messages"
+
+    };
+
+
+    Object.entries(
+        preferenceKeys
+    ).forEach(
+        ([id, key]) => {
+
+            const input =
+                document.getElementById(id);
+
+
+            const stored =
+                localStorage.getItem(key);
+
+
+            input.checked =
+                stored === null
+                ? true
+                : stored === "true";
+
+
+            input.addEventListener(
+                "change",
+                () => {
+
+                    localStorage.setItem(
+                        key,
+                        String(input.checked)
+                    );
+
+
+                    notify(
+                        "Preference saved"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    /* ======================================
+       COPY PROFILE
+    ======================================= */
+
+    async function copyProfileLink() {
+
+        if (!currentUser) {
+            return;
+        }
+
+
+        const url =
+            `${window.location.origin}/profile?user_id=${currentUser.id}`;
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                url
+            );
+
+            notify(
+                "Profile link copied!"
+            );
+
+        }
+
+        catch (error) {
+
+            prompt(
+                "Copy your profile link:",
+                url
+            );
+
+        }
+
+    }
+
+
+    /* ======================================
+       LOGOUT
+    ======================================= */
+
+    function confirmLogout() {
+
+        const confirmed =
+            confirm(
+                "Do you want to log out of SocialSphere?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        logout();
+
+    }
+
+
+    /* ======================================
+       LOAD USER
+    ======================================= */
+
+    async function loadSettings() {
+
+        try {
+
+            currentUser =
+                await ensureAuthenticated();
+
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const displayName =
+                currentUser.full_name
+                ||
+                currentUser.username;
+
+
+            document.getElementById(
+                "accountAvatar"
+            ).src =
+                fileUrl(
+                    currentUser.profile_image,
+                    displayName
+                );
+
+
+            document.getElementById(
+                "accountName"
+            ).textContent =
+                displayName;
+
+
+            document.getElementById(
+                "accountUsername"
+            ).textContent =
+                `@${currentUser.username}`;
+
+
+            document.getElementById(
+                "accountEmail"
+            ).textContent =
+                currentUser.email;
+
+
+            document.getElementById(
+                "settingsEmail"
+            ).textContent =
+                currentUser.email;
+
+
+            document.getElementById(
+                "detailUsername"
+            ).textContent =
+                `@${currentUser.username}`;
+
+
+            document.getElementById(
+                "detailEmail"
+            ).textContent =
+                currentUser.email;
+
+
+            document.getElementById(
+                "detailCreated"
+            ).textContent =
+                currentUser.created_at
+                ? new Date(
+                    currentUser.created_at
+                ).toLocaleDateString()
+                : "—";
+
+
+            document.title =
+                `Settings | SocialSphere`;
+
+        }
+
+        catch (error) {
+
+            notify(
+                error.message
+            );
+
+        }
+
+    }
+
+
+    /* ======================================
+       START
+    ======================================= */
+
+    loadSettings();
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050505">
+
+    <title>Terms of Service | SocialSphere</title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/instagram.css">
+    <link rel="stylesheet" href="/css/ultimate.css">
+    <link rel="stylesheet" href="/css/premium.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            color: #f4f4f7;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(116, 76, 255, 0.18),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(255, 70, 150, 0.14),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(0, 190, 255, 0.10),
+                    transparent 35%
+                ),
+                #050507;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* =====================================
+           NAVBAR
+        ===================================== */
+
+        .terms-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            width: 100%;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+
+            background:
+                rgba(5,5,8,0.84);
+
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .terms-nav-inner {
+            width: min(1180px, calc(100% - 30px));
+            height: 72px;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .terms-brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            color: white;
+
+            font-size: 20px;
+            font-weight: 800;
+
+            text-decoration: none;
+        }
+
+        .terms-brand-logo {
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            font-size: 21px;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c4dff,
+                    #ff477e,
+                    #ff9f43
+                );
+
+            box-shadow:
+                0 8px 28px
+                rgba(124,77,255,0.35);
+        }
+
+        .terms-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terms-nav-links a {
+            padding: 10px 14px;
+
+            border-radius: 12px;
+
+            color: #b9bcc8;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+        .terms-nav-links a:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,0.07);
+        }
+
+        .open-app-btn {
+            color: white !important;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7447ff,
+                    #a447ff
+                ) !important;
+
+            box-shadow:
+                0 8px 25px
+                rgba(116,71,255,0.25);
+        }
+
+        /* =====================================
+           HERO
+        ===================================== */
+
+        .terms-hero {
+            width: min(1000px, calc(100% - 30px));
+
+            margin: 0 auto;
+
+            padding: 80px 0 45px;
+
+            text-align: center;
+        }
+
+        .terms-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 20px;
+            padding: 9px 15px;
+
+            border:
+                1px solid rgba(255,255,255,0.09);
+
+            border-radius: 999px;
+
+            color: #cbcbd5;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            background:
+                rgba(255,255,255,0.045);
+        }
+
+        .terms-badge span {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #8d67ff;
+
+            box-shadow:
+                0 0 14px rgba(141,103,255,0.7);
+        }
+
+        .terms-hero h1 {
+            margin: 0;
+
+            font-size:
+                clamp(42px, 7vw, 75px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #c8c2ff 45%,
+                    #ff9fd4
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .terms-hero p {
+            width: min(690px, 100%);
+
+            margin: 24px auto 0;
+
+            color: #9da0ae;
+
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .updated-date {
+            margin-top: 18px;
+
+            color: #747785;
+
+            font-size: 13px;
+        }
+
+        /* =====================================
+           LAYOUT
+        ===================================== */
+
+        .terms-layout {
+            width: min(1180px, calc(100% - 30px));
+
+            margin: 0 auto 100px;
+
+            display: grid;
+
+            grid-template-columns:
+                250px minmax(0, 1fr);
+
+            gap: 30px;
+
+            align-items: start;
+        }
+
+        /* =====================================
+           SIDEBAR
+        ===================================== */
+
+        .terms-sidebar {
+            position: sticky;
+            top: 95px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 22px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            box-shadow:
+                0 20px 55px
+                rgba(0,0,0,0.22);
+        }
+
+        .terms-sidebar-title {
+            margin: 0 0 13px 8px;
+
+            color: #7e8293;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.4px;
+        }
+
+        .terms-sidebar a {
+            display: block;
+
+            padding: 11px 12px;
+
+            border-radius: 12px;
+
+            color: #b4b6c1;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .terms-sidebar a:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,0.06);
+        }
+
+        /* =====================================
+           CONTENT
+        ===================================== */
+
+        .terms-content {
+            min-width: 0;
+        }
+
+        .terms-card {
+            margin-bottom: 22px;
+            padding: 30px;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.055),
+                    rgba(255,255,255,0.018)
+                );
+
+            box-shadow:
+                0 25px 65px
+                rgba(0,0,0,0.22);
+
+            scroll-margin-top: 100px;
+        }
+
+        .terms-number {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            margin-bottom: 17px;
+
+            border-radius: 12px;
+
+            font-weight: 800;
+
+            color: #dedaff;
+
+            background:
+                rgba(123,84,255,0.16);
+
+            border:
+                1px solid
+                rgba(133,100,255,0.2);
+        }
+
+        .terms-card h2 {
+            margin: 0 0 15px;
+
+            font-size: 23px;
+
+            letter-spacing: -0.5px;
+        }
+
+        .terms-card h3 {
+            margin: 25px 0 10px;
+
+            color: #e4e4ea;
+
+            font-size: 16px;
+        }
+
+        .terms-card p {
+            margin: 0 0 15px;
+
+            color: #a7a9b5;
+
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .terms-card ul {
+            margin: 13px 0 17px;
+
+            padding-left: 21px;
+        }
+
+        .terms-card li {
+            margin: 9px 0;
+
+            color: #a7a9b5;
+
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .terms-card strong {
+            color: #ededf1;
+        }
+
+        /* =====================================
+           IMPORTANT BOX
+        ===================================== */
+
+        .important-box {
+            margin-top: 20px;
+            padding: 18px;
+
+            border:
+                1px solid
+                rgba(255,186,76,0.18);
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,166,50,0.06);
+
+            color: #bbb5a7;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .important-box strong {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #ffd49a;
+        }
+
+        /* =====================================
+           SUMMARY CARDS
+        ===================================== */
+
+        .terms-highlights {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-top: 25px;
+        }
+
+        .highlight-card {
+            padding: 20px;
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+        .highlight-icon {
+            margin-bottom: 12px;
+
+            font-size: 27px;
+        }
+
+        .highlight-card h3 {
+            margin: 0 0 8px;
+
+            color: white;
+
+            font-size: 15px;
+        }
+
+        .highlight-card p {
+            margin: 0;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =====================================
+           CONTACT
+        ===================================== */
+
+        .contact-card {
+            position: relative;
+            overflow: hidden;
+
+            text-align: center;
+        }
+
+        .contact-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            left: -70px;
+            top: -80px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(118,73,255,0.15);
+
+            filter: blur(15px);
+        }
+
+        .contact-card > * {
+            position: relative;
+        }
+
+        .contact-button {
+            display: inline-block;
+
+            margin-top: 12px;
+            padding: 13px 22px;
+
+            border-radius: 14px;
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            text-decoration: none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7b4dff,
+                    #d347ff
+                );
+
+            box-shadow:
+                0 12px 30px
+                rgba(125,77,255,0.28);
+
+            transition: 0.2s ease;
+        }
+
+        .contact-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =====================================
+           FOOTER
+        ===================================== */
+
+        .terms-footer {
+            padding: 30px 15px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.07);
+
+            text-align: center;
+
+            color: #707381;
+
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            gap: 17px;
+
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #a2a4af;
+
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* =====================================
+           MOBILE
+        ===================================== */
+
+        @media (max-width: 850px) {
+
+            .terms-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .terms-sidebar {
+                position: relative;
+                top: 0;
+
+                display: flex;
+
+                overflow-x: auto;
+
+                padding: 10px;
+            }
+
+            .terms-sidebar-title {
+                display: none;
+            }
+
+            .terms-sidebar a {
+                flex-shrink: 0;
+            }
+
+            .terms-highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .terms-nav-inner {
+                height: 64px;
+            }
+
+            .terms-brand span:last-child {
+                display: none;
+            }
+
+            .terms-nav-links a:not(.open-app-btn) {
+                display: none;
+            }
+
+            .terms-hero {
+                padding-top: 55px;
+            }
+
+            .terms-hero h1 {
+                font-size: 44px;
+
+                letter-spacing: -2px;
+            }
+
+            .terms-hero p {
+                font-size: 15px;
+            }
+
+            .terms-card {
+                padding: 22px 18px;
+
+                border-radius: 19px;
+            }
+
+            .terms-card h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     NAVBAR
+===================================== -->
+
+<header class="terms-navbar">
+
+    <div class="terms-nav-inner">
+
+        <a href="/" class="terms-brand">
+
+            <div class="terms-brand-logo">
+                S
+            </div>
+
+            <span>SocialSphere</span>
+
+        </a>
+
+
+        <nav class="terms-nav-links">
+
+            <a href="/about">
+                About
+            </a>
+
+            <a href="/privacy">
+                Privacy
+            </a>
+
+            <a href="/contact">
+                Contact
+            </a>
+
+            <a href="/feed" class="open-app-btn">
+                Open SocialSphere
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================
+     HERO
+===================================== -->
+
+<section class="terms-hero">
+
+    <div class="terms-badge">
+
+        <span></span>
+
+        SocialSphere Community Rules
+
+    </div>
+
+
+    <h1>
+        Terms of Service
+    </h1>
+
+
+    <p>
+        These Terms of Service explain the rules
+        and responsibilities that apply when you
+        create an account, post content, interact
+        with users or otherwise use SocialSphere.
+    </p>
+
+
+    <div class="updated-date">
+        Last updated: August 7, 2026
+    </div>
+
+</section>
+
+
+<!-- =====================================
+     MAIN CONTENT
+===================================== -->
+
+<div class="terms-layout">
+
+
+    <!-- =================================
+         SIDEBAR
+    ================================== -->
+
+    <aside class="terms-sidebar">
+
+        <p class="terms-sidebar-title">
+            On this page
+        </p>
+
+        <a href="#acceptance">
+            Acceptance
+        </a>
+
+        <a href="#eligibility">
+            Eligibility
+        </a>
+
+        <a href="#account">
+            Your Account
+        </a>
+
+        <a href="#conduct">
+            User Conduct
+        </a>
+
+        <a href="#content">
+            Your Content
+        </a>
+
+        <a href="#prohibited">
+            Prohibited Activity
+        </a>
+
+        <a href="#copyright">
+            Copyright
+        </a>
+
+        <a href="#termination">
+            Account Termination
+        </a>
+
+        <a href="#availability">
+            Service Availability
+        </a>
+
+        <a href="#liability">
+            Liability
+        </a>
+
+        <a href="#changes">
+            Changes
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
+
+    </aside>
+
+
+    <!-- =================================
+         TERMS CONTENT
+    ================================== -->
+
+    <main class="terms-content">
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="terms-card">
+
+            <div class="terms-number">
+                ✓
+            </div>
+
+            <h2>
+                Welcome to SocialSphere
+            </h2>
+
+            <p>
+                SocialSphere is a social media
+                platform that allows users to create
+                profiles, upload posts, share photos
+                and videos, create reels, follow
+                accounts, like content, comment,
+                save posts, communicate through
+                messages and use other social
+                features.
+            </p>
+
+            <p>
+                These Terms apply whenever you access
+                or use SocialSphere.
+            </p>
+
+
+            <div class="terms-highlights">
+
+                <div class="highlight-card">
+
+                    <div class="highlight-icon">
+                        👤
+                    </div>
+
+                    <h3>
+                        Your Account
+                    </h3>
+
+                    <p>
+                        You are responsible for your
+                        account and activity performed
+                        through it.
+                    </p>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <div class="highlight-icon">
+                        🤝
+                    </div>
+
+                    <h3>
+                        Respect Others
+                    </h3>
+
+                    <p>
+                        Do not use SocialSphere to
+                        harass, threaten or harm
+                        other users.
+                    </p>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <div class="highlight-icon">
+                        📸
+                    </div>
+
+                    <h3>
+                        Own Your Content
+                    </h3>
+
+                    <p>
+                        Only upload content that you
+                        have permission to publish.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACCEPTANCE -->
+
+        <section
+            class="terms-card"
+            id="acceptance"
+        >
+
+            <div class="terms-number">
+                1
+            </div>
+
+            <h2>
+                Acceptance of These Terms
+            </h2>
+
+            <p>
+                By creating a SocialSphere account,
+                accessing the website or using any
+                SocialSphere feature, you agree to
+                follow these Terms of Service and
+                the Privacy Policy.
+            </p>
+
+            <p>
+                If you do not agree with these Terms,
+                you should not create an account or
+                continue using SocialSphere.
+            </p>
+
+        </section>
+
+
+        <!-- ELIGIBILITY -->
+
+        <section
+            class="terms-card"
+            id="eligibility"
+        >
+
+            <div class="terms-number">
+                2
+            </div>
+
+            <h2>
+                Eligibility
+            </h2>
+
+            <p>
+                You must be legally permitted to use
+                an online social networking service
+                under the laws that apply to you.
+            </p>
+
+            <p>
+                You must provide accurate information
+                when creating your account and must
+                not intentionally impersonate another
+                person.
+            </p>
+
+            <div class="important-box">
+
+                <strong>
+                    Important
+                </strong>
+
+                Do not create an account using another
+                person's identity, email address or
+                personal information without their
+                authorization.
+
+            </div>
+
+        </section>
+
+
+        <!-- ACCOUNT -->
+
+        <section
+            class="terms-card"
+            id="account"
+        >
+
+            <div class="terms-number">
+                3
+            </div>
+
+            <h2>
+                Your SocialSphere Account
+            </h2>
+
+            <p>
+                You are responsible for maintaining
+                control of your account.
+            </p>
+
+            <p>
+                You should keep your login credentials
+                confidential and use a strong password.
+            </p>
+
+
+            <h3>
+                You agree that you will:
+            </h3>
+
+            <ul>
+
+                <li>
+                    Provide accurate registration
+                    information.
+                </li>
+
+                <li>
+                    Keep your password confidential.
+                </li>
+
+                <li>
+                    Not intentionally share access to
+                    your account with unauthorized
+                    people.
+                </li>
+
+                <li>
+                    Notify SocialSphere if you believe
+                    your account has been compromised.
+                </li>
+
+                <li>
+                    Avoid creating accounts for
+                    abusive, deceptive or fraudulent
+                    purposes.
+                </li>
+
+            </ul>
+
+
+            <p>
+                SocialSphere may provide password
+                recovery functionality when you lose
+                access to your password.
+            </p>
+
+        </section>
+
+
+        <!-- USER CONDUCT -->
+
+        <section
+            class="terms-card"
+            id="conduct"
+        >
+
+            <div class="terms-number">
+                4
+            </div>
+
+            <h2>
+                User Conduct
+            </h2>
+
+            <p>
+                SocialSphere is intended to help people
+                communicate, create and share content.
+                Users are expected to interact
+                responsibly.
+            </p>
+
+
+            <h3>
+                You agree not to:
+            </h3>
+
+            <ul>
+
+                <li>
+                    Harass, threaten or intimidate
+                    other users.
+                </li>
+
+                <li>
+                    Deliberately spread malicious
+                    software or harmful files.
+                </li>
+
+                <li>
+                    Attempt to gain unauthorized
+                    access to another user's account.
+                </li>
+
+                <li>
+                    Attempt to interfere with the
+                    security of SocialSphere.
+                </li>
+
+                <li>
+                    Spam users with unwanted messages
+                    or repetitive content.
+                </li>
+
+                <li>
+                    Intentionally manipulate platform
+                    features through automated or
+                    deceptive activity.
+                </li>
+
+                <li>
+                    Use SocialSphere for unlawful
+                    activities.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+        <!-- CONTENT -->
+
+        <section
+            class="terms-card"
+            id="content"
+        >
+
+            <div class="terms-number">
+                5
+            </div>
+
+            <h2>
+                Your Content
+            </h2>
+
+            <p>
+                You remain responsible for content
+                you upload or publish through your
+                SocialSphere account.
+            </p>
+
+            <p>
+                This can include:
+            </p>
+
+            <ul>
+
+                <li>
+                    Photos
+                </li>
+
+                <li>
+                    Videos
+                </li>
+
+                <li>
+                    Reels
+                </li>
+
+                <li>
+                    Captions
+                </li>
+
+                <li>
+                    Comments
+                </li>
+
+                <li>
+                    Profile pictures
+                </li>
+
+                <li>
+                    Biographies
+                </li>
+
+                <li>
+                    Stories
+                </li>
+
+                <li>
+                    Messages
+                </li>
+
+            </ul>
+
+
+            <p>
+                You should only upload content that
+                you created, own or otherwise have
+                permission to use.
+            </p>
+
+
+            <div class="important-box">
+
+                <strong>
+                    Public content
+                </strong>
+
+                Content you publish publicly may be
+                viewed, shared or saved by other
+                users. Do not publish sensitive
+                information that you do not want
+                others to see.
+
+            </div>
+
+        </section>
+
+
+        <!-- PROHIBITED CONTENT -->
+
+        <section
+            class="terms-card"
+            id="prohibited"
+        >
+
+            <div class="terms-number">
+                6
+            </div>
+
+            <h2>
+                Prohibited Content and Activity
+            </h2>
+
+            <p>
+                You must not use SocialSphere to
+                publish or distribute content that
+                violates applicable law or seriously
+                harms other people.
+            </p>
+
+
+            <p>
+                Examples of prohibited activity may
+                include:
+            </p>
+
+            <ul>
+
+                <li>
+                    Fraudulent or deceptive activity.
+                </li>
+
+                <li>
+                    Impersonating another person for
+                    harmful purposes.
+                </li>
+
+                <li>
+                    Threatening or encouraging
+                    violence.
+                </li>
+
+                <li>
+                    Uploading malicious software.
+                </li>
+
+                <li>
+                    Attempting to steal passwords or
+                    account information.
+                </li>
+
+                <li>
+                    Exploiting security vulnerabilities
+                    in the platform.
+                </li>
+
+                <li>
+                    Publishing another person's
+                    private information without
+                    appropriate authorization.
+                </li>
+
+                <li>
+                    Using automated tools to overload
+                    or disrupt the service.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+        <!-- COPYRIGHT -->
+
+        <section
+            class="terms-card"
+            id="copyright"
+        >
+
+            <div class="terms-number">
+                7
+            </div>
+
+            <h2>
+                Intellectual Property and Copyright
+            </h2>
+
+            <p>
+                You should respect the intellectual
+                property rights of other people and
+                organizations.
+            </p>
+
+            <p>
+                Do not intentionally upload copyrighted
+                photographs, videos, music, artwork or
+                other protected material unless you
+                have permission or another lawful
+                basis to use it.
+            </p>
+
+            <p>
+                SocialSphere branding, interface
+                elements and original platform
+                materials may not be copied or
+                misrepresented as belonging to
+                another service.
+            </p>
+
+        </section>
+
+
+        <!-- MESSAGES -->
+
+        <section class="terms-card">
+
+            <div class="terms-number">
+                8
+            </div>
+
+            <h2>
+                Messages and Communication
+            </h2>
+
+            <p>
+                SocialSphere may allow users to send
+                direct messages and other forms of
+                communication.
+            </p>
+
+            <p>
+                You are responsible for the messages
+                that you send.
+            </p>
+
+            <p>
+                You must not use messaging features
+                to harass users, distribute malicious
+                links, conduct scams or send repeated
+                unwanted messages.
+            </p>
+
+        </section>
+
+
+        <!-- TERMINATION -->
+
+        <section
+            class="terms-card"
+            id="termination"
+        >
+
+            <div class="terms-number">
+                9
+            </div>
+
+            <h2>
+                Account Suspension or Termination
+            </h2>
+
+            <p>
+                SocialSphere may restrict, suspend or
+                remove an account when reasonably
+                necessary to protect users, platform
+                security or the integrity of the
+                service.
+            </p>
+
+            <p>
+                Examples may include:
+            </p>
+
+            <ul>
+
+                <li>
+                    Serious or repeated violations of
+                    these Terms.
+                </li>
+
+                <li>
+                    Attempts to compromise platform
+                    security.
+                </li>
+
+                <li>
+                    Fraudulent activity.
+                </li>
+
+                <li>
+                    Harmful spam or automated abuse.
+                </li>
+
+                <li>
+                    Illegal activity.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+        <!-- SERVICE AVAILABILITY -->
+
+        <section
+            class="terms-card"
+            id="availability"
+        >
+
+            <div class="terms-number">
+                10
+            </div>
+
+            <h2>
+                Service Availability
+            </h2>
+
+            <p>
+                SocialSphere may change, improve,
+                temporarily disable or discontinue
+                features when necessary.
+            </p>
+
+            <p>
+                The service may occasionally become
+                unavailable because of maintenance,
+                technical problems, hosting issues,
+                security updates or circumstances
+                outside SocialSphere's control.
+            </p>
+
+            <p>
+                Continuous or uninterrupted access
+                cannot be guaranteed.
+            </p>
+
+        </section>
+
+
+        <!-- SECURITY -->
+
+        <section class="terms-card">
+
+            <div class="terms-number">
+                11
+            </div>
+
+            <h2>
+                Platform Security
+            </h2>
+
+            <p>
+                You must not attempt to bypass,
+                disable or interfere with SocialSphere
+                security systems.
+            </p>
+
+            <p>
+                This includes attempts to gain
+                unauthorized access to databases,
+                servers, user accounts or private
+                information.
+            </p>
+
+            <p>
+                If you discover a possible security
+                issue, you should report it through
+                the SocialSphere contact page rather
+                than intentionally exploiting it.
+            </p>
+
+        </section>
+
+
+        <!-- LIABILITY -->
+
+        <section
+            class="terms-card"
+            id="liability"
+        >
+
+            <div class="terms-number">
+                12
+            </div>
+
+            <h2>
+                Disclaimer and Limitation of Liability
+            </h2>
+
+            <p>
+                SocialSphere is provided on an
+                "as available" basis.
+            </p>
+
+            <p>
+                While reasonable efforts may be made
+                to provide a secure and reliable
+                service, no online platform can
+                guarantee complete availability,
+                security or error-free operation.
+            </p>
+
+            <p>
+                To the extent permitted by applicable
+                law, SocialSphere is not responsible
+                for losses caused solely by content
+                posted by users, third-party services,
+                internet interruptions or events
+                outside reasonable control.
+            </p>
+
+        </section>
+
+
+        <!-- THIRD PARTY -->
+
+        <section class="terms-card">
+
+            <div class="terms-number">
+                13
+            </div>
+
+            <h2>
+                Third-Party Services
+            </h2>
+
+            <p>
+                SocialSphere may rely on third-party
+                providers for services such as
+                hosting, database infrastructure,
+                storage and email delivery.
+            </p>
+
+            <p>
+                These third-party services may have
+                separate terms and policies that
+                govern their own services.
+            </p>
+
+        </section>
+
+
+        <!-- PRIVACY -->
+
+        <section class="terms-card">
+
+            <div class="terms-number">
+                14
+            </div>
+
+            <h2>
+                Privacy
+            </h2>
+
+            <p>
+                Your use of SocialSphere is also
+                subject to the SocialSphere Privacy
+                Policy.
+            </p>
+
+            <p>
+                The Privacy Policy explains how
+                account information, posts, messages
+                and other information may be
+                collected, processed and protected.
+            </p>
+
+            <a
+                href="/privacy"
+                class="contact-button"
+            >
+                Read Privacy Policy
+            </a>
+
+        </section>
+
+
+        <!-- CHANGES -->
+
+        <section
+            class="terms-card"
+            id="changes"
+        >
+
+            <div class="terms-number">
+                15
+            </div>
+
+            <h2>
+                Changes to These Terms
+            </h2>
+
+            <p>
+                SocialSphere may update these Terms
+                when the platform changes, new
+                features are introduced or legal
+                requirements change.
+            </p>
+
+            <p>
+                When these Terms are updated, the
+                "Last updated" date may also be
+                changed.
+            </p>
+
+            <p>
+                Continued use of SocialSphere after
+                updated Terms become effective means
+                you acknowledge the updated Terms.
+            </p>
+
+        </section>
+
+
+        <!-- CONTACT -->
+
+        <section
+            class="terms-card contact-card"
+            id="contact"
+        >
+
+            <div
+                class="terms-number"
+                style="
+                    margin-left:auto;
+                    margin-right:auto;
+                "
+            >
+                ✉
+            </div>
+
+            <h2>
+                Questions About These Terms?
+            </h2>
+
+            <p>
+                If you have questions about these
+                Terms of Service, account rules or
+                SocialSphere policies, please contact
+                us through the contact page.
+            </p>
+
+            <a
+                href="/contact"
+                class="contact-button"
+            >
+                Contact SocialSphere
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =====================================
+     FOOTER
+===================================== -->
+
+<footer class="terms-footer">
+
+    <div class="footer-links">
+
+        <a href="/about">
+            About
+        </a>
+
+        <a href="/privacy">
+            Privacy
+        </a>
+
+        <a href="/terms">
+            Terms
+        </a>
+
+        <a href="/contact">
+            Contact
+        </a>
+
+        <a href="/login">
+            Login
+        </a>
+
+    </div>
+
+
+    <div>
+        © 2026 SocialSphere. All rights reserved.
+    </div>
+
+</footer>
+
+
+</body>
+</html>

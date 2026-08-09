@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | SocialSphere</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/static/css/style.css"
+    >
+
+    <script src="/js/api.js"></script>
+<link rel="stylesheet" href="/css/ultimate.css">  <link rel="stylesheet" href="/css/premium.css">
+</head>
+
+<body class="login-page">
+
+    <div class="login-orb login-orb-one"></div>
+    <div class="login-orb login-orb-two"></div>
+    <div class="login-orb login-orb-three"></div>
+
+    <a href="/" class="login-home-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <main class="login-main">
+
+        <section class="login-container">
+
+            <!-- LEFT SIDE -->
+
+            <div class="login-left">
+
+                <a href="/" class="login-logo">
+                    <span>
+                        <i class="fa-solid fa-globe"></i>
+                    </span>
+
+                    SocialSphere
+                </a>
+
+                <div class="login-left-content">
+
+                    <div class="login-badge">
+                        <i class="fa-solid fa-sparkles"></i>
+                        Welcome to SocialSphere
+                    </div>
+
+                    <h1>
+                        Connect.
+                        <span>Share.</span>
+                        Inspire.
+                    </h1>
+
+                    <p>
+                        Join a modern social community where people share
+                        moments, create connections and build communities.
+                    </p>
+
+                    <div class="login-features">
+
+                        <div class="login-feature">
+                            <span>
+                                <i class="fa-solid fa-comments"></i>
+                            </span>
+
+                            <div>
+                                <strong>Instant Conversations</strong>
+                                <small>Chat with friends and communities.</small>
+                            </div>
+                        </div>
+
+                        <div class="login-feature">
+                            <span>
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </span>
+
+                            <div>
+                                <strong>Share Your Moments</strong>
+                                <small>Post photos, reels and stories.</small>
+                            </div>
+                        </div>
+
+                        <div class="login-feature">
+                            <span>
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </span>
+
+                            <div>
+                                <strong>Secure Experience</strong>
+                                <small>Your information remains protected.</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="login-community">
+
+                    <div class="login-avatars">
+                        <span>A</span>
+                        <span>R</span>
+                        <span>S</span>
+                        <span>P</span>
+                    </div>
+
+                    <div>
+                        <strong>10M+ active users</strong>
+                        <small>Connecting around the world</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div class="login-right">
+
+                <div class="login-form-header">
+
+                    <span class="mobile-login-logo">
+                        <i class="fa-solid fa-globe"></i>
+                    </span>
+
+                    <p>Welcome back</p>
+
+                    <h2>Login to your account</h2>
+
+                    <span>
+                        Enter your details to continue to SocialSphere.
+                    </span>
+
+                </div>
+
+                <div
+                    class="login-message"
+                    id="loginMessage"
+                ></div>
+
+                <form
+                    class="modern-login-form"
+                    id="loginForm"
+                >
+
+                    <div class="login-input-group">
+
+                        <label for="identifier">
+                            Email or Username
+                        </label>
+
+                        <div class="login-input-wrapper">
+
+                            <i class="fa-regular fa-envelope"></i>
+
+                            <input
+                                type="text"
+                                id="identifier"
+                                name="identifier"
+                                placeholder="Enter email or username"
+                                autocomplete="username"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="login-input-group">
+
+                        <div class="password-label-row">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <a href="#" class="forgot-password">
+                                Forgot password?
+                            </a>
+
+                        </div>
+
+                        <div class="login-input-wrapper">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="login-options">
+
+                        <label class="remember-checkbox">
+
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                                checked
+                                disabled
+                            >
+
+                            <span class="custom-checkbox">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            Keep me signed in on this device
+
+                        </label>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="login-submit-button"
+                        id="loginButton"
+                    >
+
+                        <span id="loginButtonText">
+                            Login
+                        </span>
+
+                        <i
+                            class="fa-solid fa-arrow-right"
+                            id="loginButtonIcon"
+                        ></i>
+
+                    </button>
+
+                </form>
+
+                <div class="login-divider">
+                    <span>or continue with</span>
+                </div>
+
+                <div class="social-login-buttons">
+
+                    <button
+                        type="button"
+                        class="social-login-button"
+                    >
+                        <i class="fa-brands fa-google"></i>
+                        Google
+                    </button>
+
+                    <button
+                        type="button"
+                        class="social-login-button"
+                    >
+                        <i class="fa-brands fa-github"></i>
+                        GitHub
+                    </button>
+
+                </div>
+
+                <p class="create-account-text">
+                    Don't have an account?
+
+                    <a href="/signup-page">
+                        Create Account
+                    </a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+    
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const identifierInput = document.getElementById("identifier");
+        const passwordInput = document.getElementById("password");
+        const rememberInput = document.getElementById("rememberMe");
+        const passwordToggle = document.getElementById("passwordToggle");
+        const loginButton = document.getElementById("loginButton");
+        const loginButtonText = document.getElementById("loginButtonText");
+        const loginButtonIcon = document.getElementById("loginButtonIcon");
+        const loginMessage = document.getElementById("loginMessage");
+
+        const nextPage = (() => {
+            const requested = new URLSearchParams(window.location.search).get("next");
+            return requested && requested.startsWith("/") && !requested.startsWith("//")
+                ? requested
+                : "/feed";
+        })();
+
+        passwordToggle.addEventListener("click", () => {
+            const hidden = passwordInput.type === "password";
+            passwordInput.type = hidden ? "text" : "password";
+            passwordToggle.innerHTML = hidden
+                ? '<i class="fa-regular fa-eye-slash"></i>'
+                : '<i class="fa-regular fa-eye"></i>';
+        });
+
+        function showMessage(message, type) {
+            loginMessage.textContent = message;
+            loginMessage.className = `login-message show ${type}`;
+        }
+
+        function setLoading(isLoading) {
+            loginButton.disabled = isLoading;
+            loginButtonText.textContent = isLoading ? "Logging in..." : "Login";
+            loginButtonIcon.className = isLoading
+                ? "fa-solid fa-spinner fa-spin"
+                : "fa-solid fa-arrow-right";
+        }
+
+        async function redirectExistingSession() {
+            const savedLogin = localStorage.getItem(SAVED_LOGIN_KEY);
+            if (savedLogin) identifierInput.value = savedLogin;
+            if (!token()) return;
+
+            try {
+                await api("/api/auth/me");
+                window.location.replace(nextPage);
+            } catch (_error) {
+                clearAuthToken();
+            }
+        }
+
+        loginForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            loginMessage.className = "login-message";
+
+            const identifier = identifierInput.value.trim();
+            const password = passwordInput.value;
+            const remember = true;
+
+            if (!identifier || !password) {
+                showMessage("Please enter your email/username and password.", "error");
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const data = await api("/api/auth/login", {
+                    method: "POST",
+                    body: JSON.stringify({identifier, password})
+                });
+
+                if (!data || !data.access_token) {
+    throw new Error("Login succeeded but no access token was returned.");
+}
+
+saveAuthToken(data.access_token);
+
+localStorage.setItem(SAVED_LOGIN_KEY, identifier);
+
+console.log("LOGIN SUCCESS");
+console.log("Redirecting to:", nextPage);
+
+showMessage("Login successful! Redirecting...", "success");
+
+setTimeout(() => {
+    window.location.href = nextPage || "/feed";
+}, 500);
+            } catch (error) {
+                showMessage(error.message || "Unable to connect to the server.", "error");
+                setLoading(false);
+            }
+        });
+
+        redirectExistingSession();
+        
+    </script>
+
+</body>
+
+</html>

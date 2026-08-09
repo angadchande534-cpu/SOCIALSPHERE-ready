@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <title>Create Post | SocialSphere</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/instagram.css"><link rel="stylesheet" href="/css/ultimate.css">
+  <script src="/js/api.js"></script>
+  <link rel="stylesheet" href="/css/premium.css">
+</head>
+<body class="instagram-page">
+<header class="topbar insta-topbar">
+  <nav class="navwrap">
+    <a class="brand insta-brand" href="/feed"><span class="brandmark">S</span><span>SocialSphere</span></a>
+    <div class="navlinks"><a href="/feed">⌂ <span>Home</span></a><a href="/search">⌕ <span>Search</span></a><a class="active" href="/create-post">⊞ <span>Create</span></a><a href="/messages">✉ <span>Messages</span></a><a href="/profile">◎ <span>Profile</span></a></div>
+  </nav>
+</header>
+
+<main class="shell">
+  <section class="glass form-card create-post-card">
+    <span class="eyebrow">New post</span>
+    <h1>Create a <span class="gradient-text">photo or video post</span></h1>
+    <p class="muted">Choose a photo or video, add your caption, and share it with your community.</p>
+    <form id="postForm">
+      <div class="field"><label for="caption">Caption</label><textarea id="caption" maxlength="3000" placeholder="Write a caption…"></textarea></div>
+      <div class="upload" id="uploadArea">
+        <div style="font-size:46px">▧</div>
+        <h3>Photo or video</h3>
+        <p class="muted">JPG, PNG, WEBP, GIF, MP4, WEBM, OGG or MOV — maximum 60 MB</p>
+        <label class="btn" for="media">Select from computer</label>
+        <input class="hidden" id="media" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg,video/quicktime">
+        <div id="previewWrap" class="create-media-preview hidden"></div>
+      </div>
+      <div class="message" id="message"></div>
+      <div class="create-actions"><a class="btn secondary" href="/feed">Cancel</a><button class="btn" id="publishButton" type="submit">Share</button></div>
+    </form>
+  </section>
+</main>
+
+<nav class="mobile-bottom-nav"><a href="/feed">⌂<span>Home</span></a><a href="/search">⌕<span>Search</span></a><a class="active mobile-create" href="/create-post">＋<span>Create</span></a><a href="/messages">✉<span>Messages</span></a><a href="/profile">◎<span>Profile</span></a></nav>
+
+<script>
+if (!token()) backendPage('/login');
+const form = document.getElementById('postForm');
+const media = document.getElementById('media');
+const previewWrap = document.getElementById('previewWrap');
+const message = document.getElementById('message');
+const button = document.getElementById('publishButton');
+let previewUrl = '';
+
+function clearPreviewUrl() {
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = '';
+}
+
+media.addEventListener('change', () => {
+  clearPreviewUrl();
+  const file = media.files[0];
+  if (!file) {
+    previewWrap.classList.add('hidden');
+    previewWrap.innerHTML = '';
+    return;
+  }
+  previewUrl = URL.createObjectURL(file);
+  const isVideo = file.type.startsWith('video/');
+  previewWrap.innerHTML = `${isVideo ? `<video src="${previewUrl}" controls playsinline></video>` : `<img src="${previewUrl}" alt="Preview">`}<span class="media-kind-badge">${isVideo ? 'Video' : 'Photo'}</span>`;
+  previewWrap.classList.remove('hidden');
+});
+
+form.addEventListener('submit', async event => {
+  event.preventDefault();
+  message.textContent = '';
+  message.className = 'message';
+  const caption = document.getElementById('caption').value.trim();
+  const file = media.files[0];
+  if (!caption && !file) {
+    message.textContent = 'Add a caption, photo or video.';
+    return;
+  }
+  if (file && file.size > 60 * 1024 * 1024) {
+    message.textContent = 'The selected file must be under 60 MB.';
+    return;
+  }
+  button.disabled = true;
+  button.textContent = 'Sharing…';
+  try {
+    const body = new FormData();
+    body.append('caption', caption);
+    if (file) body.append('media', file);
+    await api('/api/posts', {method:'POST', body});
+    message.textContent = 'Post shared successfully.';
+    message.className = 'message success';
+    setTimeout(() => backendPage('/feed'), 500);
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Share';
+  }
+});
+window.addEventListener('beforeunload', clearPreviewUrl);
+</script>
+<style>.create-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}@media(max-width:650px){.create-post-card{margin:10px 0 80px}.create-actions .btn{flex:1}}</style>
+</body>
+</html>

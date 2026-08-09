@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#060608"
+    >
+
+    <title>Friends | SocialSphere</title>
+
+    <!-- EXISTING SOCIALSPHERE CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/instagram.css">
+    <link rel="stylesheet" href="/css/ultimate.css">
+    <link rel="stylesheet" href="/css/premium.css">
+
+    <!-- EXISTING API HELPER -->
+    <script src="/js/api.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(118, 73, 255, .16),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 88% 18%,
+                    rgba(255, 64, 143, .10),
+                    transparent 30%
+                ),
+                #050507;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            color: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ========================================
+           NAVBAR
+        ======================================== */
+
+        .friends-navbar {
+            position: sticky;
+
+            top: 0;
+
+            z-index: 200;
+
+            width: 100%;
+            height: 72px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.07);
+
+            background:
+                rgba(6,6,9,.88);
+
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+        }
+
+        .friends-nav-inner {
+            width:
+                min(1220px, calc(100% - 30px));
+
+            height: 100%;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            font-size: 21px;
+
+            font-weight: 850;
+
+            letter-spacing: -.5px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 13px;
+
+            font-size: 20px;
+
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7550ff,
+                    #bd43ff,
+                    #ff477e
+                );
+
+            box-shadow:
+                0 10px 35px
+                rgba(120,73,255,.3);
+        }
+
+        .desktop-nav {
+            display: flex;
+
+            align-items: center;
+
+            gap: 4px;
+        }
+
+        .desktop-nav a {
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                10px 13px;
+
+            border-radius: 12px;
+
+            color: #9fa3b2;
+
+            font-size: 13px;
+
+            font-weight: 650;
+
+            transition: .2s ease;
+        }
+
+        .desktop-nav a:hover,
+        .desktop-nav a.active {
+            color: white;
+
+            background:
+                rgba(255,255,255,.065);
+        }
+
+        .desktop-nav svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-badge {
+            position: absolute;
+
+            top: 2px;
+            right: 2px;
+
+            min-width: 17px;
+            height: 17px;
+
+            padding: 0 4px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 999px;
+
+            background: #ff3867;
+
+            color: white;
+
+            font-size: 9px;
+
+            font-weight: 800;
+        }
+
+        /* ========================================
+           PAGE
+        ======================================== */
+
+        .friends-page {
+            width:
+                min(1120px, calc(100% - 28px));
+
+            margin: auto;
+
+            padding:
+                50px 0 110px;
+        }
+
+        /* ========================================
+           PAGE HEADER
+        ======================================== */
+
+        .friends-header {
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content:
+                space-between;
+
+            gap: 25px;
+
+            margin-bottom: 30px;
+        }
+
+        .friends-heading {
+            max-width: 690px;
+        }
+
+        .page-label {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                8px 13px;
+
+            margin-bottom: 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            color: #aaaebe;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .page-label span {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #9e66ff;
+
+            box-shadow:
+                0 0 13px #9e66ff;
+        }
+
+        .friends-heading h1 {
+            margin: 0;
+
+            font-size:
+                clamp(38px, 6vw, 60px);
+
+            line-height: 1;
+
+            letter-spacing: -2.3px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #d9d3ff 50%,
+                    #ffa4ce
+                );
+
+            -webkit-background-clip:
+                text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .friends-heading p {
+            margin:
+                16px 0 0;
+
+            color: #898d9d;
+
+            font-size: 15px;
+
+            line-height: 1.7;
+        }
+
+        /* ========================================
+           STATS
+        ======================================== */
+
+        .friends-stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 100px);
+
+            gap: 8px;
+        }
+
+        .stat-card {
+            padding:
+                15px 10px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,.03);
+
+            text-align: center;
+        }
+
+        .stat-card strong {
+            display: block;
+
+            font-size: 23px;
+        }
+
+        .stat-card span {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #747989;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing: .8px;
+        }
+
+        /* ========================================
+           SEARCH
+        ======================================== */
+
+        .friend-search {
+            position: relative;
+
+            margin-bottom: 20px;
+        }
+
+        .friend-search svg {
+            position: absolute;
+
+            left: 16px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            width: 20px;
+
+            height: 20px;
+
+            color: #737888;
+
+            pointer-events: none;
+        }
+
+        .friend-search input {
+            width: 100%;
+
+            height: 54px;
+
+            padding:
+                0 18px 0 48px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius: 17px;
+
+            outline: none;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.035);
+
+            font-size: 14px;
+
+            transition: .2s ease;
+        }
+
+        .friend-search input:focus {
+            border-color:
+                rgba(138,87,255,.45);
+
+            background:
+                rgba(255,255,255,.05);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(124,77,255,.08);
+        }
+
+        .friend-search input::placeholder {
+            color: #696e7d;
+        }
+
+        /* ========================================
+           TABS
+        ======================================== */
+
+        .friend-tabs {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            overflow-x: auto;
+
+            margin-bottom: 22px;
+
+            padding: 7px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            scrollbar-width: none;
+        }
+
+        .friend-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex-shrink: 0;
+
+            min-height: 42px;
+
+            padding:
+                0 17px;
+
+            border: 0;
+
+            border-radius: 12px;
+
+            color: #898e9e;
+
+            background:
+                transparent;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+            transition: .2s ease;
+        }
+
+        .tab-btn:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,.045);
+        }
+
+        .tab-btn.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(118,73,255,.32),
+                    rgba(211,64,255,.20)
+                );
+
+            box-shadow:
+                inset 0 0 0 1px
+                rgba(161,105,255,.15);
+        }
+
+        /* ========================================
+           USER GRID
+        ======================================== */
+
+        .users-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0,1fr));
+
+            gap: 13px;
+        }
+
+        .friend-card {
+            min-width: 0;
+
+            padding: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.075);
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.04),
+                    rgba(255,255,255,.018)
+                );
+
+            transition:
+                transform .22s ease,
+                border-color .22s ease,
+                background .22s ease;
+        }
+
+        .friend-card:hover {
+            transform:
+                translateY(-2px);
+
+            border-color:
+                rgba(255,255,255,.13);
+
+            background:
+                rgba(255,255,255,.05);
+        }
+
+        .friend-avatar {
+            position: relative;
+
+            flex-shrink: 0;
+        }
+
+        .friend-avatar img {
+            width: 66px;
+            height: 66px;
+
+            display: block;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #1a1a22;
+
+            border:
+                2px solid
+                rgba(255,255,255,.08);
+        }
+
+        .mutual-dot {
+            position: absolute;
+
+            right: 1px;
+            bottom: 2px;
+
+            width: 16px;
+            height: 16px;
+
+            border:
+                3px solid #0d0d12;
+
+            border-radius: 50%;
+
+            background: #4de59d;
+        }
+
+        .friend-main {
+            min-width: 0;
+
+            flex: 1;
+        }
+
+        .friend-name {
+            display: block;
+
+            overflow: hidden;
+
+            white-space: nowrap;
+
+            text-overflow: ellipsis;
+
+            color: #f3f3f6;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+        .friend-fullname {
+            display: block;
+
+            margin-top: 3px;
+
+            overflow: hidden;
+
+            white-space: nowrap;
+
+            text-overflow: ellipsis;
+
+            color: #777c8b;
+
+            font-size: 11px;
+        }
+
+        .friend-bio {
+            margin:
+                8px 0 0;
+
+            display: -webkit-box;
+
+            overflow: hidden;
+
+            color: #9ca0ae;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            line-clamp: 2;
+
+            -webkit-line-clamp: 2;
+
+            -webkit-box-orient:
+                vertical;
+        }
+
+        /* ========================================
+           ACTION BUTTONS
+        ======================================== */
+
+        .friend-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            flex-shrink: 0;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+
+            place-items: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius: 12px;
+
+            color: #aeb2bf;
+
+            background:
+                rgba(255,255,255,.035);
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .icon-btn:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,.09);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .icon-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .follow-btn {
+            min-width: 86px;
+
+            height: 38px;
+
+            padding:
+                0 13px;
+
+            border: 0;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #754cff,
+                    #c243ff
+                );
+
+            transition: .2s ease;
+        }
+
+        .follow-btn:hover {
+            transform:
+                translateY(-1px);
+
+            filter:
+                brightness(1.08);
+        }
+
+        .follow-btn.following {
+            color: #c5c7d0;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            background:
+                rgba(255,255,255,.04);
+        }
+
+        .follow-btn:disabled {
+            opacity: .45;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+        /* ========================================
+           EMPTY / LOADING
+        ======================================== */
+
+        .state-box {
+            min-height: 360px;
+
+            padding: 35px;
+
+            display: grid;
+
+            place-items: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            border-radius: 22px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            text-align: center;
+        }
+
+        .state-content {
+            width:
+                min(430px,100%);
+        }
+
+        .state-icon {
+            width: 78px;
+            height: 78px;
+
+            margin:
+                0 auto 18px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 24px;
+
+            color: #ae82ff;
+
+            background:
+                rgba(129,81,255,.11);
+
+            font-size: 32px;
+        }
+
+        .state-box h2 {
+            margin:
+                0 0 9px;
+
+            font-size: 22px;
+        }
+
+        .state-box p {
+            margin: 0;
+
+            color: #838898;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .loader {
+            width: 44px;
+            height: 44px;
+
+            margin:
+                0 auto 20px;
+
+            border:
+                3px solid
+                rgba(255,255,255,.1);
+
+            border-top-color:
+                #9d67ff;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+        /* ========================================
+           TOAST
+        ======================================== */
+
+        .toast {
+            position: fixed;
+
+            z-index: 600;
+
+            left: 50%;
+            bottom: 88px;
+
+            max-width:
+                calc(100% - 30px);
+
+            padding:
+                11px 18px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.09);
+
+            border-radius: 999px;
+
+            background:
+                rgba(20,20,28,.96);
+
+            color: white;
+
+            font-size: 13px;
+
+            box-shadow:
+                0 16px 50px
+                rgba(0,0,0,.4);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transform:
+                translate(-50%,20px);
+
+            transition:
+                .25s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+
+            transform:
+                translate(-50%,0);
+        }
+
+        /* ========================================
+           MOBILE NAV
+        ======================================== */
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+
+        @media (max-width: 900px) {
+
+            .users-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .desktop-nav span {
+                display: none;
+            }
+
+            .desktop-nav a {
+                padding: 10px;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .friends-header {
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+            .friends-stats {
+                width: 100%;
+
+                grid-template-columns:
+                    repeat(3,1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .friends-navbar {
+                height: 63px;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .brand span:last-child {
+                display: none;
+            }
+
+            .friends-page {
+                width:
+                    calc(100% - 18px);
+
+                padding:
+                    35px 0 100px;
+            }
+
+            .friends-heading h1 {
+                font-size: 40px;
+
+                letter-spacing:
+                    -1.7px;
+            }
+
+            .friends-heading p {
+                font-size: 13px;
+            }
+
+            .friend-card {
+                padding: 13px;
+
+                border-radius: 17px;
+
+                gap: 11px;
+            }
+
+            .friend-avatar img {
+                width: 52px;
+                height: 52px;
+            }
+
+            .friend-bio {
+                display: none;
+            }
+
+            .icon-btn {
+                width: 35px;
+                height: 35px;
+            }
+
+            .follow-btn {
+                min-width: 74px;
+
+                height: 35px;
+
+                padding:
+                    0 9px;
+            }
+
+            .mobile-nav {
+                position: fixed;
+
+                z-index: 300;
+
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+
+                height: 64px;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(5,1fr);
+
+                border:
+                    1px solid
+                    rgba(255,255,255,.10);
+
+                border-radius: 20px;
+
+                background:
+                    rgba(12,12,17,.93);
+
+                backdrop-filter:
+                    blur(18px);
+
+                -webkit-backdrop-filter:
+                    blur(18px);
+
+                box-shadow:
+                    0 18px 55px
+                    rgba(0,0,0,.48);
+            }
+
+            .mobile-nav a {
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                flex-direction: column;
+
+                gap: 3px;
+
+                color: #858a99;
+
+                font-size: 19px;
+            }
+
+            .mobile-nav a.active {
+                color: white;
+            }
+
+            .mobile-nav small {
+                font-size: 8px;
+
+                font-weight: 650;
+            }
+
+        }
+
+        @media (max-width: 440px) {
+
+            .friend-actions
+            .icon-btn.video-call {
+                display: none;
+            }
+
+            .friend-fullname {
+                max-width: 100px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ============================================
+     TOP NAVBAR
+============================================= -->
+
+<header class="friends-navbar">
+
+    <div class="friends-nav-inner">
+
+
+        <!-- BRAND -->
+
+        <a
+            href="/feed"
+            class="brand"
+        >
+
+            <div class="brand-logo">
+                S
+            </div>
+
+            <span>
+                SocialSphere
+            </span>
+
+        </a>
+
+
+
+        <!-- DESKTOP NAV -->
+
+        <nav class="desktop-nav">
+
+
+            <!-- HOME -->
+
+            <a href="/feed">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M3 11.5 12 4l9 7.5"
+                    />
+
+                    <path
+                        d="M5 10.5V20h14v-9.5"
+                    />
+                </svg>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+
+            <!-- EXPLORE -->
+
+            <a href="/explore">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                    />
+
+                    <path
+                        d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z"
+                    />
+                </svg>
+
+                <span>
+                    Explore
+                </span>
+
+            </a>
+
+
+
+            <!-- FRIENDS -->
+
+            <a
+                href="/friends"
+                class="active"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                    />
+
+                    <circle
+                        cx="9"
+                        cy="7"
+                        r="4"
+                    />
+
+                    <path
+                        d="M22 21v-2a4 4 0 0 0-3-3.87"
+                    />
+
+                    <path
+                        d="M16 3.13a4 4 0 0 1 0 7.75"
+                    />
+                </svg>
+
+                <span>
+                    Friends
+                </span>
+
+            </a>
+
+
+
+            <!-- MESSAGES -->
+
+            <a
+                href="/messages"
+                style="position:relative;"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"
+                    />
+                </svg>
+
+                <span>
+                    Messages
+                </span>
+
+                <b
+                    class="message-badge nav-badge hidden"
+                >
+                    0
+                </b>
+
+            </a>
+
+
+
+            <!-- NOTIFICATIONS -->
+
+            <a
+                href="/notifications"
+                style="position:relative;"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                    />
+
+                    <path
+                        d="M10 21h4"
+                    />
+                </svg>
+
+                <span>
+                    Alerts
+                </span>
+
+                <b
+                    class="notification-badge nav-badge hidden"
+                >
+                    0
+                </b>
+
+            </a>
+
+
+
+            <!-- PROFILE -->
+
+            <a href="/profile">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4"
+                    />
+
+                    <path
+                        d="M4 21a8 8 0 0 1 16 0"
+                    />
+                </svg>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<!-- ============================================
+     FRIENDS PAGE
+============================================= -->
+
+<main class="friends-page">
+
+
+    <!-- HEADER -->
+
+    <section class="friends-header">
+
+        <div class="friends-heading">
+
+            <div class="page-label">
+
+                <span></span>
+
+                Your SocialSphere Network
+
+            </div>
+
+            <h1>
+                Friends
+            </h1>
+
+            <p>
+                See your followers, people you follow,
+                mutual connections and discover new
+                people on SocialSphere.
+            </p>
+
+        </div>
+
+
+
+        <!-- COUNTERS -->
+
+        <div class="friends-stats">
+
+            <div class="stat-card">
+
+                <strong id="followersCount">
+                    0
+                </strong>
+
+                <span>
+                    Followers
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong id="followingCount">
+                    0
+                </strong>
+
+                <span>
+                    Following
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong id="mutualCount">
+                    0
+                </strong>
+
+                <span>
+                    Mutual
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================
+         SEARCH
+    ========================================= -->
+
+    <div class="friend-search">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+
+            <circle
+                cx="11"
+                cy="11"
+                r="7"
+            />
+
+            <path
+                d="m20 20-4-4"
+            />
+
+        </svg>
+
+
+        <input
+            id="friendSearch"
+            type="search"
+            placeholder="Search people by username or name..."
+            autocomplete="off"
+        >
+
+    </div>
+
+
+
+    <!-- ========================================
+         TABS
+    ========================================= -->
+
+    <div class="friend-tabs">
+
+        <button
+            type="button"
+            class="tab-btn active"
+            data-tab="mutual"
+        >
+            Friends
+        </button>
+
+
+        <button
+            type="button"
+            class="tab-btn"
+            data-tab="followers"
+        >
+            Followers
+        </button>
+
+
+        <button
+            type="button"
+            class="tab-btn"
+            data-tab="following"
+        >
+            Following
+        </button>
+
+
+        <button
+            type="button"
+            class="tab-btn"
+            data-tab="discover"
+        >
+            Find People
+        </button>
+
+    </div>
+
+
+
+    <!-- ========================================
+         CONTENT
+    ========================================= -->
+
+    <section id="friendsContent">
+
+        <div class="state-box">
+
+            <div class="state-content">
+
+                <div class="loader"></div>
+
+                <h2>
+                    Loading your network
+                </h2>
+
+                <p>
+                    Getting your followers and
+                    connections...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ============================================
+     MOBILE NAVIGATION
+============================================= -->
+
+<nav class="mobile-nav">
+
+
+    <a href="/feed">
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path
+                d="M3 11.5 12 4l9 7.5"
+            />
+
+            <path
+                d="M5 10.5V20h14v-9.5"
+            />
+        </svg>
+
+        <small>
+            Home
+        </small>
+
+    </a>
+
+
+
+    <a href="/explore">
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <circle
+                cx="12"
+                cy="12"
+                r="9"
+            />
+
+            <path
+                d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z"
+            />
+        </svg>
+
+        <small>
+            Explore
+        </small>
+
+    </a>
+
+
+
+    <a
+        href="/friends"
+        class="active"
+    >
+
+        <svg
+            width="21"
+            height="21"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path
+                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+            />
+
+            <circle
+                cx="9"
+                cy="7"
+                r="4"
+            />
+
+            <path
+                d="M22 21v-2a4 4 0 0 0-3-3.87"
+            />
+        </svg>
+
+        <small>
+            Friends
+        </small>
+
+    </a>
+
+
+
+    <a href="/messages">
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path
+                d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"
+            />
+        </svg>
+
+        <small>
+            Messages
+        </small>
+
+    </a>
+
+
+
+    <a href="/profile">
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <circle
+                cx="12"
+                cy="8"
+                r="4"
+            />
+
+            <path
+                d="M4 21a8 8 0 0 1 16 0"
+            />
+        </svg>
+
+        <small>
+            Profile
+        </small>
+
+    </a>
+
+
+</nav>
+
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<script>
+
+    /* ==========================================
+       VARIABLES
+    =========================================== */
+
+    let currentUser = null;
+
+    let followers = [];
+
+    let following = [];
+
+    let mutualFriends = [];
+
+    let discoverUsers = [];
+
+    let currentTab = "mutual";
+
+
+    const content =
+        document.getElementById(
+            "friendsContent"
+        );
+
+
+    const searchInput =
+        document.getElementById(
+            "friendSearch"
+        );
+
+
+    const followersCount =
+        document.getElementById(
+            "followersCount"
+        );
+
+
+    const followingCount =
+        document.getElementById(
+            "followingCount"
+        );
+
+
+    const mutualCount =
+        document.getElementById(
+            "mutualCount"
+        );
+
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+
+    /* ==========================================
+       TOAST
+    =========================================== */
+
+    function notify(message) {
+
+        toast.textContent =
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            notify.timer
+        );
+
+
+        notify.timer =
+            setTimeout(() => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            }, 2300);
+
+    }
+
+
+
+    /* ==========================================
+       ESCAPE BIO
+    =========================================== */
+
+    function safeText(value) {
+
+        return escapeHtml(
+            value || ""
+        );
+
+    }
+
+
+
+    /* ==========================================
+       CHECK IF MUTUAL
+    =========================================== */
+
+    function isMutual(userId) {
+
+        return mutualFriends.some(
+            user =>
+                Number(user.id)
+                ===
+                Number(userId)
+        );
+
+    }
+
+
+
+    /* ==========================================
+       USER CARD
+    =========================================== */
+
+    function userCard(user) {
+
+        const mutual =
+            isMutual(user.id);
+
+
+        return `
+
+            <article
+                class="friend-card"
+                id="friend-${user.id}"
+            >
+
+
+                <!-- AVATAR -->
+
+                <a
+                    class="friend-avatar"
+                    href="/profile?user_id=${user.id}"
+                >
+
+                    <img
+                        src="${
+                            fileUrl(
+                                user.profile_image,
+                                user.full_name ||
+                                user.username
+                            )
+                        }"
+                        alt=""
+                    >
+
+                    ${
+                        mutual
+                        ? `
+                            <span
+                                class="mutual-dot"
+                                title="You follow each other"
+                            ></span>
+                        `
+                        : ""
+                    }
+
+                </a>
+
+
+
+                <!-- DETAILS -->
+
+                <div class="friend-main">
+
+                    <a
+                        class="friend-name"
+                        href="/profile?user_id=${user.id}"
+                    >
+                        @${safeText(user.username)}
+                    </a>
+
+
+                    <span
+                        class="friend-fullname"
+                    >
+                        ${
+                            safeText(
+                                user.full_name ||
+                                "SocialSphere User"
+                            )
+                        }
+                    </span>
+
+
+                    ${
+                        user.bio
+                        ? `
+                            <p class="friend-bio">
+                                ${safeText(user.bio)}
+                            </p>
+                        `
+                        : ""
+                    }
+
+                </div>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="friend-actions">
+
+
+                    <!-- MESSAGE -->
+
+                    <a
+                        class="icon-btn"
+                        href="/messages?user_id=${user.id}"
+                        title="Message"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"
+                            />
+                        </svg>
+
+                    </a>
+
+
+
+                    <!-- VIDEO CALL -->
+
+                    ${
+                        mutual
+                        ? `
+                            <a
+                                class="icon-btn video-call"
+                                href="/call?user_id=${user.id}&mode=video"
+                                title="Video call"
+                            >
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <rect
+                                        x="3"
+                                        y="6"
+                                        width="13"
+                                        height="12"
+                                        rx="2"
+                                    />
+
+                                    <path
+                                        d="m16 10 5-3v10l-5-3"
+                                    />
+                                </svg>
+
+                            </a>
+                        `
+                        : ""
+                    }
+
+
+
+                    <!-- FOLLOW / UNFOLLOW -->
+
+                    <button
+                        id="follow-btn-${user.id}"
+                        type="button"
+
+                        class="
+                            follow-btn
+                            ${
+                                user.is_following
+                                ? "following"
+                                : ""
+                            }
+                        "
+
+                        onclick="
+                            toggleFollow(
+                                ${user.id}
+                            )
+                        "
+                    >
+
+                        ${
+                            user.is_following
+                            ? "Following"
+                            : "Follow"
+                        }
+
+                    </button>
+
+
+                </div>
+
+
+            </article>
+
+        `;
+
+    }
+
+
+
+    /* ==========================================
+       SEARCH FILTER
+    =========================================== */
+
+    function filteredUsers(users) {
+
+        const query =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+
+        if (!query) {
+            return users;
+        }
+
+
+        return users.filter(
+            user => {
+
+                const username =
+                    String(
+                        user.username || ""
+                    ).toLowerCase();
+
+
+                const fullName =
+                    String(
+                        user.full_name || ""
+                    ).toLowerCase();
+
+
+                return (
+                    username.includes(query)
+                    ||
+                    fullName.includes(query)
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* ==========================================
+       EMPTY STATES
+    =========================================== */
+
+    function emptyState() {
+
+        let title =
+            "No users found";
+
+
+        let message =
+            "Try searching for another username.";
+
+
+        let icon =
+            "⌕";
+
+
+        if (
+            !searchInput.value.trim()
+        ) {
+
+            if (
+                currentTab === "mutual"
+            ) {
+
+                title =
+                    "No mutual friends yet";
+
+                message =
+                    "When you and another person follow each other, they will appear here.";
+
+                icon =
+                    "♡";
+
+            }
+
+
+            else if (
+                currentTab === "followers"
+            ) {
+
+                title =
+                    "No followers yet";
+
+                message =
+                    "When someone follows you, they will appear here.";
+
+                icon =
+                    "👤";
+
+            }
+
+
+            else if (
+                currentTab === "following"
+            ) {
+
+                title =
+                    "You're not following anyone yet";
+
+                message =
+                    "Use Find People to discover SocialSphere users.";
+
+                icon =
+                    "+";
+
+            }
+
+
+            else if (
+                currentTab === "discover"
+            ) {
+
+                title =
+                    "Search for people";
+
+                message =
+                    "Type a username or name above to find people on SocialSphere.";
+
+                icon =
+                    "⌕";
+
+            }
+
+        }
+
+
+        content.innerHTML = `
+
+            <div class="state-box">
+
+                <div class="state-content">
+
+                    <div class="state-icon">
+                        ${icon}
+                    </div>
+
+                    <h2>
+                        ${title}
+                    </h2>
+
+                    <p>
+                        ${message}
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* ==========================================
+       RENDER TAB
+    =========================================== */
+
+    function renderCurrentTab() {
+
+        let users = [];
+
+
+        if (
+            currentTab === "mutual"
+        ) {
+
+            users =
+                mutualFriends;
+
+        }
+
+
+        else if (
+            currentTab === "followers"
+        ) {
+
+            users =
+                followers;
+
+        }
+
+
+        else if (
+            currentTab === "following"
+        ) {
+
+            users =
+                following;
+
+        }
+
+
+        else if (
+            currentTab === "discover"
+        ) {
+
+            users =
+                discoverUsers;
+
+        }
+
+
+        users =
+            filteredUsers(users);
+
+
+        if (!users.length) {
+
+            emptyState();
+
+            return;
+
+        }
+
+
+        content.innerHTML = `
+
+            <div class="users-grid">
+
+                ${
+                    users
+                        .map(userCard)
+                        .join("")
+                }
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* ==========================================
+       CALCULATE MUTUAL FRIENDS
+    =========================================== */
+
+    function calculateMutual() {
+
+        const followingIds =
+            new Set(
+                following.map(
+                    user =>
+                        Number(user.id)
+                )
+            );
+
+
+        mutualFriends =
+            followers.filter(
+                user =>
+                    followingIds.has(
+                        Number(user.id)
+                    )
+            );
+
+
+        followersCount.textContent =
+            followers.length;
+
+
+        followingCount.textContent =
+            following.length;
+
+
+        mutualCount.textContent =
+            mutualFriends.length;
+
+    }
+
+
+
+    /* ==========================================
+       LOAD FOLLOWERS + FOLLOWING
+    =========================================== */
+
+    async function loadNetwork() {
+
+        const results =
+            await Promise.all([
+
+                api(
+                    `/api/users/${currentUser.id}/followers`
+                ),
+
+                api(
+                    `/api/users/${currentUser.id}/following`
+                )
+
+            ]);
+
+
+        followers =
+            results[0];
+
+
+        following =
+            results[1];
+
+
+        calculateMutual();
+
+
+        renderCurrentTab();
+
+    }
+
+
+
+    /* ==========================================
+       DISCOVER SEARCH
+    =========================================== */
+
+    let searchTimer = null;
+
+
+    async function discoverSearch() {
+
+        const query =
+            searchInput.value.trim();
+
+
+        if (
+            currentTab !== "discover"
+        ) {
+
+            renderCurrentTab();
+
+            return;
+
+        }
+
+
+        if (!query) {
+
+            discoverUsers = [];
+
+            renderCurrentTab();
+
+            return;
+
+        }
+
+
+        content.innerHTML = `
+
+            <div class="state-box">
+
+                <div class="state-content">
+
+                    <div class="loader"></div>
+
+                    <h2>
+                        Searching
+                    </h2>
+
+                    <p>
+                        Finding SocialSphere users...
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        try {
+
+            discoverUsers =
+                await api(
+                    `/api/users/search?q=${
+                        encodeURIComponent(
+                            query
+                        )
+                    }`
+                );
+
+
+            renderCurrentTab();
+
+        }
+
+        catch (error) {
+
+            notify(
+                error.message
+            );
+
+        }
+
+    }
+
+
+
+    searchInput.addEventListener(
+        "input",
+        () => {
+
+            clearTimeout(
+                searchTimer
+            );
+
+
+            if (
+                currentTab === "discover"
+            ) {
+
+                searchTimer =
+                    setTimeout(
+                        discoverSearch,
+                        350
+                    );
+
+            }
+
+            else {
+
+                renderCurrentTab();
+
+            }
+
+        }
+    );
+
+
+
+    /* ==========================================
+       TAB BUTTONS
+    =========================================== */
+
+    document
+        .querySelectorAll(
+            ".tab-btn"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".tab-btn"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        currentTab =
+                            button.dataset.tab;
+
+
+                        searchInput.value =
+                            "";
+
+
+                        if (
+                            currentTab ===
+                            "discover"
+                        ) {
+
+                            searchInput.placeholder =
+                                "Search username or name...";
+
+                        }
+
+                        else {
+
+                            searchInput.placeholder =
+                                "Filter your connections...";
+
+                        }
+
+
+                        renderCurrentTab();
+
+                    }
+                );
+
+            }
+        );
+
+
+
+    /* ==========================================
+       FOLLOW / UNFOLLOW
+    =========================================== */
+
+    async function toggleFollow(
+        userId
+    ) {
+
+        const button =
+            document.getElementById(
+                `follow-btn-${userId}`
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        button.disabled =
+            true;
+
+
+        try {
+
+            const result =
+                await api(
+                    `/api/users/${userId}/follow`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+
+            /*
+                Update all local copies of
+                this user.
+            */
+
+            [
+                followers,
+                following,
+                mutualFriends,
+                discoverUsers
+
+            ].forEach(
+                list => {
+
+                    const user =
+                        list.find(
+                            item =>
+                                Number(item.id)
+                                ===
+                                Number(userId)
+                        );
+
+
+                    if (user) {
+
+                        user.is_following =
+                            result.following;
+
+                    }
+
+                }
+            );
+
+
+            /*
+                Reload followers/following because
+                mutual friend status may have changed.
+            */
+
+            await loadNetwork();
+
+
+            if (
+                currentTab ===
+                "discover"
+            ) {
+
+                const found =
+                    discoverUsers.find(
+                        user =>
+                            Number(user.id)
+                            ===
+                            Number(userId)
+                    );
+
+
+                if (found) {
+
+                    found.is_following =
+                        result.following;
+
+                }
+
+
+                renderCurrentTab();
+
+            }
+
+
+            notify(
+                result.following
+                ? "Following user"
+                : "Unfollowed user"
+            );
+
+        }
+
+        catch (error) {
+
+            notify(
+                error.message
+            );
+
+        }
+
+        finally {
+
+            if (button) {
+
+                button.disabled =
+                    false;
+
+            }
+
+        }
+
+    }
+
+
+
+    /* ==========================================
+       START PAGE
+    =========================================== */
+
+    async function startFriendsPage() {
+
+        try {
+
+            currentUser =
+                await ensureAuthenticated();
+
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            await loadNetwork();
+
+
+            if (
+                typeof
+                refreshNavigationBadges
+                === "function"
+            ) {
+
+                refreshNavigationBadges();
+
+            }
+
+        }
+
+        catch (error) {
+
+            content.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-content">
+
+                        <div class="state-icon">
+                            !
+                        </div>
+
+                        <h2>
+                            Couldn't load friends
+                        </h2>
+
+                        <p>
+                            ${
+                                safeText(
+                                    error.message
+                                )
+                            }
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    startFriendsPage();
+
+</script>
+
+
+</body>
+</html>

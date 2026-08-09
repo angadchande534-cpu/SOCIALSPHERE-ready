@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <title>SocialSphere</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/instagram.css"><link rel="stylesheet" href="/css/ultimate.css">
+  <script src="/js/api.js"></script>
+  <link rel="stylesheet" href="/css/premium.css">
+</head>
+<body class="instagram-page">
+<header class="topbar insta-topbar">
+  <nav class="navwrap">
+    <a class="brand insta-brand" href="/feed"><span class="brandmark">S</span><span>SocialSphere</span></a>
+    <div class="navlinks">
+      <a class="active" href="/feed">⌂ <span>Home</span></a>
+      <a href="/search">⌕ <span>Search</span></a>
+      <a href="/create-post">⊞ <span>Create</span></a>
+      <a class="message-link" href="/messages">✉ <span>Messages</span><b class="message-badge hidden">0</b></a>
+      <a class="notification-link" href="/notifications">♡ <span>Alerts</span><b class="notification-badge hidden">0</b></a>
+      <a href="/profile">◎ <span>Profile</span></a>
+      <button onclick="logout()">↪ <span>Logout</span></button>
+    </div>
+  </nav>
+</header>
+
+<main class="insta-shell">
+  <section class="insta-feed-column">
+    <section class="stories-shell" aria-label="Stories">
+      <div class="stories-track" id="storiesTrack">
+        <button class="story-card add-story-card" type="button" onclick="chooseStory()">
+          <span class="story-ring add-ring"><img id="myStoryAvatar" alt="Your profile"><b>＋</b></span>
+          <span>Your story</span>
+        </button>
+        <div class="story-loading">Loading stories…</div>
+      </div>
+      <input id="storyInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg,video/quicktime" hidden>
+    </section>
+
+    <a class="insta-composer" href="/create-post">
+      <img class="avatar" id="composerAvatar" alt="Profile">
+      <span>Share a photo, video or thought…</span>
+      <b>＋</b>
+    </a>
+
+    <div id="posts"><div class="insta-empty">Loading your feed…</div></div>
+  </section>
+
+  <aside class="insta-side">
+    <section class="insta-user-card">
+      <img class="avatar" id="sideAvatar" alt="Profile">
+      <div><strong id="sideName">SocialSphere User</strong><span id="sideUsername">@username</span></div>
+      <a href="/profile">View</a>
+    </section>
+    <div class="insta-stats">
+      <div><b id="postCount">0</b><span>Posts</span></div>
+      <div><b id="followerCount">0</b><span>Followers</span></div>
+      <div><b id="followingCount">0</b><span>Following</span></div>
+    </div>
+    <p class="insta-note">Share moments, connect with friends and keep your favourite posts saved.</p>
+  </aside>
+</main>
+
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+  <a class="active" href="/feed">⌂<span>Home</span></a>
+  <a href="/search">⌕<span>Search</span></a>
+  <a class="mobile-create" href="/create-post">＋<span>Create</span></a>
+  <a href="/messages">✉<span>Messages</span><b class="message-badge hidden">0</b></a>
+  <a href="/profile">◎<span>Profile</span></a>
+</nav>
+
+<div class="modal-backdrop hidden" id="likesModal" onclick="closeLikes(event)">
+  <section class="people-modal insta-modal" onclick="event.stopPropagation()">
+    <div class="modal-head"><h2>Likes</h2><button class="modal-close" onclick="closeLikes()">×</button></div>
+    <div id="likesList"><div class="insta-empty">Loading…</div></div>
+  </section>
+</div>
+
+<div class="story-viewer hidden" id="storyViewer">
+  <button class="story-close" type="button" onclick="closeStoryViewer()">×</button>
+  <button class="story-nav previous" type="button" onclick="changeStory(-1)">‹</button>
+  <section class="story-stage">
+    <div class="story-progress"><span id="storyProgress"></span></div>
+    <header class="story-owner"><img id="viewerAvatar" alt=""><div><strong id="viewerName"></strong><small id="viewerTime"></small></div><button id="deleteStoryButton" class="story-delete hidden" type="button" onclick="deleteCurrentStory()">Delete</button></header>
+    <div id="storyMedia" class="story-media"></div>
+    <p id="storyCaption" class="story-caption"></p>
+    <small id="storyViews" class="story-views"></small>
+  </section>
+  <button class="story-nav next" type="button" onclick="changeStory(1)">›</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const postsElement = document.getElementById('posts');
+const toast = document.getElementById('toast');
+const commentsCache = new Map();
+const expandedComments = new Set();
+let currentUser = null;
+let stories = [];
+let storyIndex = 0;
+let storyTimer = null;
+
+function notify(message) {
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(notify.timer);
+  notify.timer = setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+function avatarUrl(user) {
+  return fileUrl(user.profile_image, user.full_name || user.username);
+}
+
+function relativeTime(value) {
+  const seconds = Math.max(1, Math.floor((Date.now() - new Date(value).getTime()) / 1000));
+  if (seconds < 60) return `${seconds}s`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
+  return `${Math.floor(seconds / 86400)}d`;
+}
+
+function mediaMarkup(post) {
+  if (!post.image) return '';
+  const url = fileUrl(post.image);
+  if (post.media_type === 'video' || /\.(mp4|webm|ogv|ogg|mov)(\?|$)/i.test(post.image)) {
+    return `<video class="post-media" controls playsinline preload="metadata"><source src="${url}">Your browser cannot play this video.</video>`;
+  }
+  return `<img class="post-media" src="${url}" alt="Post by ${escapeHtml(post.username)}" loading="lazy">`;
+}
+
+function postCard(post) {
+  const mine = currentUser && Number(post.user_id) === Number(currentUser.id);
+  return `<article class="insta-post" id="post-${post.id}">
+    <header class="insta-post-head">
+      <a href="/profile?user_id=${post.user_id}"><img class="avatar" src="${fileUrl(post.profile_image, post.username)}" alt=""></a>
+      <div><a href="/profile?user_id=${post.user_id}"><strong>${escapeHtml(post.username)}</strong></a><small>${relativeTime(post.created_at)}</small></div>
+      ${mine ? `<button class="post-delete" type="button" onclick="deletePost(${post.id})" title="Delete post">•••<span>Delete</span></button>` : `<a class="post-message" href="/messages?user_id=${post.user_id}" title="Message">✉</a>`}
+    </header>
+    ${mediaMarkup(post)}
+    <div class="insta-action-row">
+      <button id="like-button-${post.id}" class="insta-icon-button ${post.liked_by_me ? 'liked' : ''}" onclick="toggleLike(${post.id}, this)" title="Like">${post.liked_by_me ? '♥' : '♡'}</button>
+      <button class="insta-icon-button" onclick="focusComment(${post.id})" title="Comment">◯</button>
+      <a class="insta-icon-button" href="/messages?user_id=${post.user_id}" title="Send">⌁</a>
+      <button class="insta-icon-button save-button ${post.bookmarked_by_me ? 'saved' : ''}" onclick="toggleSave(${post.id}, this)" title="Save">${post.bookmarked_by_me ? '◆' : '◇'}</button>
+    </div>
+    <button class="like-summary" onclick="openLikes(${post.id})"><b id="like-count-${post.id}">${post.likes_count}</b> ${post.likes_count === 1 ? 'like' : 'likes'}</button>
+    ${post.caption ? `<p class="insta-caption"><a href="/profile?user_id=${post.user_id}"><b>${escapeHtml(post.username)}</b></a> ${escapeHtml(post.caption)}</p>` : ''}
+    <button class="comment-summary" onclick="focusComment(${post.id})">View <span id="comment-count-${post.id}">${post.comments_count}</span> comments</button>
+    <section class="comments-panel">
+      <div class="comments-list" id="comments-list-${post.id}"></div>
+      <form class="insta-comment-form" onsubmit="submitComment(event, ${post.id})">
+        <img src="${currentUser ? avatarUrl(currentUser) : ''}" alt="">
+        <input id="comment-input-${post.id}" maxlength="1000" placeholder="Add a comment…" autocomplete="off">
+        <button type="submit">Post</button>
+      </form>
+    </section>
+  </article>`;
+}
+
+function commentRow(comment) {
+  const canDelete = currentUser && Number(comment.user_id) === Number(currentUser.id);
+  return `<div class="insta-comment" id="comment-${comment.id}">
+    <img src="${fileUrl(comment.profile_image, comment.username)}" alt="">
+    <p><a href="/profile?user_id=${comment.user_id}"><b>${escapeHtml(comment.username)}</b></a> ${escapeHtml(comment.text)}</p>
+    ${canDelete ? `<button type="button" onclick="deleteComment(${comment.id}, ${comment.post_id})">×</button>` : ''}
+  </div>`;
+}
+
+function renderComments(postId) {
+  const element = document.getElementById(`comments-list-${postId}`);
+  if (!element) return;
+  const items = commentsCache.get(postId) || [];
+  const expanded = expandedComments.has(postId);
+  const visible = expanded ? items : items.slice(-2);
+  element.innerHTML = `${items.length > 2 ? `<button class="view-comments" onclick="toggleAllComments(${postId})">${expanded ? 'Hide older comments' : `View all ${items.length} comments`}</button>` : ''}${visible.map(item => commentRow({...item, post_id: postId})).join('')}`;
+}
+
+async function loadComments(postId) {
+  try {
+    commentsCache.set(postId, await api(`/api/posts/${postId}/comments`));
+    renderComments(postId);
+  } catch (_error) {}
+}
+
+function toggleAllComments(postId) {
+  expandedComments.has(postId) ? expandedComments.delete(postId) : expandedComments.add(postId);
+  renderComments(postId);
+}
+
+function focusComment(postId) {
+  document.getElementById(`comment-input-${postId}`)?.focus();
+}
+
+async function submitComment(event, postId) {
+  event.preventDefault();
+  const input = document.getElementById(`comment-input-${postId}`);
+  const text = input.value.trim();
+  if (!text) return;
+  input.disabled = true;
+  try {
+    const comment = await api(`/api/posts/${postId}/comments`, {method:'POST', body:JSON.stringify({text})});
+    const comments = commentsCache.get(postId) || [];
+    comments.push(comment);
+    commentsCache.set(postId, comments);
+    input.value = '';
+    renderComments(postId);
+    document.getElementById(`comment-count-${postId}`).textContent = comments.length;
+  } catch (error) { notify(error.message); }
+  finally { input.disabled = false; input.focus(); }
+}
+
+async function deleteComment(commentId, postId) {
+  if (!confirm('Delete this comment?')) return;
+  try {
+    await api(`/api/comments/${commentId}`, {method:'DELETE'});
+    const comments = (commentsCache.get(postId) || []).filter(item => item.id !== commentId);
+    commentsCache.set(postId, comments);
+    renderComments(postId);
+    document.getElementById(`comment-count-${postId}`).textContent = comments.length;
+  } catch (error) { notify(error.message); }
+}
+
+async function deletePost(postId) {
+  if (!confirm('Delete this post permanently?')) return;
+  try {
+    await api(`/api/posts/${postId}`, {method:'DELETE'});
+    document.getElementById(`post-${postId}`)?.remove();
+    const count = document.getElementById('postCount');
+    if (count) count.textContent = Math.max(0, Number(count.textContent || 0) - 1);
+    notify('Post deleted');
+  } catch (error) { notify(error.message); }
+}
+
+async function toggleLike(id, button) {
+  button.disabled = true;
+  try {
+    const result = await api(`/api/posts/${id}/like`, {method:'POST'});
+    button.textContent = result.liked ? '♥' : '♡';
+    button.classList.toggle('liked', result.liked);
+    document.getElementById(`like-count-${id}`).textContent = result.likes_count;
+  } catch (error) { notify(error.message); }
+  finally { button.disabled = false; }
+}
+
+async function toggleSave(id, button) {
+  try {
+    const result = await api(`/api/posts/${id}/bookmark`, {method:'POST'});
+    button.textContent = result.bookmarked ? '◆' : '◇';
+    button.classList.toggle('saved', result.bookmarked);
+    notify(result.bookmarked ? 'Post saved' : 'Removed from saved');
+  } catch (error) { notify(error.message); }
+}
+
+async function openLikes(id) {
+  const modal = document.getElementById('likesModal');
+  const list = document.getElementById('likesList');
+  modal.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  list.innerHTML = '<div class="insta-empty">Loading…</div>';
+  try {
+    const users = await api(`/api/posts/${id}/likes`);
+    list.innerHTML = users.length ? users.map(user => `<a class="insta-person" href="/profile?user_id=${user.id}"><img src="${fileUrl(user.profile_image, user.full_name || user.username)}" alt=""><div><strong>${escapeHtml(user.username)}</strong><span>${escapeHtml(user.full_name || '')}</span></div></a>`).join('') : '<div class="insta-empty">No likes yet.</div>';
+  } catch (error) { list.innerHTML = `<div class="insta-empty">${escapeHtml(error.message)}</div>`; }
+}
+
+function closeLikes(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById('likesModal').classList.add('hidden');
+  document.body.classList.remove('modal-open');
+}
+
+async function loadMe() {
+  currentUser = await ensureAuthenticated();
+  if (!currentUser) return;
+  document.getElementById('composerAvatar').src = avatarUrl(currentUser);
+  document.getElementById('myStoryAvatar').src = avatarUrl(currentUser);
+  document.getElementById('sideAvatar').src = avatarUrl(currentUser);
+  document.getElementById('sideName').textContent = currentUser.full_name || currentUser.username;
+  document.getElementById('sideUsername').textContent = '@' + currentUser.username;
+  const profile = await api(`/api/users/${currentUser.id}`);
+  document.getElementById('postCount').textContent = profile.posts_count;
+  document.getElementById('followerCount').textContent = profile.followers_count;
+  document.getElementById('followingCount').textContent = profile.following_count;
+}
+
+async function loadPosts() {
+  try {
+    const posts = await api('/api/posts');
+    postsElement.innerHTML = posts.length ? posts.map(postCard).join('') : '<div class="insta-empty"><h2>No posts yet</h2><p>Create the first post.</p><a class="btn" href="/create-post">Create post</a></div>';
+    await Promise.all(posts.map(post => loadComments(post.id)));
+  } catch (error) { postsElement.innerHTML = `<div class="insta-empty">${escapeHtml(error.message)}</div>`; }
+}
+
+function storyCard(story, index) {
+  return `<button class="story-card ${story.viewed_by_me ? 'viewed' : ''}" type="button" onclick="openStory(${index})"><span class="story-ring"><img src="${fileUrl(story.profile_image, story.full_name || story.username)}" alt=""></span><span>${escapeHtml(story.is_mine ? 'Your story' : story.username)}</span></button>`;
+}
+
+async function loadStories() {
+  const track = document.getElementById('storiesTrack');
+  try {
+    stories = await api('/api/stories');
+    track.querySelectorAll('.story-card:not(.add-story-card), .story-loading').forEach(node => node.remove());
+    track.insertAdjacentHTML('beforeend', stories.length ? stories.map(storyCard).join('') : '<span class="story-loading">No stories yet</span>');
+  } catch (error) { notify(error.message); }
+}
+
+function chooseStory() { document.getElementById('storyInput').click(); }
+
+document.getElementById('storyInput').addEventListener('change', async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  const body = new FormData();
+  body.append('media', file);
+  const caption = prompt('Story caption (optional):', '') || '';
+  body.append('caption', caption);
+  notify('Uploading story…');
+  try {
+    await api('/api/stories', {method:'POST', body});
+    event.target.value = '';
+    await loadStories();
+    notify('Story shared for 24 hours');
+  } catch (error) { notify(error.message); }
+});
+
+async function openStory(index) {
+  if (!stories.length) return;
+  storyIndex = Math.max(0, Math.min(index, stories.length - 1));
+  const story = stories[storyIndex];
+  const media = document.getElementById('storyMedia');
+  document.getElementById('storyViewer').classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.getElementById('viewerAvatar').src = fileUrl(story.profile_image, story.full_name || story.username);
+  document.getElementById('viewerName').textContent = story.username;
+  document.getElementById('viewerTime').textContent = relativeTime(story.created_at);
+  document.getElementById('storyCaption').textContent = story.caption || '';
+  document.getElementById('storyViews').textContent = story.is_mine ? `${story.views_count} views` : '';
+  document.getElementById('deleteStoryButton').classList.toggle('hidden', !story.is_mine);
+  media.innerHTML = story.media_type === 'video' ? `<video src="${fileUrl(story.media_url)}" autoplay controls playsinline></video>` : `<img src="${fileUrl(story.media_url)}" alt="Story">`;
+  clearTimeout(storyTimer);
+  const progress = document.getElementById('storyProgress');
+  progress.style.animation = 'none'; void progress.offsetWidth;
+  const duration = story.media_type === 'video' ? 15000 : 7000;
+  progress.style.animation = `storyProgress ${duration}ms linear forwards`;
+  if (!story.is_mine) {
+    api(`/api/stories/${story.id}/view`, {method:'POST'}).catch(() => {});
+    story.viewed_by_me = true;
+  }
+  storyTimer = setTimeout(() => changeStory(1), duration);
+}
+
+function changeStory(direction) {
+  const next = storyIndex + direction;
+  if (next < 0 || next >= stories.length) return closeStoryViewer();
+  openStory(next);
+}
+
+function closeStoryViewer() {
+  clearTimeout(storyTimer);
+  document.getElementById('storyViewer').classList.add('hidden');
+  document.getElementById('storyMedia').innerHTML = '';
+  document.body.classList.remove('modal-open');
+  loadStories();
+}
+
+async function deleteCurrentStory() {
+  const story = stories[storyIndex];
+  if (!story?.is_mine || !confirm('Delete this story?')) return;
+  try {
+    await api(`/api/stories/${story.id}`, {method:'DELETE'});
+    stories.splice(storyIndex, 1);
+    closeStoryViewer();
+    notify('Story deleted');
+  } catch (error) { notify(error.message); }
+}
+
+async function start() {
+  await loadMe();
+  if (!currentUser) return;
+  await Promise.all([loadStories(), loadPosts()]);
+}
+start().catch(error => notify(error.message));
+</script>
+</body>
+</html>

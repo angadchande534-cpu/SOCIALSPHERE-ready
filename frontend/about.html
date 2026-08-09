@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About | SocialSphere</title>
+
+<link rel="stylesheet" href="/static/css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:linear-gradient(135deg,#090916,#10193c,#071b35);
+
+color:white;
+
+overflow-x:hidden;
+
+}
+
+section{
+
+width:90%;
+
+max-width:1400px;
+
+margin:auto;
+
+padding:90px 0;
+
+}
+
+.hero{
+
+text-align:center;
+
+}
+
+.hero h1{
+
+font-size:65px;
+
+font-weight:800;
+
+margin-bottom:20px;
+
+background:linear-gradient(90deg,#58b7ff,#c54dff,#ff67cf);
+
+background-clip:text;
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+}
+
+.hero p{
+
+font-size:22px;
+
+opacity:.85;
+
+line-height:38px;
+
+max-width:850px;
+
+margin:auto;
+
+}
+
+.cards{
+
+margin-top:80px;
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+gap:30px;
+
+}
+
+.card{
+
+padding:40px;
+
+border-radius:25px;
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:.4s;
+
+}
+
+.card:hover{
+
+transform:translateY(-12px);
+
+box-shadow:0 20px 50px rgba(0,0,0,.45);
+
+}
+
+.card i{
+
+font-size:45px;
+
+margin-bottom:25px;
+
+color:#6cb8ff;
+
+}
+
+.card h2{
+
+margin-bottom:20px;
+
+font-size:30px;
+
+}
+
+.card p{
+
+line-height:32px;
+
+opacity:.85;
+
+}
+
+.stats{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:30px;
+
+margin-top:100px;
+
+}
+
+.box{
+
+padding:40px;
+
+text-align:center;
+
+border-radius:20px;
+
+background:rgba(255,255,255,.05);
+
+}
+
+.box h2{
+
+font-size:55px;
+
+color:#6ab8ff;
+
+margin-bottom:10px;
+
+}
+
+.box p{
+
+font-size:20px;
+
+}
+
+.team{
+
+margin-top:100px;
+
+text-align:center;
+
+}
+
+.team h2{
+
+font-size:50px;
+
+margin-bottom:60px;
+
+}
+
+.members{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+gap:30px;
+
+}
+
+.member{
+
+padding:40px;
+
+border-radius:25px;
+
+background:rgba(255,255,255,.05);
+
+transition:.35s;
+
+}
+
+.member:hover{
+
+transform:translateY(-10px);
+
+}
+
+.avatar{
+
+width:120px;
+
+height:120px;
+
+margin:auto;
+
+border-radius:50%;
+
+background:linear-gradient(45deg,#5aaeff,#d84dff);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:45px;
+
+margin-bottom:25px;
+
+}
+
+.member h3{
+
+font-size:30px;
+
+}
+
+.member span{
+
+opacity:.7;
+
+display:block;
+
+margin:15px 0;
+
+}
+
+footer{
+
+padding:40px;
+
+text-align:center;
+
+opacity:.6;
+
+margin-top:80px;
+
+}
+
+@media(max-width:900px){
+
+.hero h1{
+
+font-size:45px;
+
+}
+
+.stats{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:600px){
+
+.stats{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+<link rel="stylesheet" href="/css/ultimate.css">  <link rel="stylesheet" href="/css/premium.css">
+</head>
+
+<body>
+
+<section class="hero">
+
+<h1>About SocialSphere</h1>
+
+<p>
+
+SocialSphere is a modern social networking platform designed to help people connect,
+share ideas, communicate instantly, and build communities in a beautiful,
+fast, and secure environment.
+
+</p>
+
+</section>
+
+<section class="cards">
+
+<div class="card">
+
+<i class="fa-solid fa-bullseye"></i>
+
+<h2>Our Mission</h2>
+
+<p>
+
+To create an engaging social platform where users can communicate,
+share memories, and collaborate with people around the world.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-lightbulb"></i>
+
+<h2>Our Vision</h2>
+
+<p>
+
+Deliver a next-generation social media experience with modern design,
+powerful technology, and exceptional user experience.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<h2>Security</h2>
+
+<p>
+
+Built using FastAPI, JWT Authentication, Supabase Database,
+and encrypted passwords to provide a safe platform.
+
+</p>
+
+</div>
+
+</section>
+
+<section class="stats">
+
+<div class="box">
+
+<h2>10M+</h2>
+
+<p>Users</p>
+
+</div>
+
+<div class="box">
+
+<h2>500K+</h2>
+
+<p>Daily Posts</p>
+
+</div>
+
+<div class="box">
+
+<h2>120+</h2>
+
+<p>Countries</p>
+
+</div>
+
+<div class="box">
+
+<h2>99.9%</h2>
+
+<p>Uptime</p>
+
+</div>
+
+</section>
+
+<section class="team">
+
+<h2>Meet The Team</h2>
+
+<div class="members">
+
+<div class="member">
+
+<div class="avatar">
+
+<i class="fa-solid fa-user"></i>
+
+</div>
+
+<h3>Angad Chande</h3>
+
+<span>Founder & Developer</span>
+
+<p>
+
+Designed the frontend, developed the backend,
+and integrated Supabase with FastAPI.
+
+</p>
+
+</div>
+
+<div class="member">
+
+<div class="avatar">
+
+<i class="fa-solid fa-code"></i>
+
+</div>
+
+<h3>Backend</h3>
+
+<span>FastAPI</span>
+
+<p>
+
+REST APIs, JWT Authentication,
+Database Management and Business Logic.
+
+</p>
+
+</div>
+
+<div class="member">
+
+<div class="avatar">
+
+<i class="fa-solid fa-palette"></i>
+
+</div>
+
+<h3>Frontend</h3>
+
+<span>HTML • CSS • JavaScript</span>
+
+<p>
+
+Modern UI, Animations,
+Responsive Design and User Experience.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 SocialSphere • Connect Beyond The Digital World
+
+</footer>
+
+</body>
+
+</html>

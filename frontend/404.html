@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>404 | SocialSphere</title>
+
+<link rel="stylesheet" href="/static/css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+overflow:hidden;
+
+background:
+linear-gradient(135deg,#090916,#11193d,#071c38);
+
+color:white;
+
+position:relative;
+
+}
+
+body::before{
+
+content:"";
+
+position:absolute;
+
+width:700px;
+
+height:700px;
+
+background:#7b2cff;
+
+filter:blur(220px);
+
+opacity:.25;
+
+left:-250px;
+
+top:-250px;
+
+animation:move1 8s infinite alternate;
+
+}
+
+body::after{
+
+content:"";
+
+position:absolute;
+
+width:600px;
+
+height:600px;
+
+background:#00d4ff;
+
+filter:blur(220px);
+
+opacity:.2;
+
+right:-200px;
+
+bottom:-200px;
+
+animation:move2 8s infinite alternate;
+
+}
+
+@keyframes move1{
+
+100%{
+
+transform:translate(100px,60px);
+
+}
+
+}
+
+@keyframes move2{
+
+100%{
+
+transform:translate(-120px,-80px);
+
+}
+
+}
+
+.container{
+
+position:relative;
+
+z-index:2;
+
+width:700px;
+
+padding:60px;
+
+text-align:center;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(25px);
+
+border-radius:30px;
+
+box-shadow:0 30px 70px rgba(0,0,0,.45);
+
+}
+
+.logo{
+
+font-size:38px;
+
+font-weight:700;
+
+margin-bottom:25px;
+
+}
+
+.logo i{
+
+color:#4da3ff;
+
+margin-right:10px;
+
+}
+
+.error{
+
+font-size:170px;
+
+font-weight:800;
+
+line-height:1;
+
+background:linear-gradient(90deg,#5ea3ff,#b14fff,#ff67cf);
+
+background-clip:text;
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+animation:float 4s infinite ease-in-out;
+
+}
+
+@keyframes float{
+
+50%{
+
+transform:translateY(-15px);
+
+}
+
+}
+
+h2{
+
+margin-top:20px;
+
+font-size:40px;
+
+}
+
+p{
+
+margin-top:15px;
+
+font-size:18px;
+
+opacity:.8;
+
+line-height:32px;
+
+}
+
+.buttons{
+
+margin-top:45px;
+
+display:flex;
+
+justify-content:center;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+}
+
+.btn{
+
+padding:16px 42px;
+
+border-radius:50px;
+
+font-size:17px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.35s;
+
+text-decoration:none;
+
+}
+
+.home{
+
+background:linear-gradient(90deg,#5ea3ff,#d94dff);
+
+color:white;
+
+box-shadow:0 10px 30px rgba(120,70,255,.45);
+
+}
+
+.home:hover{
+
+transform:translateY(-6px);
+
+box-shadow:0 20px 45px rgba(120,70,255,.6);
+
+}
+
+.feed{
+
+border:2px solid rgba(255,255,255,.25);
+
+color:white;
+
+}
+
+.feed:hover{
+
+background:white;
+
+color:#111;
+
+transform:translateY(-6px);
+
+}
+
+.small{
+
+margin-top:35px;
+
+font-size:15px;
+
+opacity:.55;
+
+}
+
+.circle{
+
+position:absolute;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.05);
+
+animation:rotate 12s linear infinite;
+
+}
+
+.c1{
+
+width:120px;
+
+height:120px;
+
+top:10%;
+
+left:12%;
+
+}
+
+.c2{
+
+width:70px;
+
+height:70px;
+
+bottom:12%;
+
+right:15%;
+
+}
+
+.c3{
+
+width:180px;
+
+height:180px;
+
+bottom:5%;
+
+left:5%;
+
+}
+
+@keyframes rotate{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+</style>
+
+<link rel="stylesheet" href="/css/ultimate.css">  <link rel="stylesheet" href="/css/premium.css">
+</head>
+
+<body>
+
+<div class="circle c1"></div>
+
+<div class="circle c2"></div>
+
+<div class="circle c3"></div>
+
+<div class="container">
+
+<div class="logo">
+
+<i class="fa-solid fa-globe"></i>
+
+SocialSphere
+
+</div>
+
+<div class="error">
+
+404
+
+</div>
+
+<h2>
+
+Oops! Page Not Found
+
+</h2>
+
+<p>
+
+The page you are looking for doesn't exist,<br>
+
+has been moved, or the URL is incorrect.
+
+</p>
+
+<div class="buttons">
+
+<a href="/" class="btn home">
+
+<i class="fa-solid fa-house"></i>
+
+Home
+
+</a>
+
+<a href="/feed-page" class="btn feed">
+
+<i class="fa-solid fa-newspaper"></i>
+
+Feed
+
+</a>
+
+</div>
+
+<div class="small">
+
+© 2026 SocialSphere • Connect Beyond The Digital World
+
+</div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Edit Profile | SocialSphere</title><link rel="stylesheet" href="/css/dashboard.css"><link rel="stylesheet" href="/css/ultimate.css"><script src="/js/api.js"></script>
+  <link rel="stylesheet" href="/css/premium.css">
+</head>
+<body>
+<header class="topbar"><nav class="navwrap"><a class="brand" href="/"><span class="brandmark">🌐</span><span>SocialSphere</span></a><div class="navlinks"><a href="/feed">🏠 <span>Feed</span></a><a href="/search">🔎 <span>Search</span></a><a href="/create-post">➕ <span>Create</span></a><a href="/bookmarks">🔖 <span>Saved</span></a><a class="message-link" href="/messages">✉️ <span>Messages</span><b class="message-badge hidden">0</b></a><a class="notification-link" href="/notifications">🔔 <span>Alerts</span><b class="notification-badge hidden">0</b></a><a class="active" href="/profile">👤 <span>Profile</span></a><button onclick="logout()">↪ <span>Logout</span></button></div></nav></header>
+<main class="shell"><section class="glass form-card"><span class="eyebrow">⚙️ Personalize your identity</span><h1>Edit <span class="gradient-text">Profile</span></h1><p class="muted">Keep your SocialSphere profile updated and recognizable.</p>
+<form id="profileForm" enctype="multipart/form-data">
+<div style="text-align:center;margin:24px 0"><img id="profilePreview" class="profile-preview" alt="Profile preview"><div style="margin-top:14px"><label class="btn secondary" for="profileImage">📷 Change Photo</label><input class="hidden" id="profileImage" type="file" accept="image/jpeg,image/png,image/webp"></div></div>
+<div class="grid2"><div class="field"><label>Username</label><input id="username" required minlength="3" maxlength="40"></div><div class="field"><label>Full Name</label><input id="fullName" maxlength="100"></div><div class="field"><label>Email</label><input id="email" type="email" required></div><div class="field"><label>Phone</label><input id="phone" maxlength="30"></div><div class="field"><label>Location</label><input id="location" maxlength="100"></div><div class="field"><label>Website</label><input id="website" placeholder="https://"></div></div>
+<div class="field"><label>Bio</label><textarea id="bio" maxlength="1000" placeholder="Tell people about yourself..."></textarea></div>
+<div class="message" id="message"></div><div style="display:flex;gap:12px;justify-content:flex-end"><a class="btn secondary" href="/profile">Cancel</a><button class="btn" id="saveButton" type="submit">💾 Save Changes</button></div>
+</form></section></main>
+<script>
+if(!token())backendPage('/login');
+const form=document.getElementById('profileForm');
+const photo=document.getElementById('profileImage');
+const preview=document.getElementById('profilePreview');
+const message=document.getElementById('message');
+const saveButton=document.getElementById('saveButton');
+const fields={
+  username:document.getElementById('username'),fullName:document.getElementById('fullName'),
+  email:document.getElementById('email'),phone:document.getElementById('phone'),
+  location:document.getElementById('location'),website:document.getElementById('website'),
+  bio:document.getElementById('bio')
+};
+async function load(){try{const me=await api('/api/auth/me');fields.username.value=me.username;fields.fullName.value=me.full_name||'';fields.email.value=me.email;fields.phone.value=me.phone||'';fields.location.value=me.location||'';fields.website.value=me.website||'';fields.bio.value=me.bio||'';preview.src=fileUrl(me.profile_image,me.full_name||me.username)}catch(error){message.textContent=error.message}}
+photo.addEventListener('change',()=>{if(photo.files[0])preview.src=URL.createObjectURL(photo.files[0])});
+form.addEventListener('submit',async e=>{e.preventDefault();saveButton.disabled=true;saveButton.textContent='Saving...';message.textContent='';message.className='message';try{const body=new FormData();body.append('username',fields.username.value.trim());body.append('full_name',fields.fullName.value.trim());body.append('email',fields.email.value.trim());body.append('phone',fields.phone.value.trim());body.append('location',fields.location.value.trim());body.append('website',fields.website.value.trim());body.append('bio',fields.bio.value.trim());if(photo.files[0])body.append('profile_image',photo.files[0]);await api('/api/users/me',{method:'PUT',body});message.textContent='Profile updated successfully!';message.className='message success';setTimeout(()=>backendPage('/profile'),700)}catch(error){message.textContent=error.message}finally{saveButton.disabled=false;saveButton.textContent='💾 Save Changes'}});load();
+</script></body></html>

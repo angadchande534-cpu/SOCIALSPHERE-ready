@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050506">
+
+    <title>Liked Posts | SocialSphere</title>
+
+    <!-- Existing SocialSphere CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/instagram.css">
+    <link rel="stylesheet" href="/css/ultimate.css">
+    <link rel="stylesheet" href="/css/premium.css">
+
+    <!-- Existing SocialSphere API -->
+    <script src="/js/api.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(118, 73, 255, .16),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(255, 68, 140, .10),
+                    transparent 30%
+                ),
+                #050507;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        /* ================================
+           NAVBAR
+        ================================= */
+
+        .likes-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            width: 100%;
+            height: 72px;
+
+            background: rgba(5, 5, 8, .88);
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, .08);
+
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .likes-nav-inner {
+            width: min(1200px, calc(100% - 28px));
+            height: 100%;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: white;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 13px;
+
+            display: grid;
+            place-items: center;
+
+            font-size: 21px;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7548ff,
+                    #d348ff,
+                    #ff497b
+                );
+
+            box-shadow:
+                0 8px 30px rgba(118, 72, 255, .30);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a {
+            position: relative;
+
+            padding: 10px 13px;
+
+            border-radius: 12px;
+
+            color: #a9adba;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: .2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: white;
+
+            background:
+                rgba(255, 255, 255, .07);
+        }
+
+        .nav-badge {
+            position: absolute;
+
+            min-width: 18px;
+            height: 18px;
+
+            right: 1px;
+            top: 1px;
+
+            padding: 0 5px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 999px;
+
+            background: #ff3264;
+
+            color: white;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ================================
+           MAIN
+        ================================= */
+
+        .likes-page {
+            width: min(1120px, calc(100% - 28px));
+
+            margin: 0 auto;
+
+            padding:
+                55px 0 110px;
+        }
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 25px;
+
+            margin-bottom: 35px;
+        }
+
+        .page-header-left {
+            max-width: 680px;
+        }
+
+        .small-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 8px 13px;
+            margin-bottom: 15px;
+
+            border:
+                1px solid rgba(255, 255, 255, .08);
+
+            border-radius: 999px;
+
+            color: #aaaebc;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            background:
+                rgba(255, 255, 255, .035);
+        }
+
+        .small-label span {
+            color: #ff4d81;
+            font-size: 17px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+
+            font-size:
+                clamp(34px, 6vw, 56px);
+
+            line-height: 1;
+
+            letter-spacing: -2px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #ddd8ff,
+                    #ffacd0
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .page-header p {
+            margin:
+                16px 0 0;
+
+            color: #8d91a0;
+
+            font-size: 15px;
+
+            line-height: 1.7;
+        }
+
+        .like-counter {
+            min-width: 115px;
+
+            padding: 16px 20px;
+
+            border:
+                1px solid rgba(255, 255, 255, .08);
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            background:
+                rgba(255, 255, 255, .035);
+        }
+
+        .like-counter strong {
+            display: block;
+
+            font-size: 26px;
+        }
+
+        .like-counter span {
+            color: #858998;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ================================
+           GRID
+        ================================= */
+
+        .liked-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 17px;
+        }
+
+        .liked-card {
+            position: relative;
+
+            min-width: 0;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(255, 255, 255, .08);
+
+            border-radius: 20px;
+
+            background:
+                rgba(255, 255, 255, .035);
+
+            transition:
+                transform .25s ease,
+                border-color .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .liked-card:hover {
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(255, 255, 255, .14);
+
+            box-shadow:
+                0 25px 60px
+                rgba(0, 0, 0, .28);
+        }
+
+        /* ================================
+           MEDIA
+        ================================= */
+
+        .liked-media {
+            position: relative;
+
+            width: 100%;
+            aspect-ratio: 1 / 1;
+
+            overflow: hidden;
+
+            background: #0a0a0d;
+        }
+
+        .liked-media img,
+        .liked-media video {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            transition:
+                transform .35s ease;
+        }
+
+        .liked-card:hover
+        .liked-media img {
+            transform: scale(1.035);
+        }
+
+        .text-post {
+            width: 100%;
+            height: 100%;
+
+            padding: 30px;
+
+            display: grid;
+            place-items: center;
+
+            text-align: center;
+
+            color: #d6d4de;
+
+            font-size: 17px;
+            line-height: 1.6;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b1631,
+                    #12121c
+                );
+        }
+
+        .video-badge {
+            position: absolute;
+
+            top: 12px;
+            right: 12px;
+
+            width: 35px;
+            height: 35px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(0, 0, 0, .60);
+
+            backdrop-filter: blur(10px);
+
+            color: white;
+
+            pointer-events: none;
+        }
+
+        /* ================================
+           CARD DETAILS
+        ================================= */
+
+        .liked-info {
+            padding: 14px 15px 16px;
+        }
+
+        .liked-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            min-width: 0;
+
+            margin-bottom: 11px;
+        }
+
+        .liked-user img {
+            width: 33px;
+            height: 33px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #222;
+        }
+
+        .liked-user-details {
+            min-width: 0;
+        }
+
+        .liked-user strong {
+            display: block;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            color: #f1f1f4;
+
+            font-size: 13px;
+        }
+
+        .liked-user small {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #727685;
+
+            font-size: 10px;
+        }
+
+        .liked-caption {
+            min-height: 39px;
+            margin: 0 0 13px;
+
+            display: -webkit-box;
+            overflow: hidden;
+            
+            color: #aaaebb;
+            font-size: 13px;
+            line-height: 1.5;
+            
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .liked-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+        }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            color: #858997;
+
+            font-size: 12px;
+        }
+
+        .stats span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .unlike-btn {
+            border: 0;
+
+            padding: 8px 11px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            color: #ff7097;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            background:
+                rgba(255, 71, 119, .09);
+
+            transition: .2s ease;
+        }
+
+        .unlike-btn:hover {
+            color: white;
+
+            background: #ec3c68;
+        }
+
+        .unlike-btn:disabled {
+            opacity: .45;
+
+            cursor: not-allowed;
+        }
+
+        /* ================================
+           LOADING / EMPTY
+        ================================= */
+
+        .state-box {
+            min-height: 370px;
+
+            display: grid;
+            place-items: center;
+
+            padding: 35px;
+
+            border:
+                1px solid rgba(255, 255, 255, .07);
+
+            border-radius: 22px;
+
+            text-align: center;
+
+            background:
+                rgba(255, 255, 255, .025);
+        }
+
+        .state-content {
+            max-width: 430px;
+        }
+
+        .state-icon {
+            width: 78px;
+            height: 78px;
+
+            margin:
+                0 auto 18px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 25px;
+
+            color: #ff6d97;
+
+            font-size: 36px;
+
+            background:
+                rgba(255, 74, 130, .10);
+
+            border:
+                1px solid
+                rgba(255, 74, 130, .13);
+        }
+
+        .state-box h2 {
+            margin:
+                0 0 10px;
+
+            font-size: 23px;
+        }
+
+        .state-box p {
+            margin:
+                0 0 22px;
+
+            color: #858998;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .state-button {
+            display: inline-block;
+
+            padding: 12px 20px;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7549ff,
+                    #be48ff
+                );
+        }
+
+        .loader {
+            width: 45px;
+            height: 45px;
+
+            margin:
+                0 auto 20px;
+
+            border:
+                3px solid rgba(255,255,255,.10);
+
+            border-top-color:
+                #8a5cff;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform:
+                    rotate(360deg);
+            }
+        }
+
+        /* ================================
+           TOAST
+        ================================= */
+
+        .toast {
+            position: fixed;
+
+            z-index: 500;
+
+            left: 50%;
+            bottom: 90px;
+
+            transform:
+                translate(-50%, 25px);
+
+            max-width:
+                calc(100% - 30px);
+
+            padding: 11px 18px;
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            border-radius: 999px;
+
+            background:
+                rgba(22, 22, 30, .95);
+
+            color: white;
+
+            font-size: 13px;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: .25s ease;
+
+            box-shadow:
+                0 15px 50px rgba(0,0,0,.4);
+
+            backdrop-filter: blur(14px);
+        }
+
+        .toast.show {
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+        /* ================================
+           MOBILE NAV
+        ================================= */
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 900px) {
+            .liked-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0,1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            .likes-navbar {
+                height: 62px;
+            }
+
+            .brand span:last-child {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .likes-page {
+                width: calc(100% - 20px);
+
+                padding:
+                    35px 0 95px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .page-header h1 {
+                font-size: 38px;
+            }
+
+            .like-counter {
+                min-width: 95px;
+            }
+
+            .liked-grid {
+                gap: 10px;
+
+                grid-template-columns:
+                    repeat(2, minmax(0,1fr));
+            }
+
+            .liked-card {
+                border-radius: 15px;
+            }
+
+            .liked-info {
+                padding: 11px;
+            }
+
+            .liked-user img {
+                width: 29px;
+                height: 29px;
+            }
+
+            .liked-user small {
+                display: none;
+            }
+
+            .liked-caption {
+                font-size: 12px;
+            }
+
+            .stats {
+                gap: 8px;
+
+                font-size: 10px;
+            }
+
+            .unlike-btn {
+                padding: 7px 8px;
+
+                font-size: 11px;
+            }
+
+            .mobile-nav {
+                position: fixed;
+
+                z-index: 200;
+
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+
+                height: 64px;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(5, 1fr);
+
+                align-items: center;
+
+                border:
+                    1px solid rgba(255,255,255,.10);
+
+                border-radius: 20px;
+
+                background:
+                    rgba(12,12,17,.92);
+
+                box-shadow:
+                    0 15px 50px rgba(0,0,0,.45);
+
+                backdrop-filter:
+                    blur(18px);
+            }
+
+            .mobile-nav a {
+                position: relative;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                gap: 3px;
+
+                color: #9094a3;
+
+                font-size: 20px;
+            }
+
+            .mobile-nav a.active {
+                color: #fff;
+            }
+
+            .mobile-nav small {
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .liked-caption {
+                display: none;
+            }
+
+            .stats span:last-child {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<!-- ========================================
+     TOP NAVBAR
+========================================= -->
+
+<header class="likes-navbar">
+
+    <div class="likes-nav-inner">
+
+        <a href="/feed" class="brand">
+
+            <div class="brand-logo">
+                S
+            </div>
+
+            <span>
+                SocialSphere
+            </span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="/feed">
+                Home
+            </a>
+
+            <a href="/search">
+                Search
+            </a>
+
+            <a href="/create-post">
+                Create
+            </a>
+
+            <a href="/like" class="active">
+                ♥ Likes
+            </a>
+
+            <a
+                href="/messages"
+                style="position:relative;"
+            >
+                Messages
+
+                <b
+                    class="message-badge nav-badge hidden"
+                >
+                    0
+                </b>
+            </a>
+
+            <a
+                href="/notifications"
+                style="position:relative;"
+            >
+                Alerts
+
+                <b
+                    class="notification-badge nav-badge hidden"
+                >
+                    0
+                </b>
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- ========================================
+     MAIN PAGE
+========================================= -->
+
+<main class="likes-page">
+
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <div class="page-header-left">
+
+            <div class="small-label">
+
+                <span>♥</span>
+
+                Your activity
+
+            </div>
+
+
+            <h1>
+                Liked Posts
+            </h1>
+
+
+            <p>
+                All the posts you've liked on
+                SocialSphere appear here. Open a post,
+                visit its creator or remove your like
+                anytime.
+            </p>
+
+        </div>
+
+
+        <div class="like-counter">
+
+            <strong id="likedCount">
+                0
+            </strong>
+
+            <span>
+                liked posts
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTENT -->
+
+    <section id="likesContainer">
+
+        <div class="state-box">
+
+            <div class="state-content">
+
+                <div class="loader"></div>
+
+                <h2>
+                    Loading your likes
+                </h2>
+
+                <p>
+                    Finding the posts you've liked...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ========================================
+     MOBILE NAV
+========================================= -->
+
+<nav class="mobile-nav">
+
+    <a href="/feed">
+        ⌂
+        <small>Home</small>
+    </a>
+
+    <a href="/search">
+        ⌕
+        <small>Search</small>
+    </a>
+
+    <a href="/create-post">
+        ＋
+        <small>Create</small>
+    </a>
+
+    <a href="/like" class="active">
+        ♥
+        <small>Likes</small>
+    </a>
+
+    <a href="/profile">
+        ◎
+        <small>Profile</small>
+    </a>
+
+</nav>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+    /* =====================================
+       VARIABLES
+    ====================================== */
+
+    let currentUser = null;
+
+    let likedPosts = [];
+
+    const container =
+        document.getElementById(
+            "likesContainer"
+        );
+
+    const likedCount =
+        document.getElementById(
+            "likedCount"
+        );
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    /* =====================================
+       TOAST
+    ====================================== */
+
+    function notify(message) {
+
+        toast.textContent =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+
+        clearTimeout(
+            notify.timer
+        );
+
+        notify.timer =
+            setTimeout(() => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            }, 2200);
+    }
+
+
+    /* =====================================
+       DATE
+    ====================================== */
+
+    function timeAgo(value) {
+
+        const date =
+            new Date(value);
+
+        const seconds =
+            Math.floor(
+                (Date.now() -
+                    date.getTime())
+                / 1000
+            );
+
+        if (seconds < 60) {
+            return "Just now";
+        }
+
+        if (seconds < 3600) {
+            return `${Math.floor(
+                seconds / 60
+            )}m ago`;
+        }
+
+        if (seconds < 86400) {
+            return `${Math.floor(
+                seconds / 3600
+            )}h ago`;
+        }
+
+        if (seconds < 604800) {
+            return `${Math.floor(
+                seconds / 86400
+            )}d ago`;
+        }
+
+        return date.toLocaleDateString();
+
+    }
+
+
+    /* =====================================
+       MEDIA TYPE
+    ====================================== */
+
+    function isVideo(post) {
+
+        return (
+            post.media_type === "video" ||
+            /\.(mp4|webm|ogg|ogv|mov)(\?|$)/i
+                .test(post.image || "")
+        );
+
+    }
+
+
+    /* =====================================
+       MEDIA HTML
+    ====================================== */
+
+    function mediaHTML(post) {
+
+        if (!post.image) {
+
+            return `
+                <div class="text-post">
+
+                    ${
+                        escapeHtml(
+                            post.caption ||
+                            "SocialSphere post"
+                        )
+                    }
+
+                </div>
+            `;
+        }
+
+
+        if (isVideo(post)) {
+
+            return `
+                <video
+                    src="${fileUrl(post.image)}"
+                    muted
+                    playsinline
+                    preload="metadata"
+                ></video>
+
+                <div class="video-badge">
+                    ▶
+                </div>
+            `;
+
+        }
+
+
+        return `
+            <img
+                src="${fileUrl(post.image)}"
+                alt="Post by ${
+                    escapeHtml(post.username)
+                }"
+                loading="lazy"
+            >
+        `;
+
+    }
+
+
+    /* =====================================
+       POST CARD
+    ====================================== */
+
+    function postCard(post) {
+
+        const caption =
+            post.caption
+                ? escapeHtml(post.caption)
+                : "No caption";
+
+
+        return `
+
+            <article
+                class="liked-card"
+                id="liked-post-${post.id}"
+            >
+
+                <!-- MEDIA -->
+
+                <a
+                    class="liked-media"
+                    href="/post?id=${post.id}"
+                >
+
+                    ${mediaHTML(post)}
+
+                </a>
+
+
+                <!-- INFORMATION -->
+
+                <div class="liked-info">
+
+
+                    <!-- USER -->
+
+                    <a
+                        class="liked-user"
+                        href="/profile?user_id=${post.user_id}"
+                    >
+
+                        <img
+                            src="${
+                                fileUrl(
+                                    post.profile_image,
+                                    post.username
+                                )
+                            }"
+                            alt=""
+                        >
+
+                        <div class="liked-user-details">
+
+                            <strong>
+                                ${escapeHtml(
+                                    post.username
+                                )}
+                            </strong>
+
+                            <small>
+                                ${timeAgo(
+                                    post.created_at
+                                )}
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- CAPTION -->
+
+                    <a
+                        href="/post?id=${post.id}"
+                    >
+
+                        <p class="liked-caption">
+                            ${caption}
+                        </p>
+
+                    </a>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="liked-actions">
+
+                        <div class="stats">
+
+                            <span>
+                                ♥
+                                <b id="likes-${post.id}">
+                                    ${post.likes_count}
+                                </b>
+                            </span>
+
+                            <span>
+                                ◯
+                                ${post.comments_count}
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            class="unlike-btn"
+                            id="unlike-${post.id}"
+                            type="button"
+                            onclick="unlikePost(
+                                ${post.id}
+                            )"
+                        >
+                            ♥ Unlike
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        `;
+
+    }
+
+
+    /* =====================================
+       RENDER POSTS
+    ====================================== */
+
+    function renderLikes() {
+
+        likedCount.textContent =
+            likedPosts.length;
+
+
+        if (!likedPosts.length) {
+
+            container.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-content">
+
+                        <div class="state-icon">
+                            ♡
+                        </div>
+
+                        <h2>
+                            No liked posts yet
+                        </h2>
+
+                        <p>
+                            When you like posts on
+                            SocialSphere, they'll be
+                            saved here so you can
+                            easily find them again.
+                        </p>
+
+                        <a
+                            class="state-button"
+                            href="/feed"
+                        >
+                            Explore Posts
+                        </a>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <div class="liked-grid">
+
+                ${
+                    likedPosts
+                        .map(postCard)
+                        .join("")
+                }
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================
+       GET ALL LIKED POSTS
+    ====================================== */
+
+    async function getLikedPosts() {
+
+        /*
+            Your existing backend returns:
+
+            liked_by_me: true / false
+
+            from:
+
+            GET /api/posts
+        */
+
+        const results = [];
+
+        let skip = 0;
+
+        const limit = 100;
+
+
+        /*
+            Loads posts in groups of 100
+            and keeps only posts liked
+            by the logged-in user.
+        */
+
+        while (true) {
+
+            const posts =
+                await api(
+                    `/api/posts?skip=${skip}&limit=${limit}`
+                );
+
+
+            results.push(
+                ...posts.filter(
+                    post =>
+                        post.liked_by_me
+                )
+            );
+
+
+            if (
+                posts.length < limit
+            ) {
+                break;
+            }
+
+
+            skip += limit;
+
+
+            /*
+                Safety limit so a browser
+                doesn't continuously request
+                thousands of posts.
+            */
+
+            if (skip >= 1000) {
+                break;
+            }
+
+        }
+
+
+        return results;
+
+    }
+
+
+    /* =====================================
+       UNLIKE POST
+    ====================================== */
+
+    async function unlikePost(postId) {
+
+        const button =
+            document.getElementById(
+                `unlike-${postId}`
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Removing...";
+
+
+        try {
+
+            const result =
+                await api(
+                    `/api/posts/${postId}/like`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+
+            /*
+                Your like endpoint toggles
+                the like.
+
+                Because this page only contains
+                posts already liked by the user,
+                result.liked should become false.
+            */
+
+            if (!result.liked) {
+
+                const card =
+                    document.getElementById(
+                        `liked-post-${postId}`
+                    );
+
+
+                if (card) {
+
+                    card.style.opacity =
+                        "0";
+
+                    card.style.transform =
+                        "scale(.96)";
+
+                }
+
+
+                setTimeout(() => {
+
+                    likedPosts =
+                        likedPosts.filter(
+                            post =>
+                                Number(post.id)
+                                !== Number(postId)
+                        );
+
+
+                    renderLikes();
+
+                }, 200);
+
+
+                notify(
+                    "Post removed from likes"
+                );
+
+            }
+
+            else {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "♥ Unlike";
+
+            }
+
+        }
+
+        catch (error) {
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "♥ Unlike";
+
+
+            notify(
+                error.message
+            );
+
+        }
+
+    }
+
+
+    /* =====================================
+       LOAD PAGE
+    ====================================== */
+
+    async function loadPage() {
+
+        try {
+
+            currentUser =
+                await ensureAuthenticated();
+
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            likedPosts =
+                await getLikedPosts();
+
+
+            renderLikes();
+
+
+            /*
+                Refresh unread message
+                and notification badges.
+            */
+
+            if (
+                typeof refreshNavigationBadges
+                === "function"
+            ) {
+
+                refreshNavigationBadges();
+
+            }
+
+        }
+
+        catch (error) {
+
+            container.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-content">
+
+                        <div class="state-icon">
+                            !
+                        </div>
+
+                        <h2>
+                            Couldn't load likes
+                        </h2>
+
+                        <p>
+                            ${
+                                escapeHtml(
+                                    error.message
+                                )
+                            }
+                        </p>
+
+                        <button
+                            class="state-button"
+                            style="
+                                border:0;
+                                cursor:pointer;
+                            "
+                            onclick="location.reload()"
+                        >
+                            Try Again
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =====================================
+       START
+    ====================================== */
+
+    loadPage();
+
+</script>
+
+
+</body>
+</html>

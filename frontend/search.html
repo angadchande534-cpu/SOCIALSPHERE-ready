@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Search | SocialSphere</title>
+  <link rel="stylesheet" href="/css/dashboard.css"><link rel="stylesheet" href="/css/ultimate.css">
+  <script src="/js/api.js"></script>
+  <link rel="stylesheet" href="/css/premium.css">
+</head>
+<body>
+<header class="topbar">
+  <nav class="navwrap">
+    <a class="brand" href="/"><span class="brandmark">🌐</span><span>SocialSphere</span></a>
+    <div class="navlinks">
+      <a href="/feed">🏠 <span>Feed</span></a>
+      <a class="active" href="/search">🔎 <span>Search</span></a>
+      <a href="/create-post">➕ <span>Create</span></a>
+      <a class="message-link" href="/messages">✉️ <span>Messages</span><b class="message-badge hidden">0</b></a><a class="notification-link" href="/notifications">🔔 <span>Alerts</span><b class="notification-badge hidden">0</b></a>
+      <a href="/profile">👤 <span>Profile</span></a>
+      <button onclick="logout()">↪ <span>Logout</span></button>
+    </div>
+  </nav>
+</header>
+
+<main class="shell">
+  <section class="glass form-card">
+    <span class="eyebrow">🔎 Discover your community</span>
+    <h1>Find <span class="gradient-text">People</span></h1>
+    <p class="muted">Search by username or full name, open a profile, and follow interesting creators.</p>
+    <form class="searchbar" id="searchForm">
+      <input id="query" placeholder="Search SocialSphere users..." autocomplete="off">
+      <button class="btn" type="submit">Search</button>
+    </form>
+    <div id="results" class="results-panel" style="margin-top:20px">
+      <div class="empty">Type a name to begin searching.</div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+if (!token()) backendPage('/login');
+const results = document.getElementById('results');
+const toast = document.getElementById('toast');
+const queryInput = document.getElementById('query');
+const form = document.getElementById('searchForm');
+let timer;
+
+function notify(message) {
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function row(user) {
+  return `<div class="user-result">
+    <a class="user-result-link" href="/profile?user_id=${user.id}">
+      <img class="avatar" src="${fileUrl(user.profile_image, user.full_name || user.username)}" alt="">
+      <div class="info">
+        <strong>${escapeHtml(user.full_name || user.username)}</strong>
+        <span>@${escapeHtml(user.username)}</span>
+        ${user.bio ? `<small>${escapeHtml(user.bio)}</small>` : ''}
+      </div>
+    </a>
+    <a class="btn secondary compact" href="/messages?user_id=${user.id}">Message</a>
+    <button class="btn secondary compact" onclick="followUser(${user.id}, this)">
+      ${user.is_following ? 'Following' : 'Follow'}
+    </button>
+  </div>`;
+}
+
+async function search() {
+  const q = queryInput.value.trim();
+  if (!q) {
+    results.innerHTML = '<div class="empty">Type a name to begin searching.</div>';
+    return;
+  }
+  results.innerHTML = '<div class="empty">Searching...</div>';
+  try {
+    const users = await api(`/api/users/search?q=${encodeURIComponent(q)}`);
+    results.innerHTML = users.length
+      ? users.map(row).join('')
+      : '<div class="empty"><div class="icon">🕵️</div>No users found.</div>';
+  } catch (error) {
+    results.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+  }
+}
+
+async function followUser(id, button) {
+  button.disabled = true;
+  try {
+    const result = await api(`/api/users/${id}/follow`, {method: 'POST'});
+    button.textContent = result.following ? 'Following' : 'Follow';
+    notify(result.following ? 'User followed' : 'User unfollowed');
+  } catch (error) {
+    notify(error.message);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  search();
+});
+queryInput.addEventListener('input', () => {
+  clearTimeout(timer);
+  timer = setTimeout(search, 350);
+});
+</script>
+</body>
+</html>

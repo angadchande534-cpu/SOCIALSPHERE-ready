@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Notifications | SocialSphere</title>
+  <link rel="stylesheet" href="/css/dashboard.css"><link rel="stylesheet" href="/css/ultimate.css">
+  <script src="/js/api.js"></script>
+  <link rel="stylesheet" href="/css/premium.css">
+</head>
+<body>
+<header class="topbar">
+  <nav class="navwrap">
+    <a class="brand" href="/"><span class="brandmark">🌐</span><span>SocialSphere</span></a>
+    <div class="navlinks">
+      <a href="/feed">🏠 <span>Feed</span></a>
+      <a href="/search">🔎 <span>Search</span></a>
+      <a href="/create-post">➕ <span>Create</span></a>
+      <a class="message-link" href="/messages">✉️ <span>Messages</span><b class="message-badge hidden">0</b></a><a class="active notification-link" href="/notifications">🔔 <span>Alerts</span><b class="notification-badge hidden">0</b></a>
+      <a href="/profile">👤 <span>Profile</span></a>
+      <button onclick="logout()">↪ <span>Logout</span></button>
+    </div>
+  </nav>
+</header>
+
+<main class="shell">
+  <section class="glass form-card notifications-card">
+    <div class="section-title">
+      <div>
+        <span class="eyebrow">🔔 Your activity center</span>
+        <h1 style="margin-top:14px">Notifications</h1>
+        <p class="muted">Likes, comments, followers, and new messages appear here.</p>
+      </div>
+      <button class="btn secondary" type="button" onclick="markAllRead()">Mark all read</button>
+    </div>
+    <div id="notificationList"><div class="empty">Loading notifications...</div></div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+if (!token()) backendPage('/login');
+const list = document.getElementById('notificationList');
+const toast = document.getElementById('toast');
+
+function notify(message) {
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function textFor(item) {
+  const actor = escapeHtml(item.actor_full_name || item.actor_username);
+  if (item.kind === 'follow') return `<strong>${actor}</strong> started following you.`;
+  if (item.kind === 'like') return `<strong>${actor}</strong> liked your post.`;
+  if (item.kind === 'comment') return `<strong>${actor}</strong> commented on your post.`;
+  if (item.kind === 'message') return `<strong>${actor}</strong> sent you a message.`;
+  return `<strong>${actor}</strong> interacted with you.`;
+}
+
+function iconFor(kind) {
+  if (kind === 'follow') return '👤';
+  if (kind === 'like') return '❤️';
+  if (kind === 'comment') return '💬';
+  if (kind === 'message') return '✉️';
+  return '🔔';
+}
+
+function notificationRow(item) {
+  return `<button class="notification-row ${item.is_read ? '' : 'unread'}" type="button" onclick="openNotification(${item.id}, ${item.actor_id}, ${item.post_id || 'null'}, '${item.kind}')">
+    <span class="notification-icon">${iconFor(item.kind)}</span>
+    <img class="avatar" src="${fileUrl(item.actor_profile_image, item.actor_full_name || item.actor_username)}" alt="">
+    <span class="notification-copy">
+      <span>${textFor(item)}</span>
+      <small>${new Date(item.created_at).toLocaleString()}</small>
+    </span>
+    ${item.is_read ? '' : '<span class="unread-dot"></span>'}
+  </button>`;
+}
+
+async function loadNotifications() {
+  try {
+    const items = await api('/api/notifications');
+    list.innerHTML = items.length
+      ? items.map(notificationRow).join('')
+      : '<div class="empty"><div class="icon">🔕</div><h3>No notifications yet</h3><p>Follow users and share posts to start receiving activity.</p></div>';
+  } catch (error) {
+    list.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+  }
+}
+
+async function openNotification(id, actorId, postId, kind) {
+  try {
+    await api(`/api/notifications/${id}/read`, {method: 'POST'});
+  } catch (_) {}
+  if (kind === 'follow') {
+    backendPage(`/profile?user_id=${actorId}`);
+  } else if (kind === 'message') {
+    backendPage(`/messages?user_id=${actorId}`);
+  } else if (postId) {
+    backendPage('/feed');
+  } else {
+    loadNotifications();
+  }
+}
+
+async function markAllRead() {
+  try {
+    await api('/api/notifications/read-all', {method: 'POST'});
+    notify('All notifications marked as read');
+    await loadNotifications();
+    await refreshNotificationBadge();
+  } catch (error) {
+    notify(error.message);
+  }
+}
+
+loadNotifications();
+</script>
+</body>
+</html>

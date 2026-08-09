@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <title>Profile | SocialSphere</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/instagram.css"><link rel="stylesheet" href="/css/ultimate.css">
+  <script src="/js/api.js"></script>
+  <link rel="stylesheet" href="/css/premium.css">
+</head>
+<body class="instagram-page">
+<header class="topbar insta-topbar">
+  <nav class="navwrap">
+    <a class="brand insta-brand" href="/feed"><span class="brandmark">S</span><span>SocialSphere</span></a>
+    <div class="navlinks"><a href="/feed">⌂ <span>Home</span></a><a href="/search">⌕ <span>Search</span></a><a href="/create-post">⊞ <span>Create</span></a><a href="/messages">✉ <span>Messages</span></a><a href="/notifications">♡ <span>Alerts</span></a><a class="active" href="/profile">◎ <span>Profile</span></a></div>
+  </nav>
+</header>
+
+<main class="profile-instagram-shell">
+  <section class="profile-instagram-head">
+    <div class="profile-ring"><img id="avatar" alt="Profile"></div>
+    <div class="profile-instagram-info">
+      <div class="profile-title-row"><h1 id="username">username</h1><div id="profileActions"></div></div>
+      <div class="profile-number-row"><button id="postsStat"><b id="postsCount">0</b> posts</button><button onclick="openPeople('followers')"><b id="followersCount">0</b> followers</button><button onclick="openPeople('following')"><b id="followingCount">0</b> following</button></div>
+      <div class="profile-description"><strong id="name">Loading…</strong><p id="bio">Bio</p><p id="details"></p></div>
+    </div>
+  </section>
+
+  <section class="profile-tabs"><button class="active">▦ POSTS</button><a href="/bookmarks">◇ SAVED</a></section>
+  <section class="instagram-grid" id="postGrid"><div class="insta-empty">Loading posts…</div></section>
+</main>
+
+<nav class="mobile-bottom-nav"><a href="/feed">⌂<span>Home</span></a><a href="/search">⌕<span>Search</span></a><a class="mobile-create" href="/create-post">＋<span>Create</span></a><a href="/messages">✉<span>Messages</span></a><a class="active" href="/profile">◎<span>Profile</span></a></nav>
+
+<div class="modal-backdrop hidden" id="peopleModal" onclick="closePeople(event)"><section class="insta-modal" onclick="event.stopPropagation()"><div class="modal-head"><h2 id="peopleTitle">Followers</h2><button class="modal-close" onclick="closePeople()">×</button></div><div id="peopleList"><div class="insta-empty">Loading…</div></div></section></div>
+<div class="toast" id="toast"></div>
+
+<script>
+if(!token())backendPage('/login');
+const grid=document.getElementById('postGrid');const toast=document.getElementById('toast');const params=new URLSearchParams(location.search);let viewedUserId=Number(params.get('user_id'))||null;let currentUser=null;let currentProfile=null;let currentPosts=[];
+function notify(message){toast.textContent=message;toast.classList.add('show');clearTimeout(notify.timer);notify.timer=setTimeout(()=>toast.classList.remove('show'),2500);}
+function renderActions(){if(!currentProfile||!currentUser)return;const actions=document.getElementById('profileActions');if(currentProfile.is_me){actions.innerHTML='<a class="profile-action-button" href="/edit-profile">Edit profile</a><a class="profile-action-button" href="/create-post">New post</a>';}else{actions.innerHTML=`<a class="profile-action-button" href="/messages?user_id=${viewedUserId}">Message</a><button class="profile-action-button" id="followButton" onclick="toggleFollow()">${currentProfile.is_following?'Following':'Follow'}</button>`;}}
+async function toggleFollow(){const button=document.getElementById('followButton');if(!button)return;button.disabled=true;try{const result=await api(`/api/users/${viewedUserId}/follow`,{method:'POST'});currentProfile.is_following=result.following;document.getElementById('followersCount').textContent=result.followers_count;renderActions();}catch(error){notify(error.message);button.disabled=false;}}
+function personRow(user){return `<div class="insta-person"><a class="insta-person-link" href="/profile?user_id=${user.id}"><img src="${fileUrl(user.profile_image,user.full_name||user.username)}" alt=""><div><strong>${escapeHtml(user.username)}</strong><span>${escapeHtml(user.full_name||'')}</span></div></a>${user.id!==currentUser.id?`<button class="profile-action-button small" onclick="togglePersonFollow(${user.id},this)">${user.is_following?'Following':'Follow'}</button>`:''}</div>`;}
+async function togglePersonFollow(userId,button){button.disabled=true;try{const result=await api(`/api/users/${userId}/follow`,{method:'POST'});button.textContent=result.following?'Following':'Follow';}catch(error){notify(error.message);}finally{button.disabled=false;}}
+async function openPeople(type){if(!viewedUserId)return;document.getElementById('peopleTitle').textContent=type==='followers'?'Followers':'Following';document.getElementById('peopleModal').classList.remove('hidden');document.body.classList.add('modal-open');const list=document.getElementById('peopleList');list.innerHTML='<div class="insta-empty">Loading…</div>';try{const users=await api(`/api/users/${viewedUserId}/${type}`);list.innerHTML=users.length?users.map(personRow).join(''):`<div class="insta-empty">No ${type} yet.</div>`;}catch(error){list.innerHTML=`<div class="insta-empty">${escapeHtml(error.message)}</div>`;}}
+function closePeople(event){if(event&&event.target!==event.currentTarget)return;document.getElementById('peopleModal').classList.add('hidden');document.body.classList.remove('modal-open');}
+function postTile(post){const video=post.media_type==='video'||/\.(mp4|webm|ogv|ogg|mov)(\?|$)/i.test(post.image||'');const media=post.image?(video?`<video src="${fileUrl(post.image)}" muted preload="metadata"></video>`:`<img src="${fileUrl(post.image)}" alt="Post" loading="lazy">`):`<div class="profile-caption-tile">${escapeHtml(post.caption||'Post')}</div>`;return `<article class="profile-media-tile" id="profile-post-${post.id}">${media}${video?'<span class="profile-media-type">▶</span>':''}${currentProfile.is_me?`<button class="profile-delete-post" onclick="deleteProfilePost(${post.id})">Delete</button>`:''}<div class="profile-tile-overlay"><span>♥ ${post.likes_count}</span><span>◯ ${post.comments_count}</span></div></article>`;}
+async function deleteProfilePost(postId){if(!confirm('Delete this post permanently?'))return;try{await api(`/api/posts/${postId}`,{method:'DELETE'});document.getElementById(`profile-post-${postId}`)?.remove();currentPosts=currentPosts.filter(item=>item.id!==postId);document.getElementById('postsCount').textContent=currentPosts.length;if(!currentPosts.length)renderGrid();notify('Post deleted');}catch(error){notify(error.message);}}
+function renderGrid(){grid.innerHTML=currentPosts.length?currentPosts.map(postTile).join(''):`<div class="insta-empty profile-empty"><h2>No posts yet</h2>${currentProfile?.is_me?'<a class="btn" href="/create-post">Create your first post</a>':''}</div>`;}
+async function load(){try{currentUser=await api('/api/auth/me');viewedUserId=viewedUserId||currentUser.id;currentProfile=await api(`/api/users/${viewedUserId}`);const user=currentProfile.user;currentPosts=await api(`/api/posts/user/${viewedUserId}`);document.getElementById('avatar').src=fileUrl(user.profile_image,user.full_name||user.username);document.getElementById('name').textContent=user.full_name||user.username;document.getElementById('username').textContent=user.username;document.getElementById('bio').textContent=user.bio||'';document.getElementById('details').textContent=[user.location?`📍 ${user.location}`:'',user.website?`🔗 ${user.website}`:''].filter(Boolean).join('  ');document.getElementById('postsCount').textContent=currentProfile.posts_count;document.getElementById('followersCount').textContent=currentProfile.followers_count;document.getElementById('followingCount').textContent=currentProfile.following_count;renderActions();renderGrid();document.title=`${user.username} | SocialSphere`;}catch(error){notify(error.message);}}
+load();
+</script>
+<style>
+.profile-instagram-shell{width:min(100%,940px);margin:0 auto;padding:42px 20px 100px}.profile-instagram-head{display:grid;grid-template-columns:280px 1fr;align-items:center;padding:0 25px 40px}.profile-ring{width:166px;height:166px;padding:4px;border-radius:50%;margin:auto;background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7)}.profile-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:5px solid #050505}.profile-title-row{display:flex;align-items:center;gap:16px}.profile-title-row h1{font-size:22px;font-weight:500;margin:0}.profile-title-row>div{display:flex;gap:8px}.profile-action-button{border:0;border-radius:8px;background:#363636;color:white;padding:8px 16px;font-weight:700;cursor:pointer}.profile-action-button:hover{background:#4a4a4a}.profile-action-button.small{padding:7px 12px;margin-left:auto}.profile-number-row{display:flex;gap:35px;margin:25px 0}.profile-number-row button{border:0;background:transparent;color:white;padding:0;cursor:pointer;font-size:15px}.profile-description strong{display:block;margin-bottom:5px}.profile-description p{margin:3px 0;line-height:1.5}.profile-tabs{height:54px;border-top:1px solid #262626;display:flex;justify-content:center;gap:55px}.profile-tabs button,.profile-tabs a{border:0;border-top:1px solid transparent;background:transparent;color:#a8a8a8;letter-spacing:1px;font-size:12px;padding:17px 4px}.profile-tabs .active{border-top-color:white;color:white}.instagram-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.profile-media-tile{aspect-ratio:1;background:#111;overflow:hidden;cursor:pointer}.profile-caption-tile{height:100%;display:grid;place-items:center;padding:18px;text-align:center}.profile-tile-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:20px;background:rgba(0,0,0,.55);opacity:0;transition:.2s;font-weight:700}.profile-media-tile:hover .profile-tile-overlay{opacity:1}.profile-empty{grid-column:1/-1}.insta-person{justify-content:space-between}.insta-person-link{display:flex;align-items:center;gap:12px;flex:1}
+@media(max-width:650px){.profile-instagram-shell{padding:22px 0 80px}.profile-instagram-head{grid-template-columns:105px 1fr;padding:0 14px 24px;align-items:start}.profile-ring{width:88px;height:88px;margin:0}.profile-title-row{display:block}.profile-title-row h1{font-size:19px;margin:4px 0 10px}.profile-title-row>div{flex-wrap:wrap}.profile-action-button{padding:7px 11px;font-size:12px}.profile-number-row{position:absolute;left:0;right:0;margin-top:48px;border-top:1px solid #262626;border-bottom:1px solid #262626;padding:13px 4px;justify-content:space-around;gap:0}.profile-number-row button{display:flex;flex-direction:column;font-size:12px;color:#a8a8a8}.profile-number-row b{font-size:15px;color:white}.profile-description{grid-column:1/-1;margin-top:68px}.profile-tabs{margin-top:0}.instagram-grid{gap:2px}.profile-delete-post{font-size:10px;padding:5px}.profile-tile-overlay{display:none}}
+</style>
+</body>
+</html>

@@ -1,0 +1,2551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050507">
+
+    <title>Explore | SocialSphere</title>
+
+    <!-- Existing SocialSphere CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/instagram.css">
+    <link rel="stylesheet" href="/css/ultimate.css">
+    <link rel="stylesheet" href="/css/premium.css">
+
+    <!-- Existing SocialSphere API -->
+    <script src="/js/api.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at 15% 5%,
+                    rgba(117, 73, 255, .16),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(255, 55, 140, .10),
+                    transparent 30%
+                ),
+                #050507;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            color: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ========================================
+           TOP NAVIGATION
+        ======================================== */
+
+        .explore-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+
+            width: 100%;
+            height: 72px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.07);
+
+            background:
+                rgba(7,7,10,.88);
+
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+        }
+
+        .nav-inner {
+            width: min(1220px, calc(100% - 30px));
+            height: 100%;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            font-size: 21px;
+            font-weight: 850;
+
+            letter-spacing: -.5px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            font-size: 20px;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7550ff,
+                    #bd43ff,
+                    #ff477e
+                );
+
+            box-shadow:
+                0 10px 35px
+                rgba(120,73,255,.3);
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+
+            gap: 4px;
+        }
+
+        .desktop-nav a {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 10px 13px;
+
+            border-radius: 12px;
+
+            color: #9fa3b2;
+
+            font-size: 13px;
+            font-weight: 650;
+
+            transition: .2s ease;
+        }
+
+        .desktop-nav a:hover,
+        .desktop-nav a.active {
+            color: white;
+
+            background:
+                rgba(255,255,255,.065);
+        }
+
+        .desktop-nav svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-badge {
+            position: absolute;
+
+            top: 3px;
+            right: 3px;
+
+            min-width: 17px;
+            height: 17px;
+
+            padding: 0 4px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 999px;
+
+            color: white;
+
+            background: #ff3867;
+
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        /* ========================================
+           PAGE
+        ======================================== */
+
+        .explore-page {
+            width: min(1180px, calc(100% - 28px));
+
+            margin: auto;
+
+            padding:
+                50px 0 110px;
+        }
+
+        /* ========================================
+           HEADER
+        ======================================== */
+
+        .explore-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            gap: 25px;
+
+            margin-bottom: 28px;
+        }
+
+        .explore-heading {
+            max-width: 700px;
+        }
+
+        .page-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 8px 13px;
+            margin-bottom: 15px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            color: #aaaebe;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .page-label span {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #9d65ff;
+
+            box-shadow:
+                0 0 13px #9d65ff;
+        }
+
+        .explore-heading h1 {
+            margin: 0;
+
+            font-size:
+                clamp(38px, 6vw, 62px);
+
+            line-height: 1;
+
+            letter-spacing: -2.5px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #d9d3ff 50%,
+                    #ffa4cd
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .explore-heading p {
+            max-width: 620px;
+
+            margin: 16px 0 0;
+
+            color: #858a9a;
+
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .post-counter {
+            min-width: 115px;
+
+            padding: 15px 19px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,.03);
+
+            text-align: center;
+        }
+
+        .post-counter strong {
+            display: block;
+
+            font-size: 25px;
+        }
+
+        .post-counter span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #777c8b;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ========================================
+           SEARCH
+        ======================================== */
+
+        .explore-tools {
+            position: sticky;
+            top: 83px;
+            z-index: 100;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 22px;
+            padding: 10px;
+
+            border:
+                1px solid rgba(255,255,255,.075);
+
+            border-radius: 20px;
+
+            background:
+                rgba(10,10,15,.82);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .search-box {
+            flex: 1;
+
+            min-width: 0;
+
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 0 15px;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,.035);
+        }
+
+        .search-box svg {
+            width: 20px;
+            height: 20px;
+
+            flex-shrink: 0;
+
+            color: #767b8d;
+        }
+
+        .search-box input {
+            width: 100%;
+
+            border: 0;
+            outline: 0;
+
+            color: white;
+
+            background: transparent;
+
+            font-size: 14px;
+        }
+
+        .search-box input::placeholder {
+            color: #696d7c;
+        }
+
+        .filter-scroll {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            overflow-x: auto;
+
+            scrollbar-width: none;
+        }
+
+        .filter-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            flex-shrink: 0;
+
+            height: 43px;
+
+            padding: 0 15px;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius: 13px;
+
+            color: #9195a5;
+
+            background:
+                rgba(255,255,255,.03);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .filter-btn:hover {
+            color: white;
+
+            background:
+                rgba(255,255,255,.07);
+        }
+
+        .filter-btn.active {
+            color: white;
+
+            border-color:
+                rgba(143,89,255,.34);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(117,72,255,.26),
+                    rgba(212,66,255,.18)
+                );
+        }
+
+        /* ========================================
+           EXPLORE GRID
+        ======================================== */
+
+        .explore-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0,1fr));
+
+            gap: 5px;
+        }
+
+        .explore-card {
+            position: relative;
+
+            min-width: 0;
+
+            aspect-ratio: 1 / 1;
+
+            overflow: hidden;
+
+            background: #0c0c11;
+
+            cursor: pointer;
+        }
+
+        .explore-card:first-child {
+            border-radius: 19px 0 0 0;
+        }
+
+        .explore-card:nth-child(3) {
+            border-radius: 0 19px 0 0;
+        }
+
+        .explore-media {
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition:
+                transform .35s ease,
+                filter .35s ease;
+        }
+
+        .explore-card:hover
+        .explore-media {
+            transform: scale(1.045);
+
+            filter: brightness(.62);
+        }
+
+        .text-post {
+            position: absolute;
+            inset: 0;
+
+            display: grid;
+            place-items: center;
+
+            padding: 25px;
+
+            text-align: center;
+
+            color: #dddbe6;
+
+            font-size: 16px;
+            line-height: 1.5;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(126,79,255,.25),
+                    transparent 50%
+                ),
+                linear-gradient(
+                    145deg,
+                    #151223,
+                    #09090e
+                );
+        }
+
+        /* ========================================
+           VIDEO ICON
+        ======================================== */
+
+        .media-type {
+            position: absolute;
+
+            top: 11px;
+            right: 11px;
+
+            z-index: 4;
+
+            width: 34px;
+            height: 34px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(0,0,0,.57);
+
+            backdrop-filter: blur(8px);
+        }
+
+        .media-type svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ========================================
+           HOVER OVERLAY
+        ======================================== */
+
+        .post-overlay {
+            position: absolute;
+            inset: 0;
+
+            z-index: 3;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            padding: 16px;
+
+            opacity: 0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0,0,0,.82),
+                    rgba(0,0,0,.10) 55%,
+                    rgba(0,0,0,.12)
+                );
+
+            transition: .25s ease;
+        }
+
+        .explore-card:hover
+        .post-overlay {
+            opacity: 1;
+        }
+
+        .overlay-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .like-mini-btn {
+            width: 37px;
+            height: 37px;
+
+            display: grid;
+            place-items: center;
+
+            border: 0;
+            border-radius: 50%;
+
+            color: white;
+
+            background:
+                rgba(0,0,0,.48);
+
+            cursor: pointer;
+
+            backdrop-filter: blur(8px);
+
+            transition: .2s ease;
+        }
+
+        .like-mini-btn:hover {
+            transform: scale(1.08);
+
+            background:
+                rgba(255,255,255,.16);
+        }
+
+        .like-mini-btn.liked {
+            color: #ff4e78;
+        }
+
+        .like-mini-btn svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .overlay-bottom {
+            min-width: 0;
+        }
+
+        .post-user {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            min-width: 0;
+
+            margin-bottom: 11px;
+        }
+
+        .post-user img {
+            width: 31px;
+            height: 31px;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(255,255,255,.25);
+
+            border-radius: 50%;
+
+            object-fit: cover;
+        }
+
+        .post-user strong {
+            min-width: 0;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            font-size: 12px;
+        }
+
+        .post-stats {
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .post-stats span {
+            display: flex;
+            align-items: center;
+
+            gap: 5px;
+        }
+
+        .post-stats svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ========================================
+           EMPTY / LOADING
+        ======================================== */
+
+        .state-box {
+            min-height: 390px;
+
+            display: grid;
+            place-items: center;
+
+            padding: 40px;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius: 22px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            text-align: center;
+        }
+
+        .state-content {
+            width: min(440px,100%);
+        }
+
+        .state-icon {
+            width: 76px;
+            height: 76px;
+
+            margin:
+                0 auto 18px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 24px;
+
+            color: #b385ff;
+
+            background:
+                rgba(129,81,255,.11);
+
+            font-size: 32px;
+        }
+
+        .state-box h2 {
+            margin: 0 0 9px;
+
+            font-size: 22px;
+        }
+
+        .state-box p {
+            margin: 0;
+
+            color: #858a9b;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .loader {
+            width: 44px;
+            height: 44px;
+
+            margin:
+                0 auto 20px;
+
+            border:
+                3px solid rgba(255,255,255,.1);
+
+            border-top-color:
+                #9f68ff;
+
+            border-radius: 50%;
+
+            animation:
+                rotate .8s linear infinite;
+        }
+
+        @keyframes rotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========================================
+           LOAD MORE
+        ======================================== */
+
+        .load-more-wrap {
+            display: flex;
+            justify-content: center;
+
+            padding-top: 28px;
+        }
+
+        .load-more {
+            min-width: 145px;
+
+            padding: 12px 20px;
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            border-radius: 14px;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.045);
+
+            font-size: 13px;
+            font-weight: 750;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .load-more:hover {
+            transform: translateY(-2px);
+
+            background:
+                rgba(255,255,255,.08);
+        }
+
+        .load-more:disabled {
+            opacity: .45;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+        /* ========================================
+           TOAST
+        ======================================== */
+
+        .toast {
+            position: fixed;
+
+            z-index: 500;
+
+            left: 50%;
+            bottom: 85px;
+
+            max-width:
+                calc(100% - 30px);
+
+            padding: 11px 18px;
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            border-radius: 999px;
+
+            background:
+                rgba(21,21,28,.96);
+
+            color: white;
+
+            font-size: 13px;
+
+            box-shadow:
+                0 16px 50px rgba(0,0,0,.4);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transform:
+                translate(-50%,20px);
+
+            transition: .25s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+
+            transform:
+                translate(-50%,0);
+        }
+
+        /* ========================================
+           MOBILE NAVIGATION
+        ======================================== */
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+
+        @media (max-width: 900px) {
+
+            .desktop-nav span {
+                display: none;
+            }
+
+            .desktop-nav a {
+                padding: 10px;
+            }
+
+            .explore-tools {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .filter-scroll {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .explore-topbar {
+                height: 63px;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .brand span:last-child {
+                display: none;
+            }
+
+            .explore-page {
+                width: calc(100% - 16px);
+
+                padding:
+                    34px 0 100px;
+            }
+
+            .explore-header {
+                align-items: flex-start;
+                flex-direction: column;
+
+                margin-bottom: 22px;
+            }
+
+            .explore-heading h1 {
+                font-size: 40px;
+
+                letter-spacing: -1.7px;
+            }
+
+            .explore-heading p {
+                font-size: 13px;
+            }
+
+            .explore-tools {
+                top: 71px;
+
+                border-radius: 17px;
+            }
+
+            .explore-grid {
+                gap: 3px;
+            }
+
+            .post-overlay {
+                opacity: 1;
+
+                padding: 8px;
+
+                background:
+                    linear-gradient(
+                        to top,
+                        rgba(0,0,0,.68),
+                        transparent 55%
+                    );
+            }
+
+            .overlay-top,
+            .post-user {
+                display: none;
+            }
+
+            .post-stats {
+                gap: 10px;
+
+                font-size: 10px;
+            }
+
+            .post-stats svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            .media-type {
+                top: 7px;
+                right: 7px;
+
+                width: 29px;
+                height: 29px;
+            }
+
+            .mobile-nav {
+                position: fixed;
+
+                z-index: 300;
+
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+
+                height: 64px;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(5,1fr);
+
+                border:
+                    1px solid rgba(255,255,255,.10);
+
+                border-radius: 20px;
+
+                background:
+                    rgba(12,12,17,.93);
+
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+
+                box-shadow:
+                    0 18px 55px rgba(0,0,0,.48);
+            }
+
+            .mobile-nav a {
+                position: relative;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                gap: 3px;
+
+                color: #858a99;
+
+                font-size: 19px;
+            }
+
+            .mobile-nav a.active {
+                color: white;
+            }
+
+            .mobile-nav small {
+                font-size: 8px;
+                font-weight: 650;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ============================================
+     TOP NAV
+============================================= -->
+
+<header class="explore-topbar">
+
+    <div class="nav-inner">
+
+        <a href="/feed" class="brand">
+
+            <div class="brand-logo">
+                S
+            </div>
+
+            <span>
+                SocialSphere
+            </span>
+
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="/feed">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M3 11.5 12 4l9 7.5"
+                    />
+                    <path
+                        d="M5 10.5V20h14v-9.5"
+                    />
+                </svg>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+            <a href="/explore" class="active">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                    />
+                    <path
+                        d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z"
+                    />
+                </svg>
+
+                <span>
+                    Explore
+                </span>
+
+            </a>
+
+
+            <a href="/reels">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <rect
+                        x="3"
+                        y="4"
+                        width="18"
+                        height="16"
+                        rx="3"
+                    />
+                    <path d="m8 4 3 5"/>
+                    <path d="m14 4 3 5"/>
+                    <path d="M3 9h18"/>
+                    <path d="m10 13 5 3-5 3Z"/>
+                </svg>
+
+                <span>
+                    Reels
+                </span>
+
+            </a>
+
+
+            <a href="/create-post">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="5"
+                    />
+                    <path d="M12 8v8"/>
+                    <path d="M8 12h8"/>
+                </svg>
+
+                <span>
+                    Create
+                </span>
+
+            </a>
+
+
+            <a
+                href="/messages"
+                style="position:relative;"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"
+                    />
+                </svg>
+
+                <span>
+                    Messages
+                </span>
+
+                <b
+                    class="message-badge nav-badge hidden"
+                >
+                    0
+                </b>
+
+            </a>
+
+
+            <a
+                href="/notifications"
+                style="position:relative;"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                    />
+                    <path
+                        d="M10 21h4"
+                    />
+                </svg>
+
+                <span>
+                    Alerts
+                </span>
+
+                <b
+                    class="notification-badge nav-badge hidden"
+                >
+                    0
+                </b>
+
+            </a>
+
+
+            <a href="/profile">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4"
+                    />
+                    <path
+                        d="M4 21a8 8 0 0 1 16 0"
+                    />
+                </svg>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<!-- ============================================
+     EXPLORE PAGE
+============================================= -->
+
+<main class="explore-page">
+
+
+    <!-- PAGE HEADER -->
+
+    <section class="explore-header">
+
+        <div class="explore-heading">
+
+            <div class="page-label">
+
+                <span></span>
+
+                Discover SocialSphere
+
+            </div>
+
+
+            <h1>
+                Explore
+            </h1>
+
+
+            <p>
+                Discover photos, videos and posts from
+                people across SocialSphere.
+            </p>
+
+        </div>
+
+
+        <div class="post-counter">
+
+            <strong id="postCount">
+                0
+            </strong>
+
+            <span>
+                posts
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         SEARCH + FILTER
+    =========================================== -->
+
+    <section class="explore-tools">
+
+        <div class="search-box">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                />
+
+                <path
+                    d="m20 20-4-4"
+                />
+            </svg>
+
+
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search posts or usernames..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div class="filter-scroll">
+
+            <button
+                class="filter-btn active"
+                data-filter="all"
+            >
+                All
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="photos"
+            >
+                Photos
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="videos"
+            >
+                Videos
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="popular"
+            >
+                Popular
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="newest"
+            >
+                Newest
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         CONTENT
+    =========================================== -->
+
+    <section id="exploreContent">
+
+        <div class="state-box">
+
+            <div class="state-content">
+
+                <div class="loader"></div>
+
+                <h2>
+                    Discovering posts
+                </h2>
+
+                <p>
+                    Loading content from SocialSphere...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- LOAD MORE -->
+
+    <div
+        class="load-more-wrap hidden"
+        id="loadMoreWrap"
+    >
+
+        <button
+            class="load-more"
+            id="loadMoreButton"
+            type="button"
+        >
+            Load More
+        </button>
+
+    </div>
+
+</main>
+
+
+
+<!-- ============================================
+     MOBILE NAV
+============================================= -->
+
+<nav class="mobile-nav">
+
+    <a href="/feed">
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path d="M3 11.5 12 4l9 7.5"/>
+            <path d="M5 10.5V20h14v-9.5"/>
+        </svg>
+
+        <small>
+            Home
+        </small>
+
+    </a>
+
+
+    <a
+        href="/explore"
+        class="active"
+    >
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <circle
+                cx="12"
+                cy="12"
+                r="9"
+            />
+
+            <path
+                d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z"
+            />
+        </svg>
+
+        <small>
+            Explore
+        </small>
+
+    </a>
+
+
+    <a href="/create-post">
+
+        <svg
+            width="21"
+            height="21"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <rect
+                x="3"
+                y="3"
+                width="18"
+                height="18"
+                rx="5"
+            />
+
+            <path d="M12 8v8"/>
+            <path d="M8 12h8"/>
+        </svg>
+
+        <small>
+            Create
+        </small>
+
+    </a>
+
+
+    <a href="/reels">
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <rect
+                x="3"
+                y="4"
+                width="18"
+                height="16"
+                rx="3"
+            />
+
+            <path d="M3 9h18"/>
+            <path d="m10 13 5 3-5 3Z"/>
+        </svg>
+
+        <small>
+            Reels
+        </small>
+
+    </a>
+
+
+    <a href="/profile">
+
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <circle
+                cx="12"
+                cy="8"
+                r="4"
+            />
+
+            <path
+                d="M4 21a8 8 0 0 1 16 0"
+            />
+        </svg>
+
+        <small>
+            Profile
+        </small>
+
+    </a>
+
+</nav>
+
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<script>
+
+    /* ============================================
+       VARIABLES
+    ============================================= */
+
+    const exploreContent =
+        document.getElementById(
+            "exploreContent"
+        );
+
+    const postCount =
+        document.getElementById(
+            "postCount"
+        );
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+    const loadMoreWrap =
+        document.getElementById(
+            "loadMoreWrap"
+        );
+
+    const loadMoreButton =
+        document.getElementById(
+            "loadMoreButton"
+        );
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    let currentUser = null;
+
+    let allPosts = [];
+
+    let currentFilter = "all";
+
+    let currentSkip = 0;
+
+    const pageLimit = 30;
+
+    let hasMore = true;
+
+
+
+    /* ============================================
+       TOAST
+    ============================================= */
+
+    function notify(message) {
+
+        toast.textContent =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+
+        clearTimeout(
+            notify.timer
+        );
+
+        notify.timer =
+            setTimeout(() => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            }, 2200);
+
+    }
+
+
+
+    /* ============================================
+       CHECK VIDEO
+    ============================================= */
+
+    function isVideo(post) {
+
+        return (
+            post.media_type === "video" ||
+
+            /\.(mp4|webm|ogg|mov|ogv)(\?|$)/i
+                .test(post.image || "")
+        );
+
+    }
+
+
+
+    /* ============================================
+       MEDIA
+    ============================================= */
+
+    function mediaHTML(post) {
+
+        if (!post.image) {
+
+            return `
+
+                <div class="text-post">
+
+                    ${
+                        escapeHtml(
+                            post.caption ||
+                            "SocialSphere"
+                        )
+                    }
+
+                </div>
+
+            `;
+
+        }
+
+
+        if (isVideo(post)) {
+
+            return `
+
+                <video
+                    class="explore-media"
+                    src="${fileUrl(post.image)}"
+                    muted
+                    playsinline
+                    preload="metadata"
+                ></video>
+
+                <div class="media-type">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M8 5v14l11-7z"
+                        />
+                    </svg>
+
+                </div>
+
+            `;
+
+        }
+
+
+        return `
+
+            <img
+                class="explore-media"
+                src="${fileUrl(post.image)}"
+                loading="lazy"
+                alt="Post by ${
+                    escapeHtml(
+                        post.username
+                    )
+                }"
+            >
+
+        `;
+
+    }
+
+
+
+    /* ============================================
+       LIKE ICON
+    ============================================= */
+
+    function heartSVG(filled = false) {
+
+        return `
+
+            <svg
+                viewBox="0 0 24 24"
+                ${
+                    filled
+                    ? 'fill="currentColor"'
+                    : 'fill="none"'
+                }
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path
+                    d="
+                        M20.8 4.6
+                        a5.5 5.5 0 0 0-7.8 0
+                        L12 5.6
+                        l-1-1
+                        a5.5 5.5 0 0 0-7.8 7.8
+                        l1 1
+                        L12 21
+                        l7.8-7.6
+                        1-1
+                        a5.5 5.5 0 0 0 0-7.8
+                    "
+                />
+
+            </svg>
+
+        `;
+
+    }
+
+
+
+    /* ============================================
+       POST CARD
+    ============================================= */
+
+    function postCard(post) {
+
+        return `
+
+            <article
+                class="explore-card"
+                id="explore-post-${post.id}"
+                onclick="openPost(
+                    event,
+                    ${post.id}
+                )"
+            >
+
+                ${mediaHTML(post)}
+
+
+                <div class="post-overlay">
+
+                    <div class="overlay-top">
+
+                        <button
+                            id="like-button-${post.id}"
+                            class="
+                                like-mini-btn
+                                ${
+                                    post.liked_by_me
+                                    ? "liked"
+                                    : ""
+                                }
+                            "
+                            type="button"
+
+                            onclick="
+                                toggleLike(
+                                    event,
+                                    ${post.id}
+                                )
+                            "
+                        >
+
+                            ${
+                                heartSVG(
+                                    post.liked_by_me
+                                )
+                            }
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="overlay-bottom">
+
+
+                        <a
+                            class="post-user"
+                            href="/profile?user_id=${post.user_id}"
+
+                            onclick="
+                                event.stopPropagation()
+                            "
+                        >
+
+                            <img
+                                src="${
+                                    fileUrl(
+                                        post.profile_image,
+                                        post.username
+                                    )
+                                }"
+                                alt=""
+                            >
+
+                            <strong>
+                                ${
+                                    escapeHtml(
+                                        post.username
+                                    )
+                                }
+                            </strong>
+
+                        </a>
+
+
+                        <div class="post-stats">
+
+                            <span>
+
+                                ${heartSVG(true)}
+
+                                <b
+                                    id="like-count-${post.id}"
+                                >
+                                    ${post.likes_count}
+                                </b>
+
+                            </span>
+
+
+                            <span>
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <path
+                                        d="
+                                            M21 15
+                                            a4 4 0 0 1-4 4
+                                            H8
+                                            l-5 3
+                                            V7
+                                            a4 4 0 0 1 4-4
+                                            h10
+                                            a4 4 0 0 1 4 4
+                                            z
+                                        "
+                                    />
+                                </svg>
+
+                                ${post.comments_count}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        `;
+
+    }
+
+
+
+    /* ============================================
+       FILTER POSTS
+    ============================================= */
+
+    function filteredPosts() {
+
+        let posts =
+            [...allPosts];
+
+
+        const query =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+
+        if (query) {
+
+            posts =
+                posts.filter(post => {
+
+                    const username =
+                        String(
+                            post.username || ""
+                        ).toLowerCase();
+
+                    const caption =
+                        String(
+                            post.caption || ""
+                        ).toLowerCase();
+
+
+                    return (
+                        username.includes(query) ||
+                        caption.includes(query)
+                    );
+
+                });
+
+        }
+
+
+        if (
+            currentFilter === "photos"
+        ) {
+
+            posts =
+                posts.filter(post =>
+                    post.image &&
+                    !isVideo(post)
+                );
+
+        }
+
+
+        if (
+            currentFilter === "videos"
+        ) {
+
+            posts =
+                posts.filter(post =>
+                    isVideo(post)
+                );
+
+        }
+
+
+        if (
+            currentFilter === "popular"
+        ) {
+
+            posts.sort(
+                (a,b) =>
+                    (
+                        b.likes_count +
+                        b.comments_count
+                    )
+                    -
+                    (
+                        a.likes_count +
+                        a.comments_count
+                    )
+            );
+
+        }
+
+
+        if (
+            currentFilter === "newest"
+        ) {
+
+            posts.sort(
+                (a,b) =>
+                    new Date(
+                        b.created_at
+                    )
+                    -
+                    new Date(
+                        a.created_at
+                    )
+            );
+
+        }
+
+
+        return posts;
+
+    }
+
+
+
+    /* ============================================
+       RENDER
+    ============================================= */
+
+    function renderPosts() {
+
+        const posts =
+            filteredPosts();
+
+
+        postCount.textContent =
+            posts.length;
+
+
+        if (!posts.length) {
+
+            exploreContent.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-content">
+
+                        <div class="state-icon">
+                            ⌕
+                        </div>
+
+                        <h2>
+                            Nothing found
+                        </h2>
+
+                        <p>
+                            Try another search or
+                            choose a different filter.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        exploreContent.innerHTML = `
+
+            <div class="explore-grid">
+
+                ${
+                    posts
+                        .map(postCard)
+                        .join("")
+                }
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* ============================================
+       OPEN POST
+    ============================================= */
+
+    function openPost(event, postId) {
+
+        if (
+            event.target.closest(
+                "button, a"
+            )
+        ) {
+            return;
+        }
+
+
+        window.location.href =
+            `/post?id=${postId}`;
+
+    }
+
+
+
+    /* ============================================
+       TOGGLE LIKE
+    ============================================= */
+
+    async function toggleLike(
+        event,
+        postId
+    ) {
+
+        event.stopPropagation();
+
+
+        const button =
+            document.getElementById(
+                `like-button-${postId}`
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        button.disabled = true;
+
+
+        try {
+
+            const result =
+                await api(
+                    `/api/posts/${postId}/like`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+
+            const post =
+                allPosts.find(
+                    item =>
+                        Number(item.id)
+                        ===
+                        Number(postId)
+                );
+
+
+            if (post) {
+
+                post.liked_by_me =
+                    result.liked;
+
+                post.likes_count =
+                    result.likes_count;
+
+            }
+
+
+            button.classList.toggle(
+                "liked",
+                result.liked
+            );
+
+
+            button.innerHTML =
+                heartSVG(
+                    result.liked
+                );
+
+
+            const counter =
+                document.getElementById(
+                    `like-count-${postId}`
+                );
+
+
+            if (counter) {
+
+                counter.textContent =
+                    result.likes_count;
+
+            }
+
+        }
+
+        catch (error) {
+
+            notify(
+                error.message
+            );
+
+        }
+
+        finally {
+
+            button.disabled =
+                false;
+
+        }
+
+    }
+
+
+
+    /* ============================================
+       LOAD POSTS
+    ============================================= */
+
+    async function loadPosts(
+        append = false
+    ) {
+
+        if (
+            !append
+        ) {
+
+            currentSkip = 0;
+
+            allPosts = [];
+
+            hasMore = true;
+
+        }
+
+
+        loadMoreButton.disabled =
+            true;
+
+
+        loadMoreButton.textContent =
+            "Loading...";
+
+
+        try {
+
+            const posts =
+                await api(
+                    `/api/posts?skip=${currentSkip}&limit=${pageLimit}`
+                );
+
+
+            if (append) {
+
+                allPosts.push(
+                    ...posts
+                );
+
+            }
+
+            else {
+
+                allPosts =
+                    posts;
+
+            }
+
+
+            currentSkip +=
+                posts.length;
+
+
+            hasMore =
+                posts.length
+                === pageLimit;
+
+
+            loadMoreWrap.classList.toggle(
+                "hidden",
+                !hasMore
+            );
+
+
+            renderPosts();
+
+        }
+
+        catch (error) {
+
+            if (!append) {
+
+                exploreContent.innerHTML = `
+
+                    <div class="state-box">
+
+                        <div class="state-content">
+
+                            <div class="state-icon">
+                                !
+                            </div>
+
+                            <h2>
+                                Couldn't load Explore
+                            </h2>
+
+                            <p>
+                                ${
+                                    escapeHtml(
+                                        error.message
+                                    )
+                                }
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+
+            else {
+
+                notify(
+                    error.message
+                );
+
+            }
+
+        }
+
+        finally {
+
+            loadMoreButton.disabled =
+                false;
+
+
+            loadMoreButton.textContent =
+                "Load More";
+
+        }
+
+    }
+
+
+
+    /* ============================================
+       SEARCH
+    ============================================= */
+
+    searchInput.addEventListener(
+        "input",
+        renderPosts
+    );
+
+
+
+    /* ============================================
+       FILTER BUTTONS
+    ============================================= */
+
+    document
+        .querySelectorAll(
+            ".filter-btn"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".filter-btn"
+                        )
+                        .forEach(item =>
+                            item.classList.remove(
+                                "active"
+                            )
+                        );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    currentFilter =
+                        button.dataset.filter;
+
+
+                    renderPosts();
+
+                }
+            );
+
+        });
+
+
+
+    /* ============================================
+       LOAD MORE BUTTON
+    ============================================= */
+
+    loadMoreButton.addEventListener(
+        "click",
+        () => {
+
+            if (hasMore) {
+
+                loadPosts(true);
+
+            }
+
+        }
+    );
+
+
+
+    /* ============================================
+       START PAGE
+    ============================================= */
+
+    async function startExplore() {
+
+        currentUser =
+            await ensureAuthenticated();
+
+
+        if (!currentUser) {
+            return;
+        }
+
+
+        await loadPosts();
+
+
+        if (
+            typeof refreshNavigationBadges
+            === "function"
+        ) {
+
+            refreshNavigationBadges();
+
+        }
+
+    }
+
+
+    startExplore();
+
+</script>
+
+
+</body>
+</html>

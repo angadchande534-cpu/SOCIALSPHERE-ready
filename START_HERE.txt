@@ -1,0 +1,25 @@
+SOCIALSPHERE - WORKING LOCAL BUILD
+=================================
+
+1) Open THIS folder in VS Code (the folder containing app, frontend, requirements.txt).
+
+2) In PowerShell run:
+
+python -m venv .venv
+
+Wait until the prompt comes back. Do NOT press Ctrl+C.
+
+3) Install packages without activating the venv:
+
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+4) Start the app:
+
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
+
+5) Open:
+
+http://127.0.0.1:8000/signup-page
+
+This build uses local SQLite (social_media.db) for reliable local use.
+The original environment file is preserved as .env.supabase.backup.
