@@ -70,6 +70,14 @@ app = FastAPI(
     ),
     version="5.0.0",
 )
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
+
+app.mount(
+    "/static",
+    StaticFiles(directory=str(FRONTEND_DIR)),
+    name="static"
+)
 
 
 # =========================================================
